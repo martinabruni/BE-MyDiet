@@ -1,0 +1,97 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "MyDietCoreDbContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "MyDiet.Core.Sql.Models",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[CalendarEntry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CalendarMeal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Diet]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Food]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FoodAlternative]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Meal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MealFood]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MealSwap]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MealType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Plan]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UnitConversion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UnitOfMeasurement]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[User]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}
