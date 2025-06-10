@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MyDiet.Core.Sql.Models.Models;
+namespace MyDiet.Core.Sql.Models;
 
 public partial class MealSwap
 {

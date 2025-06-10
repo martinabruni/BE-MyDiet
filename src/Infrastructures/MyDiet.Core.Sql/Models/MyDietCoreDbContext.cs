@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyDiet.Core.Sql.Models.Models;
+namespace MyDiet.Core.Sql.Models;
 
 public partial class MyDietCoreDbContext : DbContext
 {
