@@ -79,5 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Snapshots\MyDiet.Core.Database_20250610_11-05-03.dacpac" />
+    <None Include="Snapshots\MyDiet.Core.Database_20250610_12-32-59.dacpac" />
+    <None Include="Snapshots\MyDiet.Core.Database_20250610_12-35-18.dacpac" />
   </ItemGroup>
 </Project>

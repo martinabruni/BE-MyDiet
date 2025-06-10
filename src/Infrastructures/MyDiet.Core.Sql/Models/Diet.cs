@@ -13,9 +13,9 @@ public partial class Diet
 
     public string Name { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<Plan> Plan { get; set; } = new List<Plan>();
 

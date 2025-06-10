@@ -13,9 +13,9 @@ public partial class Meal
 
     public int MealTypeId { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<CalendarMeal> CalendarMeal { get; set; } = new List<CalendarMeal>();
 

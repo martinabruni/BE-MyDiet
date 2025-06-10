@@ -15,9 +15,9 @@ public partial class User
 
     public string HashedPassword { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdateAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<CalendarEntry> CalendarEntry { get; set; } = new List<CalendarEntry>();
 

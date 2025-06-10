@@ -15,9 +15,9 @@ public partial class UnitConversion
 
     public decimal ConversionFactor { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual UnitOfMeasurement FromUnit { get; set; }
 

@@ -17,9 +17,9 @@ public partial class MealFood
 
     public int UnitOfMeasurementId { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual Food Food { get; set; }
 

@@ -13,9 +13,9 @@ public partial class FoodAlternative
 
     public int AlternativeFoodId { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual Food AlternativeFood { get; set; }
 

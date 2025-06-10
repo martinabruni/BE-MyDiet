@@ -5,7 +5,7 @@
     [FoodId] INT NOT NULL,
     [Quantity] DECIMAL(18,4) NOT NULL,
     [UnitOfMeasurementId] INT NOT NULL,
-    [CreatedAt] DATETIME NULL,
+    [CreatedAt] DATETIME NOT NULL,
     [UpdatedAt] DATETIME NULL,
     CONSTRAINT [FK_MealFood_Meal] FOREIGN KEY ([MealId]) REFERENCES [dbo].[Meal]([Id]),
     CONSTRAINT [FK_MealFood_Food] FOREIGN KEY ([FoodId]) REFERENCES [dbo].[Food]([Id]),

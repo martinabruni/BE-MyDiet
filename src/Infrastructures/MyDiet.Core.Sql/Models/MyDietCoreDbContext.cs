@@ -43,12 +43,8 @@ public partial class MyDietCoreDbContext : DbContext
     {
         modelBuilder.Entity<CalendarEntry>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Plan).WithMany(p => p.CalendarEntry)
                 .HasForeignKey(d => d.PlanId)
@@ -63,12 +59,8 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<CalendarMeal>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.CalendarEntry).WithMany(p => p.CalendarMeal)
                 .HasForeignKey(d => d.CalendarEntryId)
@@ -83,16 +75,12 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<Diet>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsFixedLength();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.User).WithMany(p => p.Diet)
                 .HasForeignKey(d => d.UserId)
@@ -102,26 +90,18 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<Food>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsFixedLength();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<FoodAlternative>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.AlternativeFood).WithMany(p => p.FoodAlternativeAlternativeFood)
                 .HasForeignKey(d => d.AlternativeFoodId)
@@ -136,12 +116,8 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<Meal>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.MealType).WithMany(p => p.Meal)
                 .HasForeignKey(d => d.MealTypeId)
@@ -156,13 +132,9 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<MealFood>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Quantity).HasColumnType("decimal(18, 4)");
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Food).WithMany(p => p.MealFood)
                 .HasForeignKey(d => d.FoodId)
@@ -182,12 +154,8 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<MealSwap>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.CalendarMeal).WithMany(p => p.MealSwapCalendarMeal)
                 .HasForeignKey(d => d.CalendarMealId)
@@ -202,30 +170,22 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<MealType>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsFixedLength();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Plan>(entity =>
         {
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsFixedLength();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Diet).WithMany(p => p.Plan)
                 .HasForeignKey(d => d.DietId)
@@ -236,12 +196,8 @@ public partial class MyDietCoreDbContext : DbContext
         modelBuilder.Entity<UnitConversion>(entity =>
         {
             entity.Property(e => e.ConversionFactor).HasColumnType("decimal(18, 4)");
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.FromUnit).WithMany(p => p.UnitConversionFromUnit)
                 .HasForeignKey(d => d.FromUnitId)
@@ -260,24 +216,18 @@ public partial class MyDietCoreDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(10)
                 .IsFixedLength();
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsFixedLength();
-            entity.Property(e => e.UpdatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CreatedAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(255)
@@ -286,9 +236,7 @@ public partial class MyDietCoreDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .IsFixedLength();
-            entity.Property(e => e.UpdateAt)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .IsFixedLength();

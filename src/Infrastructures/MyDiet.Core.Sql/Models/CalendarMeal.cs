@@ -13,9 +13,9 @@ public partial class CalendarMeal
 
     public int MealId { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual CalendarEntry CalendarEntry { get; set; }
 

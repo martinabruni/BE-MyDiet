@@ -11,9 +11,9 @@ public partial class Food
 
     public string Name { get; set; }
 
-    public byte[] CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public byte[] UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<FoodAlternative> FoodAlternativeAlternativeFood { get; set; } = new List<FoodAlternative>();
 
