@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MyDiet.Core.Domain.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyDiet.Core.Domain.Dtos
 {
-    public class FoodDto : BaseDto<int>
+    public class FoodDto : ABaseDto<int>
     {
         [Required]
         public string Name { get; set; } = "";

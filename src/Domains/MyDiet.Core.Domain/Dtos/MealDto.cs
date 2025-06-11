@@ -1,6 +1,8 @@
-﻿namespace MyDiet.Core.Domain.Dtos
+﻿using MyDiet.Core.Domain.Abstractions;
+
+namespace MyDiet.Core.Domain.Dtos
 {
-    public class MealDto : BaseDto<int>
+    public class MealDto : ABaseDto<int>
     {
         public int PlanId { get; set; }
 

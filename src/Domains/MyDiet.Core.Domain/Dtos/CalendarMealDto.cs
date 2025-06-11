@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MyDiet.Core.Domain.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyDiet.Core.Domain.Dtos
 {
-    public class CalendarMealDto : BaseDto<int>
+    public class CalendarMealDto : ABaseDto<int>
     {
         [Required]
         public int CalendarEntryId { get; set; }
