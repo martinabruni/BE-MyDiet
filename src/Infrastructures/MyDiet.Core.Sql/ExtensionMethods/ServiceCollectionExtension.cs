@@ -5,6 +5,8 @@
         public static IServiceCollection AddCoreSql(this IServiceCollection services)
         {
             // TODO: Register db context
+            //services.AddDbContext<MyDietCoreDbContext>
+
             return services;
         }
 

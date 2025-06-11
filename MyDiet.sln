@@ -26,6 +26,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MyDiet.Core.Database", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiet.Core.Sql", "src\Infrastructures\MyDiet.Core.Sql\MyDiet.Core.Sql.csproj", "{11EBCBBD-508E-431C-B3E8-20AE178D1D8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiet.Core.Security", "src\Infrastructures\MyDiet.Core.Security\MyDiet.Core.Security.csproj", "{2B8398DA-FBF6-4923-A1E4-E5F83DF49AA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{11EBCBBD-508E-431C-B3E8-20AE178D1D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11EBCBBD-508E-431C-B3E8-20AE178D1D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11EBCBBD-508E-431C-B3E8-20AE178D1D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B8398DA-FBF6-4923-A1E4-E5F83DF49AA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B8398DA-FBF6-4923-A1E4-E5F83DF49AA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B8398DA-FBF6-4923-A1E4-E5F83DF49AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B8398DA-FBF6-4923-A1E4-E5F83DF49AA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{818290B6-6180-4923-94E0-2C5F9B4D65C9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{6C529858-7A63-4389-925A-034AF7B28C1D} = {93CE6A11-9559-4BF8-9410-375B4C7C5418}
 		{11EBCBBD-508E-431C-B3E8-20AE178D1D8C} = {93CE6A11-9559-4BF8-9410-375B4C7C5418}
+		{2B8398DA-FBF6-4923-A1E4-E5F83DF49AA4} = {93CE6A11-9559-4BF8-9410-375B4C7C5418}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E840E447-324A-4759-8BDF-BA710BA71B85}
