@@ -2,6 +2,6 @@
 
 namespace MyDiet.Core.Sql.Models;
 
-public partial class User : IAuditable
+public partial class User : IAuditable, IEntity<Guid>
 {
 }

@@ -2,6 +2,6 @@
 
 namespace MyDiet.Core.Sql.Models;
 
-public partial class CalendarEntry : IAuditable
+public partial class CalendarEntry : IAuditable, IEntity<int>
 {
 }

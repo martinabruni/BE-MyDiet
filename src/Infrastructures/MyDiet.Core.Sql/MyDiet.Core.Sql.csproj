@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\Domains\MyDiet.Core.Domain\MyDiet.Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

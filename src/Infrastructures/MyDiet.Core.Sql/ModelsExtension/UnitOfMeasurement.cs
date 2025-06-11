@@ -2,6 +2,6 @@
 
 namespace MyDiet.Core.Sql.Models;
 
-public partial class UnitOfMeasurement : IAuditable
+public partial class UnitOfMeasurement : IAuditable, IEntity<int>
 {
 }

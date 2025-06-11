@@ -2,6 +2,6 @@
 
 namespace MyDiet.Core.Sql.Models;
 
-public partial class MealType : IAuditable
+public partial class MealType : IAuditable, IEntity<int>
 {
 }
