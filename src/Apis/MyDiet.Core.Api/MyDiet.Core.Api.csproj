@@ -15,6 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Businesses\MyDiet.Core.Business\MyDiet.Core.Business.csproj" />
+    <ProjectReference Include="..\..\Infrastructures\MyDiet.Core.Security\MyDiet.Core.Security.csproj" />
     <ProjectReference Include="..\..\Infrastructures\MyDiet.Core.Sql\MyDiet.Core.Sql.csproj" />
   </ItemGroup>
 
