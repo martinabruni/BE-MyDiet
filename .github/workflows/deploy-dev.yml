@@ -1,0 +1,35 @@
+name: CI/CD – Dev Deploy
+
+# 1. Trigger on pushes and PRs to dev branch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 2. Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 3. Log in to Azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 4. Build (via your Dockerfile) and deploy to Container Apps
+      - name: Build & Deploy to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}
+          acrName: ${{ secrets.ACR_NAME }}
+          resourceGroup: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          containerAppName: ${{ secrets.AZURE_CONTAINER_APP }}
