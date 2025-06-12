@@ -14,17 +14,18 @@ namespace MyDiet.Core.Business.Services
             _keyProvider = keyProvider;
         }
 
-        public async Task<byte[]> GetPublicKey()
+        public async Task<string> GetPublicKey()
         {
             try
             {
                 TKey rsa = await _keyProvider.GetPrivateKeyAsync();
-                return rsa.ExportSubjectPublicKeyInfo();
+                var publicKey = rsa.ExportSubjectPublicKeyInfo();
+                return Convert.ToBase64String(publicKey);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Internal server error: {ex.Message}");
-                return Task.FromResult<byte[]>([]).Result;
+                return Task.FromResult<string>("").Result;
             }
         }
         public async Task<string> GenerateTokenAsync(TClaim claimDto)

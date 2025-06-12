@@ -10,6 +10,7 @@ namespace MyDiet.Core.Security.Abstractions
     internal abstract class AGenericJwtTokenGenerator<TDto> : IJwtTokenGenerator<TDto>
     {
         public readonly JwtSettings _jwtSettings;
+        //TODO: add generic TKey
         public readonly IKeyProvider<RSA> _keyProvider;
 
         protected AGenericJwtTokenGenerator(IKeyProvider<RSA> keyProvider, JwtSettings jwtSettings)
@@ -23,6 +24,7 @@ namespace MyDiet.Core.Security.Abstractions
         public virtual async Task<string> GenerateTokenAsync(TDto claimDto)
         {
             RSA rsa = await _keyProvider.GetPrivateKeyAsync();
+            //TODO: replace key type and algorithm with generic TKey and SecurityAlgorithms
             var creds = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
 
             var jwt = new JwtSecurityToken(

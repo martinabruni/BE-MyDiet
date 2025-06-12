@@ -20,7 +20,7 @@ namespace MyDiet.Core.Api.Controllers
         public async Task<IActionResult> GetPublicKey()
         {
             var publicKey = await _jwtTokenService.GetPublicKey();
-            return Ok(new { PublicKey = Convert.ToBase64String(publicKey) });
+            return Ok(new { PublicKey = publicKey });
         }
 
         [HttpGet]
@@ -28,7 +28,8 @@ namespace MyDiet.Core.Api.Controllers
         {
             var userClaim = new UserClaimDto
             {
-                UserId = Guid.NewGuid() // This should be replaced with actual user ID retrieval logic
+                // TODO: replace with real values
+                UserId = Guid.NewGuid() 
             };
             var token = await _jwtTokenService.GenerateTokenAsync(userClaim);
             return Ok(new { Token = token });

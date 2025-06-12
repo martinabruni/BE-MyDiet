@@ -1,8 +1,8 @@
 ﻿namespace MyDiet.Core.Domain.Interfaces
 {
-    public interface IJwtTokenGenerator<TDto>
+    public interface IJwtTokenGenerator<TClaim>
     {
         //TODO: Add constrainst
-        Task<string> GenerateTokenAsync(TDto claimDto);
+        Task<string> GenerateTokenAsync(TClaim claimDto);
     }
 }
