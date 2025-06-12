@@ -1,4 +1,6 @@
 ﻿using MyDiet.Identity.Domain.Interfaces;
+using MyDiet.Shared.Domain.Responses;
+using System.Net;
 using System.Security.Cryptography;
 
 namespace MyDiet.Identity.Business.Services
@@ -14,30 +16,70 @@ namespace MyDiet.Identity.Business.Services
             _keyProvider = keyProvider;
         }
 
-        public async Task<string> GetPublicKey()
+        public async Task<ApiDataResponse<string>> GetPemPublicKey()
         {
             try
             {
                 TKey rsa = await _keyProvider.GetPrivateKeyAsync();
                 var publicKey = rsa.ExportSubjectPublicKeyInfo();
-                return Convert.ToBase64String(publicKey);
+                var pemPublicKey = PemEncoding.WriteString("PUBLIC KEY", publicKey);
+                return new ApiDataResponse<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Data = pemPublicKey,
+                    Message = "Public key retrieved successfully."
+                };
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Internal server error: {ex.Message}");
-                return Task.FromResult<string>("").Result;
+                return new ApiDataResponse<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.ToString(),
+                };
             }
         }
-        public async Task<string> GenerateTokenAsync(TClaim claimDto)
+
+        public async Task<ApiDataResponse<string>> GetPublicKeyAsync()
         {
             try
             {
-                return await _jwtTokenGenerator.GenerateTokenAsync(claimDto);
+                TKey rsa = await _keyProvider.GetPrivateKeyAsync();
+                var publicKey = rsa.ExportSubjectPublicKeyInfo();
+                return new ApiDataResponse<string>
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Data = Convert.ToBase64String(publicKey),
+                    Message = "Public key retrieved successfully."
+                };
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Internal server error: {ex.Message}");
-                return string.Empty;
+                return new ApiDataResponse<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.ToString(),
+                };
+            }
+        }
+        public async Task<ApiDataResponse<string>> GenerateTokenAsync(TClaim claimDto)
+        {
+            try
+            {
+                return new ApiDataResponse<string>
+                {
+                    StatusCode = HttpStatusCode.Created,
+                    Data = await _jwtTokenGenerator.GenerateTokenAsync(claimDto),
+                    Message = "Token generated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiDataResponse<string>
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.ToString(),
+                };
             }
         }
     }

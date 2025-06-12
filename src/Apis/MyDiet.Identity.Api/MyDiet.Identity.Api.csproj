@@ -4,9 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c0e2bcac-df32-4976-bb01-8a1d30f3f371</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
@@ -14,6 +18,7 @@
     <ProjectReference Include="..\..\Businesses\MyDiet.Identity.Business\MyDiet.Identity.Business.csproj" />
     <ProjectReference Include="..\..\Domains\MyDiet.Identity.Domain\MyDiet.Identity.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructures\MyDiet.Identity.Infrastructure\MyDiet.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyDiet.Shared.Api\MyDiet.Shared.Api.csproj" />
   </ItemGroup>
 
 </Project>

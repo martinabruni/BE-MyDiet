@@ -7,7 +7,7 @@ namespace MyDiet.Identity.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class UserJwtTokenController : ControllerBase
+    public class UserJwtTokenController : GenericController
     {
         private readonly IJwtTokenService<UserClaimDto, RSA> _jwtTokenService;
 
@@ -17,10 +17,18 @@ namespace MyDiet.Identity.Api.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetPemPublicKey()
+        {
+            //TOOD: return pem format
+            var publicKeyRes = await _jwtTokenService.GetPemPublicKey();
+            return ComposeResult(publicKeyRes);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetPublicKey()
         {
-            var publicKey = await _jwtTokenService.GetPublicKey();
-            return Ok(new { PublicKey = publicKey });
+            var publicKeyRes = await _jwtTokenService.GetPublicKeyAsync();
+            return ComposeResult(publicKeyRes);
         }
 
         [HttpGet]
@@ -29,10 +37,10 @@ namespace MyDiet.Identity.Api.Controllers
             var userClaim = new UserClaimDto
             {
                 // TODO: replace with real values
-                UserId = Guid.NewGuid() 
+                UserId = Guid.NewGuid()
             };
-            var token = await _jwtTokenService.GenerateTokenAsync(userClaim);
-            return Ok(new { Token = token });
+            var tokenRes = await _jwtTokenService.GenerateTokenAsync(userClaim);
+            return ComposeResult(tokenRes);
         }
     }
 }
