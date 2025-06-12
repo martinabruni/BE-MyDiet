@@ -14,7 +14,7 @@ namespace MyDiet.Core.Security.KeyProviders
             _settings = settings;
         }
 
-        public async Task<RSA> GetKeyAsync()
+        public async Task<RSA> GetPrivateKeyAsync()
         {
             var credential = new ManagedIdentityCredential();
             var client = new SecretClient(new Uri(_settings.VaultUri!), credential);

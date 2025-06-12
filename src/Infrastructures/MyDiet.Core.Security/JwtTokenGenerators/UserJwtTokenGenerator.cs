@@ -14,25 +14,12 @@ namespace MyDiet.Core.Security.JwtTokenGenerators
         {
         }
 
-        public override async Task<string> GenerateTokenAsync(UserClaimDto claimDto)
+        public override List<Claim> BuildClaims(UserClaimDto claimDto)
         {
-            RSA rsa = await _keyProvider.GetKeyAsync();
-            var creds = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
-
-            var claims = new List<Claim>
+            return new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub, claimDto.UserId.ToString()),
             };
-
-            var jwt = new JwtSecurityToken(
-                issuer: _jwtSettings.Issuer,
-                audience: _jwtSettings.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
 }
