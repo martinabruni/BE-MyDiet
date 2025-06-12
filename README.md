@@ -1,93 +1,52 @@
-# BE-MyDiet
+# MyDiet Backend
 
-A Domain-Driven Design (DDD) skeleton template for .NET backend projects.  
-This template sets up a clean architecture with layers for Domain, Business, Infrastructure and API, ready to plug in your entities, value objects, aggregates and application services.
+This repository contains the backend services for the **MyDiet** application. The solution is built with **.NET 8** and follows a Domain Driven Design approach. It is organised into four main projects:
 
----
+- **Apis** – ASP.NET Core web API exposing the application endpoints.
+- **Businesses** – application services and domain logic.
+- **Domains** – DTOs and interfaces shared across the solution.
+- **Infrastructures** – database access, security helpers and other integrations.
 
-## Prerequisites
+The database schema is defined in [`src/Infrastructures/schema.md`](src/Infrastructures/schema.md) and maps entities such as `User`, `Diet`, `Plan`, `Meal` and other related tables.
 
-- [.NET 8.0 SDK (or later)](https://dotnet.microsoft.com/download)  
-- `git` (to clone this repo, if installing locally)
+## Getting started
 
----
+1. Install the [.NET 8 SDK](https://dotnet.microsoft.com/download).
+2. Restore dependencies and build the solution:
 
-## Installing the template
+   ```bash
+   dotnet restore MyDiet.sln
+   dotnet build MyDiet.sln
+   ```
 
-### From this repository (local)
+3. Run the API:
 
-```bash
-# 1. Clone the repo
-git clone https://github.com/<your-org>/BE-MyDiet.git
-cd BE-MyDiet
+   ```bash
+   dotnet run --project src/Apis/MyDiet.Core.Api
+   ```
 
-# 2. Install the template from the local folder
-dotnet new install .
-````
+   The API includes endpoints for obtaining a public key and generating JWT tokens as defined in `UserJwtTokenController`.
 
-### Directly from GitHub
+A `Dockerfile` is also provided under `src/Apis/MyDiet.Core.Api` for containerised deployments.
 
-```bash
-dotnet new install https://github.com/<your-org>/BE-MyDiet
-```
-
-> **Note:** Replace `<your-org>` with your GitHub organization or username.
-
----
-
-## Creating a new project
-
-Once the template is installed, scaffold your DDD-based project with:
-
-```bash
-dotnet new BE-MyDiet \
-  --name MyAwesomeService \
-  --output MyAwesomeService
-```
-
-This will produce a folder structure like:
+## Project structure
 
 ```
-MyAwesomeService/
-├───src
-│   ├───MyAwesomeService.Apis
-|       ├───MyAwesomeService.Core.Api
-│   ├───MyAwesomeService.Businesses
-|       ├───MyAwesomeService.Core.Business
-│   ├───MyAwesomeService.Domains
-|       ├───MyAwesomeService.Core.Domain
-│   └───MyAwesomeService.Infrastructures
-|       ├───MyAwesomeService.Core.Infrastructure
+src/
+├── Apis/
+│   └── MyDiet.Core.Api/          # ASP.NET Core API
+├── Businesses/
+│   └── MyDiet.Core.Business/     # Domain services
+├── Domains/
+│   └── MyDiet.Core.Domain/       # DTOs and shared interfaces
+└── Infrastructures/
+    ├── MyDiet.Core.Database/     # SQL Server project
+    ├── MyDiet.Core.Security/     # JWT helpers and key providers
+    └── MyDiet.Core.Sql/          # EF Core models and repositories
 ```
 
-You can then:
+The `MyDietCoreDbContext` class configures the EF Core mappings for all entities, while generic repositories implement basic CRUD operations.
 
-```bash
-cd MyAwesomeService
-dotnet restore
-dotnet build
-```
+## License
 
----
-
-## Uninstalling the template
-
-```bash
-# If installed from a folder
-dotnet new uninstall .
-
-# If installed from GitHub
-dotnet new uninstall https://github.com/<your-org>/BE-MyDiet
-```
-
----
-
-## Additional help
-
-```bash
-# View all available template parameters
-dotnet new BE-MyDiet --help
-```
-
-Feel free to customize the template parameters or folder layout as needed!
-```
+This project is provided as a starting point for a diet planning backend. Feel free to adapt it to your needs.
