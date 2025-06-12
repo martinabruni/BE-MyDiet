@@ -1,6 +1,6 @@
-﻿using MyDiet.Core.Business.Services;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Interfaces;
+﻿using MyDiet.Identity.Business.Services;
+using MyDiet.Identity.Domain.Dtos;
+using MyDiet.Identity.Domain.Interfaces;
 using System.Security.Cryptography;
 
 namespace Microsoft.Extensions.DependencyInjection

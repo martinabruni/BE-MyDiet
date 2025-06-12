@@ -1,4 +1,4 @@
-﻿namespace MyDiet.Core.Domain.Dtos
+﻿namespace MyDiet.Identity.Domain.Dtos
 {
     public class UserClaimDto
     {

@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace MyDiet.Core.Domain.Interfaces
+namespace MyDiet.Identity.Domain.Interfaces
 {
     public interface IKeyProvider<TKey> where TKey : AsymmetricAlgorithm
     {

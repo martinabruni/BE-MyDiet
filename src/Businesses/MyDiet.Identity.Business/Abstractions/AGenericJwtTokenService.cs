@@ -1,9 +1,9 @@
-﻿using MyDiet.Core.Domain.Interfaces;
+﻿using MyDiet.Identity.Domain.Interfaces;
 using System.Security.Cryptography;
 
-namespace MyDiet.Core.Business.Services
+namespace MyDiet.Identity.Business.Services
 {
-    internal abstract class AGenericJwtTokenService<TClaim, TKey> : IJwtTokenService<TClaim, TKey> where TKey : AsymmetricAlgorithm
+    internal abstract class AGenericJwtTokenService<TClaim, TKey> : IJwtTokenService<TClaim, TKey> where TKey : AsymmetricAlgorithm where TClaim : class
     {
         private readonly IJwtTokenGenerator<TClaim> _jwtTokenGenerator;
         private readonly IKeyProvider<TKey> _keyProvider;

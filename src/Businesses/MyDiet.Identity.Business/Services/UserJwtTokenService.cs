@@ -1,8 +1,8 @@
-﻿using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Interfaces;
+﻿using MyDiet.Identity.Domain.Dtos;
+using MyDiet.Identity.Domain.Interfaces;
 using System.Security.Cryptography;
 
-namespace MyDiet.Core.Business.Services
+namespace MyDiet.Identity.Business.Services
 {
     internal class UserJwtTokenService : AGenericJwtTokenService<UserClaimDto, RSA>
     {
