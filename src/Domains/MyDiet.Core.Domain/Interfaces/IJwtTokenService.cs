@@ -1,7 +1,7 @@
 ﻿namespace MyDiet.Core.Domain.Interfaces
 {
-    public interface IJwtTokenService<TDto>
+    public interface IJwtTokenService<TClaim>
     {
-        Task<string> GenerateTokenAsync(TDto claimDto);
+        Task<string> GenerateTokenAsync(TClaim claimDto);
     }
 }
