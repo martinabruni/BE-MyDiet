@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddJwtService(this IServiceCollection services)
         {
-            services.AddScoped<IJwtTokenService<UserClaimDto>, UserJwtTokenService>();
+            services.AddTransient<IJwtTokenService<UserClaimDto>, UserJwtTokenService>();
             return services;
         }
     }

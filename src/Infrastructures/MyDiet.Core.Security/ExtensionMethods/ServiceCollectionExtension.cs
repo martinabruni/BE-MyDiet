@@ -11,7 +11,7 @@ namespace Microsoft.Extension.DependencyInjection
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddKeyProvider(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddJwtSettings(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(sp =>
                 new JwtSettings
@@ -28,13 +28,19 @@ namespace Microsoft.Extension.DependencyInjection
                     //ClientSecret = configuration["JwtSettings:ClientSecret"]
                 }
             );
-            services.AddSingleton<IKeyProvider<RSA>, AzureKeyVaultKeyProvider>();
+            return services;
+        }
+
+        public static IServiceCollection AddKeyProvider(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddJwtSettings(configuration);
+            services.AddSingleton<IKeyProvider<RSA>, LocalKeyProvider>();
             return services;
         }
 
         public static IServiceCollection AddJwtTokenGenerator(this IServiceCollection services)
         {
-            services.AddScoped<IJwtTokenGenerator<UserClaimDto>, UserJwtTokenGenerator>();
+            services.AddSingleton<IJwtTokenGenerator<UserClaimDto>, UserJwtTokenGenerator>();
             return services;
         }
     }
