@@ -22,7 +22,10 @@ namespace Microsoft.Extension.DependencyInjection
                     UseKeyVault = bool.Parse(configuration["JwtSettings:UseKeyVault"] ?? "false"),
                     VaultUri = configuration["JwtSettings:VaultUri"],
                     KeyName = configuration["JwtSettings:KeyName"],
-                    PrivateKeyPath = configuration["JwtSettings:PrivateKeyPath"]
+                    PrivateKeyPath = configuration["JwtSettings:PrivateKeyPath"],
+                    //ClientId = configuration["JwtSettings:ClientId"],
+                    //TenantId = configuration["JwtSettings:TenantId"],
+                    //ClientSecret = configuration["JwtSettings:ClientSecret"]
                 }
             );
             services.AddSingleton<IKeyProvider<RSA>, AzureKeyVaultKeyProvider>();
