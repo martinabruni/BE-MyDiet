@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyDiet.Identity.Domain.Dtos;
 using MyDiet.Identity.Domain.Interfaces;
 using MyDiet.Identity.Infrastructure;
+using MyDiet.Identity.Infrastructure.Interfaces;
 using MyDiet.Identity.Infrastructure.JwtTokenGenerators;
 using MyDiet.Identity.Infrastructure.KeyProviders;
 using System.Security.Cryptography;
@@ -34,7 +35,7 @@ namespace Microsoft.Extension.DependencyInjection
         public static IServiceCollection AddKeyProvider(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddJwtSettings(configuration);
-            services.AddSingleton<IKeyProvider<RSA>, LocalKeyProvider>();
+            services.AddSingleton<IPrivateKeyProvider<RSA>, LocalKeyProvider>();
             return services;
         }
 

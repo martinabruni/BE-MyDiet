@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using MyDiet.Identity.Domain.Interfaces;
+using MyDiet.Identity.Infrastructure.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -10,9 +11,9 @@ namespace MyDiet.Identity.Infrastructure.Abstractions
     {
         public readonly JwtSettings _jwtSettings;
         //TODO: add generic TKey
-        public readonly IKeyProvider<RSA> _keyProvider;
+        public readonly IPrivateKeyProvider<RSA> _keyProvider;
 
-        protected AGenericJwtTokenGenerator(IKeyProvider<RSA> keyProvider, JwtSettings jwtSettings)
+        protected AGenericJwtTokenGenerator(IPrivateKeyProvider<RSA> keyProvider, JwtSettings jwtSettings)
         {
             this._keyProvider = keyProvider;
             this._jwtSettings = jwtSettings;

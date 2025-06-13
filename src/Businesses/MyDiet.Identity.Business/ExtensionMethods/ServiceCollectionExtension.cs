@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddJwtService(this IServiceCollection services)
         {
-            services.AddTransient<IJwtTokenService<UserClaimDto, RSA>, UserJwtTokenService>();
+            services.AddTransient<IJwtTokenService<UserClaimDto>, UserJwtTokenService>();
             return services;
         }
     }

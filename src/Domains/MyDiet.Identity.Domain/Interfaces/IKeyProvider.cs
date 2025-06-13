@@ -1,9 +1,7 @@
-﻿using System.Security.Cryptography;
-
-namespace MyDiet.Identity.Domain.Interfaces
+﻿namespace MyDiet.Identity.Domain.Interfaces
 {
-    public interface IKeyProvider<TKey> where TKey : AsymmetricAlgorithm
+    public interface IKeyProvider
     {
-        Task<TKey> GetPrivateKeyAsync();
+        Task<string> GetPublicKeyAsync();
     }
 }

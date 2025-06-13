@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyDiet.Identity.Domain.Dtos;
 using MyDiet.Identity.Domain.Interfaces;
-using System.Security.Cryptography;
 
 namespace MyDiet.Identity.Api.Controllers
 {
@@ -9,30 +8,22 @@ namespace MyDiet.Identity.Api.Controllers
     [Route("api/[controller]/[action]")]
     public class UserJwtTokenController : GenericController
     {
-        private readonly IJwtTokenService<UserClaimDto, RSA> _jwtTokenService;
+        private readonly IJwtTokenService<UserClaimDto> _jwtTokenService;
 
-        public UserJwtTokenController(IJwtTokenService<UserClaimDto, RSA> jwtTokenService)
+        public UserJwtTokenController(IJwtTokenService<UserClaimDto> jwtTokenService)
         {
             _jwtTokenService = jwtTokenService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPemPublicKey()
-        {
-            //TOOD: return pem format
-            var publicKeyRes = await _jwtTokenService.GetPemPublicKey();
-            return ComposeResult(publicKeyRes);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetPublicKey()
+        public async Task<IActionResult> GetPublicKeyAsync()
         {
             var publicKeyRes = await _jwtTokenService.GetPublicKeyAsync();
             return ComposeResult(publicKeyRes);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetToken()
+        public async Task<IActionResult> GetTokenAsync()
         {
             var userClaim = new UserClaimDto
             {
