@@ -13,11 +13,12 @@ namespace MyDiet.Identity.Business.Services
     internal class KeyVaultSecretService : IJwtKeyService<RsaSecurityKey, JwkSetDto>
     {
         private readonly RSA _rsa;
+        private readonly RsaSecurityKey _rsaSecurityKey;
         private readonly ByteArrayBase64Converter _converter;
         private readonly JsonSerializerOptions _options;
         private readonly IJwtKeyRepository<KeyVaultSecret> _keyRepository;
 
-        public KeyVaultSecretService(RSA rsa, ByteArrayBase64Converter converter, IJwtKeyRepository<KeyVaultSecret> keyRepository)
+        public KeyVaultSecretService(RSA rsa, ByteArrayBase64Converter converter, IJwtKeyRepository<KeyVaultSecret> keyRepository, RsaSecurityKey rsaSecurityKey)
         {
             _rsa = rsa;
             _converter = converter;
@@ -28,9 +29,9 @@ namespace MyDiet.Identity.Business.Services
                 IncludeFields = true
             };
             _options.Converters.Add(_converter);
+            _rsaSecurityKey = rsaSecurityKey;
         }
 
-        //TODO: fix return type
         public async Task<ApiResponse<RsaSecurityKey>> CreatePrivateKeyAsync()
         {
             try
@@ -91,7 +92,7 @@ namespace MyDiet.Identity.Business.Services
                             {
                                 Kty = "RSA",
                                 Use = "sig",
-                                Kid = new RsaSecurityKey(rsa).KeyId,
+                                Kid = _rsaSecurityKey.KeyId,
                                 Alg = "RS256",
                                 N = Base64UrlEncoder.Encode(deserializedParameters.Modulus),
                                 E = Base64UrlEncoder.Encode(deserializedParameters.Exponent)

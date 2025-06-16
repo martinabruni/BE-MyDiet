@@ -15,7 +15,9 @@ namespace Microsoft.Extension.DependencyInjection
         public static IServiceCollection AddJwtInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             var _rsaKey = RSA.Create(2048);
+            var _rsaSecurityKey = new RsaSecurityKey(_rsaKey) { KeyId = configuration["Jwt:Token:KeyId"]! };
             services.AddSingleton<RSA>(_rsaKey);
+            services.AddSingleton<RsaSecurityKey>(_rsaSecurityKey);
             services.AddSingleton(sp => new KeyVaultOption
             {
                 SecretName = configuration["Jwt:KeyVault:SecretName"] ?? "privateKey"
@@ -26,7 +28,7 @@ namespace Microsoft.Extension.DependencyInjection
                     Issuer = configuration["Jwt:Token:Issuer"]!,
                     Audience = configuration["Jwt:Token:Audience"]!,
                     ExpiryMinutes = int.Parse(configuration["Jwt:Token:ExpiryMinutes"]!),
-                    SigningCredentials = new SigningCredentials(new RsaSecurityKey(_rsaKey), SecurityAlgorithms.RsaSha256)
+                    SigningCredentials = new SigningCredentials(_rsaSecurityKey, SecurityAlgorithms.RsaSha256)
                 }
             );
             services.AddSingleton(sp => new SecretClient(new Uri(configuration["Jwt:KeyVault:Uri"]!), new DefaultAzureCredential()));
