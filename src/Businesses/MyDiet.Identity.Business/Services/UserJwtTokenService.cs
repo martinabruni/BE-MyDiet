@@ -1,12 +1,22 @@
-﻿using MyDiet.Identity.Domain.Dtos;
-using MyDiet.Identity.Domain.Interfaces;
+﻿using MyDiet.Identity.Business.Abstractions;
+using MyDiet.Identity.Domain.Dtos;
+using MyDiet.Identity.Domain.Options;
+using System.Security.Claims;
 
 namespace MyDiet.Identity.Business.Services
 {
     internal class UserJwtTokenService : AGenericJwtTokenService<UserClaimDto>
     {
-        public UserJwtTokenService(IJwtTokenGenerator<UserClaimDto> jwtTokenGenerator, IKeyProvider keyProvider) : base(jwtTokenGenerator, keyProvider)
+        public UserJwtTokenService(TokenOption jwtSettings) : base(jwtSettings)
         {
+        }
+
+        public override List<Claim> BuildClaims(UserClaimDto claimDto)
+        {
+            return new List<Claim>
+            {
+                new Claim("userId", claimDto.UserId.ToString()),
+            };
         }
     }
 }

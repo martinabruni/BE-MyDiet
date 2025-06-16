@@ -1,60 +1,39 @@
 ﻿using MyDiet.Identity.Domain.Interfaces;
+using MyDiet.Identity.Domain.Options;
 using MyDiet.Shared.Domain.Responses;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
 
-namespace MyDiet.Identity.Business.Services
+namespace MyDiet.Identity.Business.Abstractions
 {
     internal abstract class AGenericJwtTokenService<TClaim> : IJwtTokenService<TClaim> where TClaim : class
     {
-        private readonly IJwtTokenGenerator<TClaim> _jwtTokenGenerator;
-        private readonly IKeyProvider _keyProvider;
+        private readonly TokenOption _tokenOption;
 
-        public AGenericJwtTokenService(IJwtTokenGenerator<TClaim> jwtTokenGenerator, IKeyProvider keyProvider)
+        protected AGenericJwtTokenService(TokenOption tokenOption)
         {
-            _jwtTokenGenerator = jwtTokenGenerator;
-            _keyProvider = keyProvider;
+            _tokenOption = tokenOption;
         }
 
-        public async Task<ApiDataResponse<string>> GetPublicKeyAsync()
-        {
-            try
-            {
-                return new ApiDataResponse<string>
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Data = await _keyProvider.GetPublicKeyAsync(),
-                    Message = "Public key retrieved successfully."
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ApiDataResponse<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = ex.ToString(),
-                };
-            }
-        }
+        public abstract List<Claim> BuildClaims(TClaim claimDto);
 
-        public async Task<ApiDataResponse<string>> GenerateTokenAsync(TClaim claimDto)
+        public virtual Task<ApiResponse<string>> GenerateTokenAsync(TClaim claimDto)
         {
-            try
+            var jwt = new JwtSecurityToken(
+                issuer: _tokenOption.Issuer,
+                audience: _tokenOption.Audience,
+                claims: BuildClaims(claimDto),
+                expires: DateTime.UtcNow.AddMinutes(_tokenOption.ExpiryMinutes),
+                signingCredentials: _tokenOption.SigningCredentials
+            );
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return Task.FromResult(new ApiResponse<string>()
             {
-                return new ApiDataResponse<string>
-                {
-                    StatusCode = HttpStatusCode.Created,
-                    Data = await _jwtTokenGenerator.GenerateTokenAsync(claimDto),
-                    Message = "Token generated successfully."
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ApiDataResponse<string>
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = ex.ToString(),
-                };
-            }
+                Data = token,
+                StatusCode = HttpStatusCode.OK,
+                Message = "Token generated successfully."
+            });
         }
     }
 }

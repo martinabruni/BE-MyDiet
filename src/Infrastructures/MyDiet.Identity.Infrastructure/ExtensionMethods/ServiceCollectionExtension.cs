@@ -1,47 +1,38 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyDiet.Identity.Domain.Dtos;
+using Microsoft.IdentityModel.Tokens;
 using MyDiet.Identity.Domain.Interfaces;
-using MyDiet.Identity.Infrastructure;
-using MyDiet.Identity.Infrastructure.Interfaces;
-using MyDiet.Identity.Infrastructure.JwtTokenGenerators;
-using MyDiet.Identity.Infrastructure.KeyProviders;
+using MyDiet.Identity.Domain.Options;
+using MyDiet.Identity.Infrastructure.Repositories;
 using System.Security.Cryptography;
 
 namespace Microsoft.Extension.DependencyInjection
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddJwtSettings(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddJwtInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            var _rsaKey = RSA.Create(2048);
+            services.AddSingleton<RSA>(_rsaKey);
+            services.AddSingleton(sp => new KeyVaultOption
+            {
+                SecretName = configuration["Jwt:KeyVault:SecretName"] ?? "privateKey"
+            });
             services.AddSingleton(sp =>
-                new JwtSettings
+                new TokenOption
                 {
-                    Issuer = configuration["JwtSettings:Issuer"] ?? "localhost",
-                    Audience = configuration["JwtSettings:Audience"] ?? "myapp-api",
-                    ExpiryMinutes = int.Parse(configuration["JwtSettings:ExpiryMinutes"] ?? "60"),
-                    UseKeyVault = bool.Parse(configuration["JwtSettings:UseKeyVault"] ?? "false"),
-                    VaultUri = configuration["JwtSettings:VaultUri"],
-                    KeyName = configuration["JwtSettings:KeyName"],
-                    PrivateKeyPath = configuration["JwtSettings:PrivateKeyPath"],
-                    //ClientId = configuration["JwtSettings:ClientId"],
-                    //TenantId = configuration["JwtSettings:TenantId"],
-                    //ClientSecret = configuration["JwtSettings:ClientSecret"]
+                    Issuer = configuration["Jwt:Token:Issuer"]!,
+                    Audience = configuration["Jwt:Token:Audience"]!,
+                    ExpiryMinutes = int.Parse(configuration["Jwt:Token:ExpiryMinutes"]!),
+                    SigningCredentials = new SigningCredentials(new RsaSecurityKey(_rsaKey), SecurityAlgorithms.RsaSha256)
                 }
             );
-            return services;
-        }
+            services.AddSingleton(sp => new SecretClient(new Uri(configuration["Jwt:KeyVault:Uri"]!), new DefaultAzureCredential()));
 
-        public static IServiceCollection AddKeyProvider(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddJwtSettings(configuration);
-            services.AddSingleton<IPrivateKeyProvider<RSA>, LocalKeyProvider>();
-            return services;
-        }
+            services.AddTransient<IJwtKeyRepository<KeyVaultSecret>, KeyVaultSecretRepository>();
 
-        public static IServiceCollection AddJwtTokenGenerator(this IServiceCollection services)
-        {
-            services.AddSingleton<IJwtTokenGenerator<UserClaimDto>, UserJwtTokenGenerator>();
             return services;
         }
     }

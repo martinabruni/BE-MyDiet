@@ -16,13 +16,6 @@ namespace MyDiet.Identity.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPublicKeyAsync()
-        {
-            var publicKeyRes = await _jwtTokenService.GetPublicKeyAsync();
-            return ComposeResult(publicKeyRes);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetTokenAsync()
         {
             var userClaim = new UserClaimDto
@@ -33,5 +26,6 @@ namespace MyDiet.Identity.Api.Controllers
             var tokenRes = await _jwtTokenService.GenerateTokenAsync(userClaim);
             return ComposeResult(tokenRes);
         }
+
     }
 }
