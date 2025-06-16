@@ -44,7 +44,6 @@ namespace MyDiet.Identity.Api.Controllers
             var token = await _jwtTokenService.GenerateTokenAsync(userClaim);
             var publicKey = await _jwtKeyService.GetPublicKeyAsync();
 
-
             try
             {
                 var rsaParams = new RSAParameters
@@ -80,8 +79,6 @@ namespace MyDiet.Identity.Api.Controllers
             {
                 return false;
             }
-
         }
-
     }
 }

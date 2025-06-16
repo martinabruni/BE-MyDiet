@@ -11,7 +11,7 @@ namespace MyDiet.Identity.Infrastructure.Repositories
 
         public KeyVaultSecretRepository(KeyVaultOption vaultOption, SecretClient secretClient)
         {
-            _vaultOption = vaultOption;
+            _vaultOption = vaultOption;     
             _secretClient = secretClient;
         }
         public async Task<KeyVaultSecret?> CreatePrivateKeyAsync(KeyVaultSecret value)

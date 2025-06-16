@@ -26,6 +26,5 @@ namespace MyDiet.Identity.Api.Controllers
             var tokenRes = await _jwtTokenService.GenerateTokenAsync(userClaim);
             return ComposeResult(tokenRes);
         }
-
     }
 }

@@ -111,6 +111,5 @@ namespace MyDiet.Identity.Business.Services
                 };
             }
         }
-
     }
 }

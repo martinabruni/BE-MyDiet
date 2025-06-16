@@ -32,7 +32,6 @@ namespace Microsoft.Extension.DependencyInjection
                 }
             );
             services.AddSingleton(sp => new SecretClient(new Uri(configuration["Jwt:KeyVault:Uri"]!), new DefaultAzureCredential()));
-
             services.AddTransient<IJwtKeyRepository<KeyVaultSecret>, KeyVaultSecretRepository>();
 
             return services;
