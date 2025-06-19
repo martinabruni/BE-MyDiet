@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using MyDiet.Identity.Domain.Dtos;
 using MyDiet.Identity.Domain.Interfaces;
 
@@ -6,25 +7,21 @@ namespace MyDiet.Identity.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class UserJwtTokenController : GenericController
+    public class UserJwtTokenController : AGenericController
     {
-        private readonly IJwtTokenService<UserClaimDto> _jwtTokenService;
+        private readonly IJwtTokenManager<UserClaimDto, RsaSecurityKey, JsonWebKeySetDto> _jwtTokenManager;
 
-        public UserJwtTokenController(IJwtTokenService<UserClaimDto> jwtTokenService)
+        public UserJwtTokenController(IJwtTokenManager<UserClaimDto, RsaSecurityKey, JsonWebKeySetDto> jwtTokenManager)
         {
-            _jwtTokenService = jwtTokenService;
+            _jwtTokenManager = jwtTokenManager;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetTokenAsync()
+        [HttpPost]
+        public async Task<IActionResult> GetTokenAsync(UserClaimDto claimDto)
         {
-            var userClaim = new UserClaimDto
-            {
-                // TODO: replace with real values
-                UserId = Guid.NewGuid()
-            };
-            var tokenRes = await _jwtTokenService.GenerateTokenAsync(userClaim);
-            return ComposeResult(tokenRes);
+
+            var res = await _jwtTokenManager.GenerateTokenAsync(claimDto);
+            return ComposeResult(res);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MyDiet.Identity.Business.Converters
+namespace MyDiet.Shared.Infrastructure.Converters
 {
     public class ByteArrayBase64Converter : JsonConverter<byte[]>
     {

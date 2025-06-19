@@ -3,6 +3,6 @@
     public interface IJwtKeyRepository<TData>
     {
         Task<TData?> CreatePrivateKeyAsync(TData value);
-        Task<TData?> GetPublicKeyAsync();
+        Task<TData?> GetPrivateKeyAsync();
     }
 }

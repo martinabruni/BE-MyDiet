@@ -1,5 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using MyDiet.Identity.Business.Converters;
+using MyDiet.Identity.Business.Managers;
 using MyDiet.Identity.Business.Services;
 using MyDiet.Identity.Domain.Dtos;
 using MyDiet.Identity.Domain.Interfaces;
@@ -15,9 +15,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddJwtBusiness(this IServiceCollection services)
         {
-            services.AddSingleton<ByteArrayBase64Converter>();
-            services.AddTransient<IJwtKeyService<RsaSecurityKey, JwkSetDto>, KeyVaultSecretService>();
-            services.AddTransient<IJwtTokenService<UserClaimDto>, UserJwtTokenService>();
+            services.AddTransient<IJwtKeyService<RsaSecurityKey, JsonWebKeySetDto>, KeyVaultSecretService>();
+            services.AddTransient<IJwtTokenService<UserClaimDto, RsaSecurityKey>, UserJwtTokenService>();
+            services.AddTransient<IJwtTokenManager<UserClaimDto, RsaSecurityKey, JsonWebKeySetDto>, UserJwtTokenManager>();
             return services;
         }
     }

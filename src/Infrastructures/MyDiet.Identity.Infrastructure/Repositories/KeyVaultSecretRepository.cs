@@ -4,14 +4,14 @@ using MyDiet.Identity.Domain.Options;
 
 namespace MyDiet.Identity.Infrastructure.Repositories
 {
-    internal class KeyVaultSecretRepository : IJwtKeyRepository<KeyVaultSecret>
+    public class KeyVaultSecretRepository : IJwtKeyRepository<KeyVaultSecret>
     {
         private readonly KeyVaultOption _vaultOption;
         private readonly SecretClient _secretClient;
 
         public KeyVaultSecretRepository(KeyVaultOption vaultOption, SecretClient secretClient)
         {
-            _vaultOption = vaultOption;     
+            _vaultOption = vaultOption;
             _secretClient = secretClient;
         }
         public async Task<KeyVaultSecret?> CreatePrivateKeyAsync(KeyVaultSecret value)
@@ -20,7 +20,7 @@ namespace MyDiet.Identity.Infrastructure.Repositories
             return value;
         }
 
-        public async Task<KeyVaultSecret?> GetPublicKeyAsync()
+        public async Task<KeyVaultSecret?> GetPrivateKeyAsync()
         {
             return await _secretClient.GetSecretAsync(_vaultOption.SecretName!);
         }

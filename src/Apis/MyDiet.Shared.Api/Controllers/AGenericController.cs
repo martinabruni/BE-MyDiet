@@ -2,7 +2,7 @@
 using MyDiet.Shared.Domain.Responses;
 using System.Net;
 
-public abstract class GenericController : ControllerBase
+public abstract class AGenericController : ControllerBase
 {
     protected virtual IActionResult ComposeResult<TData>(ApiResponse<TData> res) where TData : class
     {

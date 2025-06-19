@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Businesses\MyDiet.Identity.Business\MyDiet.Identity.Business.csproj" />
+    <ProjectReference Include="..\..\Domains\MyDiet.Core.Domain\MyDiet.Core.Domain.csproj" />
     <ProjectReference Include="..\..\Domains\MyDiet.Identity.Domain\MyDiet.Identity.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructures\MyDiet.Identity.Infrastructure\MyDiet.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\MyDiet.Shared.Api\MyDiet.Shared.Api.csproj" />
