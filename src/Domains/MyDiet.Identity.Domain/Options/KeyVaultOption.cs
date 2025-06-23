@@ -2,6 +2,7 @@
 {
     public class KeyVaultOption
     {
-        public string SecretName { get; set; } = string.Empty;
+        public required string PrivateKeyName { get; set; }
+        public int KeySize { get; set; } = 2048;
     }
 }

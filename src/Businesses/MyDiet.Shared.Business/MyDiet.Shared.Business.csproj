@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domains\MyDiet.Shared.Domain\MyDiet.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructures\MyDiet.Shared.Infrastructure\MyDiet.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

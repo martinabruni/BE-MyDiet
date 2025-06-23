@@ -7,16 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.35.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domains\MyDiet.Identity.Domain\MyDiet.Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\Domains\MyDiet.Shared.Domain\MyDiet.Shared.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructures\MyDiet.Shared.Infrastructure\MyDiet.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyDiet.Shared.Business\MyDiet.Shared.Business.csproj" />
   </ItemGroup>
 
 </Project>
