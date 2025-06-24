@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddJwtInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddKeyPairInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSection = configuration.GetSection("Jwt");
             var algorithm = jwtSection["Jwk:Alg"];

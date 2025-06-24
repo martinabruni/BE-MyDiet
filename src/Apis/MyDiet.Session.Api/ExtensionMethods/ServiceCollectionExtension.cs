@@ -4,9 +4,8 @@
     {
         public static IServiceCollection AddStartupServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddJwtInfrastructure(configuration);
+            services.AddKeyPairInfrastructure(configuration);
             services.AddSessionBusinessServices();
-
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));

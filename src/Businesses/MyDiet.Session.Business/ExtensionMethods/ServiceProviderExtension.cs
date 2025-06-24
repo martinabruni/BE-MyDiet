@@ -7,8 +7,15 @@ namespace System
     {
         public static async Task InitializeAsync(this IServiceProvider serviceProvider)
         {
-            var keyPairManager = serviceProvider.GetRequiredService<IKeyPairManager>();
-            await keyPairManager.RigenerateAsync();
+            try
+            {
+                var keyPairManager = serviceProvider.GetRequiredService<IKeyPairManager>();
+                await keyPairManager.RigenerateAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

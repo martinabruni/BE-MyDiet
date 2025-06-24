@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiet.Auth.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiet.Auth.Domain", "src\Domains\MyDiet.Auth.Domain\MyDiet.Auth.Domain.csproj", "{0038DDC2-FAEB-497D-8F42-710B57C5B699}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiet.Auth.Business", "src\Businesses\MyDiet.Auth.Business\MyDiet.Auth.Business.csproj", "{FB41FC3F-2E3D-482D-B59A-D849DB714A80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{0038DDC2-FAEB-497D-8F42-710B57C5B699}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0038DDC2-FAEB-497D-8F42-710B57C5B699}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0038DDC2-FAEB-497D-8F42-710B57C5B699}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB41FC3F-2E3D-482D-B59A-D849DB714A80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB41FC3F-2E3D-482D-B59A-D849DB714A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB41FC3F-2E3D-482D-B59A-D849DB714A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB41FC3F-2E3D-482D-B59A-D849DB714A80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{9CCC9116-9539-41B2-BECD-4949DE162AE6} = {93CE6A11-9559-4BF8-9410-375B4C7C5418}
 		{C7A04D20-0CAF-44E6-B57E-5C9070898C42} = {93CE6A11-9559-4BF8-9410-375B4C7C5418}
 		{0038DDC2-FAEB-497D-8F42-710B57C5B699} = {C9865844-AE72-4411-A8F6-6C75088A1779}
+		{FB41FC3F-2E3D-482D-B59A-D849DB714A80} = {818290B6-6180-4923-94E0-2C5F9B4D65C9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E840E447-324A-4759-8BDF-BA710BA71B85}

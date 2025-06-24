@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IVaultService<KeyVaultSecret>, PrivateKeyService>();
             services.AddScoped<IVaultService<JsonWebKeySetDto>, PublicKeyService>();
 
-            services.AddScoped<IKeyPairManager, KeyPairManager>();
+            services.AddTransient<IKeyPairManager, KeyPairManager>();
 
             return services;
         }
