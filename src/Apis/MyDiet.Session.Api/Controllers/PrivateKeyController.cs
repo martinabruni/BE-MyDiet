@@ -1,10 +1,12 @@
 ﻿using Azure.Security.KeyVault.Secrets;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyDiet.Session.Domain.Responses;
 using MyDiet.Session.Domain.Services;
 
 namespace MyDiet.Session.Api.Controllers
 {
+    [Authorize(Policy = "Admin")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class PrivateKeyController : ControllerBase

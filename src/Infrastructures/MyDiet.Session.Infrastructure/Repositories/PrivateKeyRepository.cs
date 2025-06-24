@@ -27,11 +27,11 @@ namespace MyDiet.Session.Infrastructure.Repositories
             }
             try
             {
-                await _secretClient.SetSecretAsync(secret);
+                var vaultSecret = await _secretClient.SetSecretAsync(secret);
                 return new RepositoryResponse<KeyVaultSecret>
                 {
                     StatusCode = RepositoryCode.Created,
-                    Data = secret,
+                    Data = vaultSecret,
                     Message = "Secret created successfully."
                 };
             }

@@ -32,8 +32,6 @@ namespace MyDiet.Session.Business.Mappers
         public JsonWebKeySetDto Map(KeyVaultSecret input)
         {
             RSAParameters deserializedParameters = JsonSerializer.Deserialize<RSAParameters>(input.Value, _jsonSerializerOptions);
-            var rsa = RSA.Create(_keyOption.KeySize);
-            rsa.ImportParameters(deserializedParameters);
             return new JsonWebKeySetDto
             {
                 Keys =
@@ -67,7 +65,7 @@ namespace MyDiet.Session.Business.Mappers
         RsaSecurityKey IMapper<KeyVaultSecret, RsaSecurityKey>.Map(KeyVaultSecret input)
         {
             RSAParameters deserializedParameters = JsonSerializer.Deserialize<RSAParameters>(input.Value, _jsonSerializerOptions);
-            return new RsaSecurityKey(deserializedParameters);
+            return new RsaSecurityKey(deserializedParameters) { KeyId = input.Properties.Version};
         }
     }
 }

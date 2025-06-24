@@ -12,16 +12,14 @@ namespace MyDiet.Session.Business.Services
     internal class PrivateKeyService : IVaultService<KeyVaultSecret>
     {
         private readonly IVaultRepository<KeyVaultSecret> _privateKeyRepository;
-        private readonly IMapper<KeyVaultSecret, JsonWebKeySetDto> _secretToJwksMapper;
         private readonly IMapper<RSA, KeyVaultSecret> _rsaToSecretMapper;
         private readonly KeyPair _keyPair;
         private readonly KeyOption _keyOption;
 
-        public PrivateKeyService(IVaultRepository<KeyVaultSecret> vaultRepository, KeyPair keyPair, IMapper<KeyVaultSecret, JsonWebKeySetDto> secretToJwksMapper, IMapper<RSA, KeyVaultSecret> rsaToSecretMapper, KeyOption keyOption)
+        public PrivateKeyService(IVaultRepository<KeyVaultSecret> vaultRepository, KeyPair keyPair, IMapper<RSA, KeyVaultSecret> rsaToSecretMapper, KeyOption keyOption)
         {
             _privateKeyRepository = vaultRepository;
             _keyPair = keyPair;
-            _secretToJwksMapper = secretToJwksMapper;
             _rsaToSecretMapper = rsaToSecretMapper;
             _keyOption = keyOption;
         }
@@ -36,8 +34,29 @@ namespace MyDiet.Session.Business.Services
                     Message = "Private key is already set.",
                 };
             }
+
+            var existingSecret = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
+
+            if (existingSecret.Data is not null)
+            {
+                _keyPair.PrivateKey = existingSecret.Data;
+                return new BusinessResponse<KeyVaultSecret>
+                {
+                    StatusCode = BusinessCode.Ok,
+                    Message = "Private key pulled successfully.",
+                };
+            }
+
+            var deletedSecret = await _privateKeyRepository.GetDeletedSecretAsync(_keyOption.PrivateKeyName);
+
+            if (deletedSecret.Data is not null)
+            {
+                _privateKeyRepository.PurgeSecretAsync(_keyOption.PrivateKeyName).GetAwaiter().GetResult();
+            }
+
             var secret = _rsaToSecretMapper.Map(RSA.Create(_keyOption.KeySize));
             var vaultResponse = await _privateKeyRepository.CreateSecretAsync(secret);
+
             if (vaultResponse.StatusCode != RepositoryCode.Created)
             {
                 return vaultResponse.ToBusinessResponse();
@@ -47,7 +66,7 @@ namespace MyDiet.Session.Business.Services
             return new BusinessResponse<KeyVaultSecret>
             {
                 StatusCode = BusinessCode.Created,
-                Message = "Secret created successfully.",
+                Message = "Private key created successfully.",
             };
         }
 
@@ -70,7 +89,7 @@ namespace MyDiet.Session.Business.Services
             }
             return new BusinessResponse<KeyVaultSecret>
             {
-                StatusCode = BusinessCode.Success,
+                StatusCode = BusinessCode.Ok,
                 Message = "Private key exists."
             };
         }

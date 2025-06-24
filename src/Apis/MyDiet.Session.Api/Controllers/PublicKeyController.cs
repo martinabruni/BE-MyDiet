@@ -1,5 +1,4 @@
-﻿using Azure.Security.KeyVault.Secrets;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyDiet.Session.Domain.Models;
 using MyDiet.Session.Domain.Responses;
@@ -25,6 +24,7 @@ namespace MyDiet.Session.Api.Controllers
             return response.ToActionResult();
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateAsync()
         {

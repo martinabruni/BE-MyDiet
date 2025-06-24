@@ -9,7 +9,7 @@ namespace MyDiet.Session.Domain.Responses
         {
             return response.StatusCode switch
             {
-                BusinessCode.Success => new OkObjectResult(response),
+                BusinessCode.Ok => new OkObjectResult(response),
                 BusinessCode.Created => new CreatedResult(string.Empty, response),
                 BusinessCode.BadRequest => new BadRequestObjectResult(response),
                 BusinessCode.Unauthorized => new UnauthorizedResult(),

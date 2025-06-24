@@ -4,7 +4,7 @@ namespace MyDiet.Session.Domain.Responses
 {
     public enum BusinessCode
     {
-        Success = HttpStatusCode.OK,
+        Ok = HttpStatusCode.OK,
         Created = HttpStatusCode.Created,
         BadRequest = HttpStatusCode.BadRequest,
         Unauthorized = HttpStatusCode.Unauthorized,

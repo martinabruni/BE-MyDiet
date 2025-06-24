@@ -33,6 +33,18 @@ namespace MyDiet.Session.Business.Services
                     Message = "Public key is already set.",
                 };
             }
+
+            if(_keyPair.PrivateKey is not null)
+            {
+                _keyPair.PublicKey = _secretToJwksMapper.Map(_keyPair.PrivateKey);
+                return new BusinessResponse<JsonWebKeySetDto>
+                {
+                    StatusCode = BusinessCode.Created,
+                    Message = "Public key created successfully from existing private key.",
+                    Data = _keyPair.PublicKey
+                };
+            }
+
             var secret = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
 
             if (secret.Data is null)
@@ -49,6 +61,7 @@ namespace MyDiet.Session.Business.Services
             {
                 StatusCode = BusinessCode.Created,
                 Message = "Public key created successfully.",
+                Data = _keyPair.PublicKey
             };
         }
 
@@ -73,7 +86,7 @@ namespace MyDiet.Session.Business.Services
             }
             return new BusinessResponse<JsonWebKeySetDto>
             {
-                StatusCode = BusinessCode.Success,
+                StatusCode = BusinessCode.Ok,
                 Message = "Public key exists.",
                 Data = _keyPair.PublicKey
             };

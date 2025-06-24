@@ -1,0 +1,14 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using MyDiet.Session.Domain.Managers;
+
+namespace System
+{
+    public static class ServiceProviderExtension
+    {
+        public static async Task InitializeAsync(this IServiceProvider serviceProvider)
+        {
+            var keyPairManager = serviceProvider.GetRequiredService<IKeyPairManager>();
+            await keyPairManager.RigenerateAsync();
+        }
+    }
+}

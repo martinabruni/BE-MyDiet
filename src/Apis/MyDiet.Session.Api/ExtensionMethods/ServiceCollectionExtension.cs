@@ -6,6 +6,12 @@
         {
             services.AddJwtInfrastructure(configuration);
             services.AddSessionBusinessServices();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            });
+
             return services;
         }
     }
