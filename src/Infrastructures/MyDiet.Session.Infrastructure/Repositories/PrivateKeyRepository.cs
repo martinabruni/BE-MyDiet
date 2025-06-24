@@ -1,8 +1,8 @@
 ﻿using Azure;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using BaseUtility;
 using MyDiet.Session.Domain.Repositories;
-using MyDiet.Session.Domain.Responses;
 
 namespace MyDiet.Session.Infrastructure.Repositories
 {
@@ -55,7 +55,7 @@ namespace MyDiet.Session.Infrastructure.Repositories
 
         public async Task<RepositoryResponse<KeyVaultSecret>> GetDeletedSecretAsync(string secretName)
         {
-            if(string.IsNullOrWhiteSpace(secretName))
+            if (string.IsNullOrWhiteSpace(secretName))
             {
                 return new RepositoryResponse<KeyVaultSecret>
                 {
@@ -69,7 +69,7 @@ namespace MyDiet.Session.Infrastructure.Repositories
                 var secret = await _secretClient.GetDeletedSecretAsync(secretName);
                 return new RepositoryResponse<KeyVaultSecret>
                 {
-                    StatusCode = RepositoryCode.Success,
+                    StatusCode = RepositoryCode.Ok,
                     Data = secret.Value,
                     Message = "Deleted secret retrieved successfully."
                 };
@@ -108,7 +108,7 @@ namespace MyDiet.Session.Infrastructure.Repositories
                 var secret = await _secretClient.GetSecretAsync(secretName);
                 return new RepositoryResponse<KeyVaultSecret>
                 {
-                    StatusCode = RepositoryCode.Success,
+                    StatusCode = RepositoryCode.Ok,
                     Data = secret.Value,
                     Message = "Secret retrieved successfully."
                 };
@@ -155,7 +155,7 @@ namespace MyDiet.Session.Infrastructure.Repositories
                 await _secretClient.PurgeDeletedSecretAsync(secretName);
                 return new RepositoryResponse<KeyVaultSecret>
                 {
-                    StatusCode = RepositoryCode.Success,
+                    StatusCode = RepositoryCode.Ok,
                     Message = "Secret purged successfully."
                 };
             }

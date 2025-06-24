@@ -1,9 +1,8 @@
 ﻿using Azure.Security.KeyVault.Secrets;
-using MyDiet.Session.Domain.Mappers;
+using BaseUtility;
 using MyDiet.Session.Domain.Models;
 using MyDiet.Session.Domain.Options;
 using MyDiet.Session.Domain.Repositories;
-using MyDiet.Session.Domain.Responses;
 using MyDiet.Session.Domain.Services;
 
 namespace MyDiet.Session.Business.Services
@@ -34,7 +33,7 @@ namespace MyDiet.Session.Business.Services
                 };
             }
 
-            if(_keyPair.PrivateKey is not null)
+            if (_keyPair.PrivateKey is not null)
             {
                 _keyPair.PublicKey = _secretToJwksMapper.Map(_keyPair.PrivateKey);
                 return new BusinessResponse<JsonWebKeySetDto>

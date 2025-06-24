@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-namespace MyDiet.Session.Domain.Responses
+namespace MyDiet.Shared.Domain
 {
-    public enum BusinessCode
+    public enum RepositoryCode
     {
         Ok = HttpStatusCode.OK,
         Created = HttpStatusCode.Created,
@@ -10,7 +10,6 @@ namespace MyDiet.Session.Domain.Responses
         Unauthorized = HttpStatusCode.Unauthorized,
         Forbidden = HttpStatusCode.Forbidden,
         NotFound = HttpStatusCode.NotFound,
-        InternalServerError = HttpStatusCode.InternalServerError,
-        NotImplemented = HttpStatusCode.NotImplemented,
+        InternalServerError = HttpStatusCode.InternalServerError
     }
 }

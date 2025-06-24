@@ -1,7 +1,7 @@
 ﻿using Azure.Security.KeyVault.Secrets;
+using BaseUtility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyDiet.Session.Domain.Responses;
 using MyDiet.Session.Domain.Services;
 
 namespace MyDiet.Session.Api.Controllers

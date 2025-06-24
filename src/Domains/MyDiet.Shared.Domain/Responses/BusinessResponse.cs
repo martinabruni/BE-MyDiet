@@ -1,4 +1,4 @@
-﻿namespace MyDiet.Session.Domain.Responses
+﻿namespace MyDiet.Shared.Domain
 {
     public class BusinessResponse<TData>
         where TData : class

@@ -1,5 +1,5 @@
-﻿using MyDiet.Session.Domain.Models;
-using MyDiet.Session.Domain.Responses;
+﻿using BaseUtility;
+using MyDiet.Session.Domain.Models;
 
 namespace MyDiet.Session.Domain.Managers
 {

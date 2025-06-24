@@ -1,7 +1,7 @@
 ﻿using Azure.Security.KeyVault.Secrets;
+using BaseUtility;
 using MyDiet.Session.Domain.Managers;
 using MyDiet.Session.Domain.Models;
-using MyDiet.Session.Domain.Responses;
 using MyDiet.Session.Domain.Services;
 
 namespace MyDiet.Session.Business.Managers

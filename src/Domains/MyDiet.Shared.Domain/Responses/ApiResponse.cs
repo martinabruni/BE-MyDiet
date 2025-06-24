@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace MyDiet.Session.Domain.Responses
+namespace MyDiet.Shared.Domain
 {
     public class ApiResponse<TData>
     {

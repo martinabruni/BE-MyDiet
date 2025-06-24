@@ -1,9 +1,8 @@
 ﻿using Azure.Security.KeyVault.Secrets;
-using MyDiet.Session.Domain.Mappers;
+using BaseUtility;
 using MyDiet.Session.Domain.Models;
 using MyDiet.Session.Domain.Options;
 using MyDiet.Session.Domain.Repositories;
-using MyDiet.Session.Domain.Responses;
 using MyDiet.Session.Domain.Services;
 using System.Security.Cryptography;
 

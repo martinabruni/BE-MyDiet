@@ -1,4 +1,4 @@
-﻿using MyDiet.Session.Domain.Responses;
+﻿using BaseUtility;
 
 namespace MyDiet.Session.Domain.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace MyDiet.Session.Domain.Mappers
+﻿namespace MyDiet.Shared.Domain
 {
     public interface IMapper<TInput, TOutput> where TInput : class where TOutput : class
     {

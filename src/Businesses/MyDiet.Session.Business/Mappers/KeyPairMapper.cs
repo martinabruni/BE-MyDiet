@@ -1,6 +1,6 @@
 ﻿using Azure.Security.KeyVault.Secrets;
+using BaseUtility;
 using Microsoft.IdentityModel.Tokens;
-using MyDiet.Session.Domain.Mappers;
 using MyDiet.Session.Domain.Models;
 using MyDiet.Session.Domain.Options;
 using System.Security.Cryptography;
@@ -65,7 +65,7 @@ namespace MyDiet.Session.Business.Mappers
         RsaSecurityKey IMapper<KeyVaultSecret, RsaSecurityKey>.Map(KeyVaultSecret input)
         {
             RSAParameters deserializedParameters = JsonSerializer.Deserialize<RSAParameters>(input.Value, _jsonSerializerOptions);
-            return new RsaSecurityKey(deserializedParameters) { KeyId = input.Properties.Version};
+            return new RsaSecurityKey(deserializedParameters) { KeyId = input.Properties.Version };
         }
     }
 }

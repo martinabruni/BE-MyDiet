@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BaseUtility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyDiet.Session.Domain.Managers;
-using MyDiet.Session.Domain.Responses;
 
 namespace MyDiet.Session.Api.Controllers
 {

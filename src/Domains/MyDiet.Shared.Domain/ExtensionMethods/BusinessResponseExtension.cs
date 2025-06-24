@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MyDiet.Session.Domain.Responses
+namespace MyDiet.Shared.Domain
 {
     public static class BusinessResponseExtension
     {

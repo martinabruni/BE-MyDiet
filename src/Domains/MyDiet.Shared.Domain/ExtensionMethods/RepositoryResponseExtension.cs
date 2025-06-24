@@ -1,4 +1,4 @@
-﻿namespace MyDiet.Session.Domain.Responses
+﻿namespace MyDiet.Shared.Domain
 {
     public static class RepositoryResponseExtension
     {
@@ -9,7 +9,7 @@
             {
                 Data = repositoryResponse.Data,
                 Message = repositoryResponse.Message,
-                StatusCode = (BusinessCode)repositoryResponse.StatusCode
+                StatusCode = (BusinessCode) repositoryResponse.StatusCode
             };
         }
     }
