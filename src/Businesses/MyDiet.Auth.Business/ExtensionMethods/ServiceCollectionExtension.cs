@@ -3,6 +3,8 @@ using MyDiet.Auth.Business.Managers;
 using MyDiet.Auth.Business.Mappers;
 using MyDiet.Auth.Business.Services;
 using MyDiet.Auth.Domain.Dtos;
+using MyDiet.Auth.Domain.Dtos.Requests;
+using MyDiet.Auth.Domain.Dtos.Responses;
 using MyDiet.Auth.Domain.Managers;
 using MyDiet.Auth.Infrastructure.Models;
 
@@ -14,8 +16,10 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IMapper<AuthUserDto, User>, AuthUserMapper>();
             services.AddScoped<IMapper<User, AuthUserDto>, AuthUserMapper>();
+            services.AddScoped<IMapper<UserRegistrationRequest, AuthUserDto>, AuthUserMapper>();
+            services.AddScoped<IMapper<AuthUserDto, UserRegistrationResponse>, AuthUserMapper>();
 
-            services.AddScoped<IService<AuthUserDto, Guid>, AuthUserService>();
+            services.AddScoped<IService<AuthUserDto, User, Guid>, AuthUserService>();
             services.AddScoped<IAuthManager, AuthManager>();
             return services;
         }
