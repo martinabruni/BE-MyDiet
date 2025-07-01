@@ -1,11 +1,11 @@
 ﻿using Azure.Security.KeyVault.Secrets;
 using BaseUtility;
-using MyDiet.Session.Domain.Models;
-using MyDiet.Session.Domain.Options;
-using MyDiet.Session.Domain.Repositories;
-using MyDiet.Session.Domain.Services;
+using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Options;
+using MyDiet.Auth.Domain.Repositories;
+using MyDiet.Auth.Domain.Services;
 
-namespace MyDiet.Session.Business.Services
+namespace MyDiet.Auth.Business.Services
 {
     internal class PublicKeyService : IVaultService<JsonWebKeySetDto>
     {
@@ -87,7 +87,6 @@ namespace MyDiet.Session.Business.Services
             {
                 StatusCode = BusinessCode.Ok,
                 Message = "Public key exists.",
-                Data = _keyPair.PublicKey
             };
         }
 
@@ -100,9 +99,22 @@ namespace MyDiet.Session.Business.Services
             };
         }
 
-        public Task<BusinessResponse<JsonWebKeySetDto>> GetAsync()
+        public async Task<BusinessResponse<JsonWebKeySetDto>> GetAsync()
         {
-            return ExistsAsync();
+            if (_keyPair.PublicKey is null)
+            {
+                return new BusinessResponse<JsonWebKeySetDto>
+                {
+                    StatusCode = BusinessCode.NotFound,
+                    Message = "Public key does not exist. Please create it first."
+                };
+            }
+            return new BusinessResponse<JsonWebKeySetDto>
+            {
+                StatusCode = BusinessCode.Ok,
+                Message = "Public key retrieved successfully",
+                Data = _keyPair.PublicKey
+            };
         }
     }
 }

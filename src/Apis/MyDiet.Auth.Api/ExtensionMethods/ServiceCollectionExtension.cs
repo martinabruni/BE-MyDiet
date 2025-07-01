@@ -6,10 +6,16 @@
         {
             services.AddKeyPairInfrastructure(configuration);
             services.AddKeyPairBusiness();
+            services
+                .AddAuthentication()
+                .AddBearerToken();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
             });
+
+            services.AddAuthInfrastructure(configuration);
+            services.AddAuthBusiness();
 
             return services;
         }

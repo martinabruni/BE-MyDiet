@@ -11,9 +11,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Businesses\MyDiet.Session.Business\MyDiet.Session.Business.csproj" />
-    <ProjectReference Include="..\..\Domains\MyDiet.Session.Domain\MyDiet.Session.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

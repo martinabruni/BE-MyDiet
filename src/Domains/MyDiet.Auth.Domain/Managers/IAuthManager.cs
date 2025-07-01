@@ -6,6 +6,9 @@ namespace MyDiet.Auth.Domain.Managers
 {
     public interface IAuthManager
     {
-        Task<BusinessResponse<UserRegistrationResponse>> RegisterUserAsync(UserRegistrationRequest userRegistrationDto);
+        Task<BusinessResponse<UserRegistrationResponse>> RegisterUserAsync(UserRegistrationRequest request);
+        Task<BusinessResponse<TokenResponse>> LoginUserAsync(UserLoginRequest request);
+        Task<BusinessResponse<TokenResponse>> LogoutUserAsync(string token);
+
     }
 }

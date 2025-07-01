@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MyDiet.Session.Domain.Managers;
+﻿using MyDiet.Auth.Domain.Managers;
 
 namespace System
 {
@@ -9,7 +8,8 @@ namespace System
         {
             try
             {
-                var keyPairManager = serviceProvider.GetRequiredService<IKeyPairManager>();
+                using var scope = serviceProvider.CreateScope();
+                var keyPairManager = scope.ServiceProvider.GetRequiredService<IKeyPairManager>();
                 await keyPairManager.RigenerateAsync();
             }
             catch (Exception ex)

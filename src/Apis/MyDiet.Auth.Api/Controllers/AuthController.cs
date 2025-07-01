@@ -22,5 +22,12 @@ namespace MyDiet.Auth.Api.Controllers
             var response = await _authManager.RegisterUserAsync(request);
             return response.ToActionResult();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> LoginUser([FromBody] UserLoginRequest request)
+        {
+            var response = await _authManager.LoginUserAsync(request);
+            return response.ToActionResult();
+        }
     }
 }

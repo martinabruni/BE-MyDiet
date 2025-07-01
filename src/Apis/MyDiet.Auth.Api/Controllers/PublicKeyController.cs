@@ -1,8 +1,8 @@
 ﻿using BaseUtility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyDiet.Session.Domain.Models;
-using MyDiet.Session.Domain.Services;
+using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Services;
 
 namespace MyDiet.Session.Api.Controllers
 {
@@ -20,7 +20,7 @@ namespace MyDiet.Session.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            var response = await _publicKeyService.ExistsAsync();
+            var response = await _publicKeyService.GetAsync();
             return response.ToActionResult();
         }
 

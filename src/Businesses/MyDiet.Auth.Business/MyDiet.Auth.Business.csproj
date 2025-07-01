@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BaseUtility" Version="1.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.6" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BaseUtility" Version="1.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.6" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.12.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Domains\MyDiet.Auth.Domain\MyDiet.Auth.Domain.csproj" />
-    <ProjectReference Include="..\..\Infrastructures\MyDiet.Auth.Infrastructure\MyDiet.Auth.Infrastructure.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Domains\MyDiet.Auth.Domain\MyDiet.Auth.Domain.csproj" />
+		<ProjectReference Include="..\..\Infrastructures\MyDiet.Auth.Infrastructure\MyDiet.Auth.Infrastructure.csproj" />
+	</ItemGroup>
 
 </Project>

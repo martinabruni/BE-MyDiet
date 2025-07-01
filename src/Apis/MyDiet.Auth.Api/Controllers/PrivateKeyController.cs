@@ -2,7 +2,7 @@
 using BaseUtility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyDiet.Session.Domain.Services;
+using MyDiet.Auth.Domain.Services;
 
 namespace MyDiet.Session.Api.Controllers
 {

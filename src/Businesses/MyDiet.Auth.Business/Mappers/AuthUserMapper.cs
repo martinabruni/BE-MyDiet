@@ -1,6 +1,7 @@
 ﻿using BaseUtility;
 using Microsoft.AspNetCore.Identity;
 using MyDiet.Auth.Domain.Dtos;
+using MyDiet.Auth.Domain.Dtos.Claims;
 using MyDiet.Auth.Domain.Dtos.Requests;
 using MyDiet.Auth.Domain.Dtos.Responses;
 using MyDiet.Auth.Infrastructure.Models;
@@ -11,7 +12,8 @@ namespace MyDiet.Auth.Business.Mappers
         IMapper<AuthUserDto, User>,
         IMapper<User, AuthUserDto>,
         IMapper<AuthUserDto, UserRegistrationResponse>,
-        IMapper<UserRegistrationRequest, AuthUserDto>
+        IMapper<UserRegistrationRequest, AuthUserDto>,
+        IMapper<AuthUserDto, UserClaims>
     {
         public User Map(AuthUserDto input)
         {
@@ -40,12 +42,13 @@ namespace MyDiet.Auth.Business.Mappers
 
         public AuthUserDto Map(UserRegistrationRequest input)
         {
+            var id = Guid.NewGuid();
             return new AuthUserDto
             {
-                Id = Guid.NewGuid(),
+                Id = id,
                 Username = input.Username,
                 Email = input.Email,
-                HashedPassword = new PasswordHasher<object>().HashPassword(input, input.Password),
+                HashedPassword = new PasswordHasher<object>().HashPassword(id, input.Password),
             };
         }
 
@@ -56,6 +59,14 @@ namespace MyDiet.Auth.Business.Mappers
                 Id = input.Id,
                 Username = input.Username,
                 Email = input.Email,
+            };
+        }
+
+        UserClaims IMapper<AuthUserDto, UserClaims>.Map(AuthUserDto input)
+        {
+            return new UserClaims
+            {
+                UserId = input.Id
             };
         }
     }

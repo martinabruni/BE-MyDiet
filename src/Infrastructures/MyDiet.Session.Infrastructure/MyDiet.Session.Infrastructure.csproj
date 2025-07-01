@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Domains\MyDiet.Session.Domain\MyDiet.Session.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

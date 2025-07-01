@@ -1,12 +1,12 @@
 ﻿using Azure.Security.KeyVault.Secrets;
 using BaseUtility;
-using MyDiet.Session.Domain.Models;
-using MyDiet.Session.Domain.Options;
-using MyDiet.Session.Domain.Repositories;
-using MyDiet.Session.Domain.Services;
+using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Options;
+using MyDiet.Auth.Domain.Repositories;
+using MyDiet.Auth.Domain.Services;
 using System.Security.Cryptography;
 
-namespace MyDiet.Session.Business.Services
+namespace MyDiet.Auth.Business.Services
 {
     internal class PrivateKeyService : IVaultService<KeyVaultSecret>
     {
@@ -41,6 +41,7 @@ namespace MyDiet.Session.Business.Services
                 _keyPair.PrivateKey = existingSecret.Data;
                 return new BusinessResponse<KeyVaultSecret>
                 {
+                    Data = _keyPair.PrivateKey,
                     StatusCode = BusinessCode.Ok,
                     Message = "Private key pulled successfully.",
                 };
@@ -64,6 +65,7 @@ namespace MyDiet.Session.Business.Services
 
             return new BusinessResponse<KeyVaultSecret>
             {
+                Data = _keyPair.PrivateKey,
                 StatusCode = BusinessCode.Created,
                 Message = "Private key created successfully.",
             };

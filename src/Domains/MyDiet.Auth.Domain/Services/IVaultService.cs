@@ -1,6 +1,6 @@
 ﻿using BaseUtility;
 
-namespace MyDiet.Session.Domain.Services
+namespace MyDiet.Auth.Domain.Services
 {
     public interface IVaultService<TData>
         where TData : class
