@@ -4,6 +4,7 @@ using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Dtos.Claims;
 using MyDiet.Auth.Domain.Dtos.Requests;
 using MyDiet.Auth.Domain.Dtos.Responses;
+using MyDiet.Auth.Domain.Enums;
 using MyDiet.Auth.Infrastructure.Models;
 
 namespace MyDiet.Auth.Business.Mappers
@@ -35,6 +36,7 @@ namespace MyDiet.Auth.Business.Mappers
                 Username = input.Username,
                 Email = input.Email,
                 HashedPassword = input.HashedPassword,
+                Role = (UserRole)input.Role,
                 CreatedAt = input.CreatedAt,
                 UpdatedAt = input.UpdatedAt,
             };
@@ -49,6 +51,7 @@ namespace MyDiet.Auth.Business.Mappers
                 Username = input.Username,
                 Email = input.Email,
                 HashedPassword = new PasswordHasher<object>().HashPassword(id, input.Password),
+                Role = UserRole.User
             };
         }
 
@@ -66,7 +69,8 @@ namespace MyDiet.Auth.Business.Mappers
         {
             return new UserClaims
             {
-                UserId = input.Id
+                UserId = input.Id,
+                Role = input.Role
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using BaseUtility;
+using MyDiet.Auth.Domain.Enums;
 
 namespace MyDiet.Auth.Domain.Dtos
 {
@@ -9,5 +10,7 @@ namespace MyDiet.Auth.Domain.Dtos
         public required string Email { get; set; }
 
         public required string HashedPassword { get; set; }
+
+        public required UserRole Role { get; set; } = 0;
     }
 }

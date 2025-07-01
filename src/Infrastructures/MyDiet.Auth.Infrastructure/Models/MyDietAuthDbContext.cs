@@ -19,6 +19,8 @@ public partial class MyDietAuthDbContext : DbContext
     {
         modelBuilder.Entity<User>(entity =>
         {
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0793F0ECA2");
+
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Email)

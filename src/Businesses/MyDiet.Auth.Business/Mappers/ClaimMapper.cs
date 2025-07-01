@@ -9,7 +9,10 @@ namespace MyDiet.Auth.Business.Mappers
     {
         public List<Claim> Map(UserClaims input)
         {
-            return [new Claim("UserId", input.UserId.ToString())];
+            return [
+                new Claim("UserId", input.UserId.ToString()),
+                new Claim("Role", input.Role.ToString())
+            ];
         }
     }
 }
