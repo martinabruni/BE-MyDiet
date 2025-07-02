@@ -40,9 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddJwtBearer(async options =>
                 {
                     //TODO: please change this ASAP and make it work
-                    // Fetch the signing key from the KeyPairController endpoint
                     var httpClient = new HttpClient();
-                    // Adjust the URL to your actual Auth API host and port
                     var signingKeyResponse = httpClient.GetFromJsonAsync<BusinessResponse<IEnumerable<RsaSecurityKey>>>(
                         "https://localhost:7113/api/KeyPair/GetSigningKeyAsync").GetAwaiter().GetResult();
                     options.TokenValidationParameters = new TokenValidationParameters
