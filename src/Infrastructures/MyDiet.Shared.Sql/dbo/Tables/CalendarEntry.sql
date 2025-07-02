@@ -7,6 +7,6 @@
     [UpdatedAt] DATETIME         NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_CalendarEntry_Plan] FOREIGN KEY ([PlanId]) REFERENCES [dbo].[Plan] ([Id]),
-    CONSTRAINT [FK_CalendarEntry_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
+    CONSTRAINT [FK_CalendarEntry_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[CoreUser] ([Id])
 );
 

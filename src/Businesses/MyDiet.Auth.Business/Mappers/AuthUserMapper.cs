@@ -10,15 +10,15 @@ using MyDiet.Auth.Infrastructure.Models;
 namespace MyDiet.Auth.Business.Mappers
 {
     internal class AuthUserMapper :
-        IMapper<AuthUserDto, User>,
-        IMapper<User, AuthUserDto>,
+        IMapper<AuthUserDto, AuthUser>,
+        IMapper<AuthUser, AuthUserDto>,
         IMapper<AuthUserDto, UserRegistrationResponse>,
         IMapper<UserRegistrationRequest, AuthUserDto>,
         IMapper<AuthUserDto, UserClaims>
     {
-        public User Map(AuthUserDto input)
+        public AuthUser Map(AuthUserDto input)
         {
-            return new User
+            return new AuthUser
             {
                 Id = input.Id,
                 Username = input.Username,
@@ -28,7 +28,7 @@ namespace MyDiet.Auth.Business.Mappers
             };
         }
 
-        public AuthUserDto Map(User input)
+        public AuthUserDto Map(AuthUser input)
         {
             return new AuthUserDto
             {

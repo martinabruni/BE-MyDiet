@@ -4,9 +4,9 @@ using MyDiet.Auth.Infrastructure.Models;
 
 namespace MyDiet.Auth.Business.Services
 {
-    internal class AuthUserService : AGenericService<AuthUserDto, User, Guid>
+    internal class AuthUserService : AGenericService<AuthUserDto, AuthUser, Guid>
     {
-        public AuthUserService(IRepository<User, Guid> repository, IMapper<User, AuthUserDto> databaseToDtoMapper, IMapper<AuthUserDto, User> dtoToDatabaseMapper) : base(repository, databaseToDtoMapper, dtoToDatabaseMapper)
+        public AuthUserService(IRepository<AuthUser, Guid> repository, IMapper<AuthUser, AuthUserDto> databaseToDtoMapper, IMapper<AuthUserDto, AuthUser> dtoToDatabaseMapper) : base(repository, databaseToDtoMapper, dtoToDatabaseMapper)
         {
         }
     }

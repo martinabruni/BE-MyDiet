@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[CoreUser]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    [Username] NCHAR (50) NULL, 
+    [CreatedAt] DATETIME NOT NULL,
+    [UpdatedAt] DATETIME NULL,
+)

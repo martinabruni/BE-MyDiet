@@ -5,7 +5,6 @@ using MyDiet.Auth.Domain.Managers;
 
 namespace MyDiet.Session.Api.Controllers
 {
-    [Authorize(Policy = "Admin")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class KeyPairController : ControllerBase
@@ -17,10 +16,18 @@ namespace MyDiet.Session.Api.Controllers
             _keyPairManager = keyPairManager;
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpGet]
         public async Task<IActionResult> RegenerateAsync()
         {
             var response = await _keyPairManager.RegenerateAsync();
+            return response.ToActionResult();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSigningKeyAsync()
+        {
+            var response = await _keyPairManager.GetSigningKeyAsync();
             return response.ToActionResult();
         }
     }

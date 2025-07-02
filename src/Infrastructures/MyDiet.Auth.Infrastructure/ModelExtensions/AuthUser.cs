@@ -2,7 +2,7 @@
 
 namespace MyDiet.Auth.Infrastructure.Models
 {
-    public partial class User : IAuditable, IEntity<Guid>
+    public partial class AuthUser : IAuditable, IEntity<Guid>
     {
     }
 }

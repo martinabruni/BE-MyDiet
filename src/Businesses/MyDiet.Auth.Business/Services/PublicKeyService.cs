@@ -64,57 +64,57 @@ namespace MyDiet.Auth.Business.Services
             };
         }
 
-        public async Task<BusinessResponse<JsonWebKeySetDto>> GetDeletedAsync()
+        public Task<BusinessResponse<JsonWebKeySetDto>> GetDeletedAsync()
         {
-            return new BusinessResponse<JsonWebKeySetDto>
+            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
             {
                 StatusCode = BusinessCode.NotImplemented,
                 Message = "This method is not implemented for PublicKeyService."
-            };
+            });
         }
 
-        public async Task<BusinessResponse<JsonWebKeySetDto>> ExistsAsync()
+        public Task<BusinessResponse<JsonWebKeySetDto>> ExistsAsync()
         {
             if (_keyPair.PublicKey is null)
             {
-                return new BusinessResponse<JsonWebKeySetDto>
+                return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
                 {
                     StatusCode = BusinessCode.NotFound,
                     Message = "Public key does not exist. Please create it first."
-                };
+                });
             }
-            return new BusinessResponse<JsonWebKeySetDto>
+            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
             {
                 StatusCode = BusinessCode.Ok,
                 Message = "Public key exists.",
-            };
+            });
         }
 
-        public async Task<BusinessResponse<JsonWebKeySetDto>> PurgeDeletedAsync()
+        public Task<BusinessResponse<JsonWebKeySetDto>> PurgeDeletedAsync()
         {
-            return new BusinessResponse<JsonWebKeySetDto>
+            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
             {
                 StatusCode = BusinessCode.NotImplemented,
                 Message = "This method is not implemented for PublicKeyService."
-            };
+            });
         }
 
-        public async Task<BusinessResponse<JsonWebKeySetDto>> GetAsync()
+        public Task<BusinessResponse<JsonWebKeySetDto>> GetAsync()
         {
             if (_keyPair.PublicKey is null)
             {
-                return new BusinessResponse<JsonWebKeySetDto>
+                return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
                 {
                     StatusCode = BusinessCode.NotFound,
                     Message = "Public key does not exist. Please create it first."
-                };
+                });
             }
-            return new BusinessResponse<JsonWebKeySetDto>
+            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
             {
                 StatusCode = BusinessCode.Ok,
                 Message = "Public key retrieved successfully",
                 Data = _keyPair.PublicKey
-            };
+            });
         }
     }
 }

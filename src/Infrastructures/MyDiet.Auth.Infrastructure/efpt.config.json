@@ -15,7 +15,7 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[User]",
+         "Name": "[dbo].[AuthUser]",
          "ObjectType": 0
       }
    ],

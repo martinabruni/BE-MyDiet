@@ -25,7 +25,7 @@ namespace MyDiet.Auth.Business.Services
             _tokenResponseMapper = tokenResponseMapper;
         }
 
-        public async Task<BusinessResponse<TokenResponse>> GenerateTokenAsync(UserClaims claimDto, KeyVaultSecret privateKey)
+        public BusinessResponse<TokenResponse> GenerateToken(UserClaims claimDto, KeyVaultSecret privateKey)
         {
             try
             {
@@ -53,14 +53,14 @@ namespace MyDiet.Auth.Business.Services
             }
         }
 
-        public async Task<BusinessResponse<TokenResponse>> RevokeTokenAsync(string token)
+        public Task<BusinessResponse<TokenResponse>> RevokeTokenAsync(string token)
         {
             //TODO: Implement token revocation logic
-            return new BusinessResponse<TokenResponse>()
+            return Task.FromResult(new BusinessResponse<TokenResponse>()
             {
                 StatusCode = BusinessCode.NotImplemented,
                 Message = "Token revocation is not implemented."
-            };
+            });
         }
     }
 }

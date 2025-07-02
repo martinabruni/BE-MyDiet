@@ -44,7 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IDatabase<MyDietAuthDbContext>, MyDietAuthDb>();
-            services.AddScoped<IRepository<User, Guid>, AuthUserRepository>();
+            services.AddScoped<IRepository<AuthUser, Guid>, AuthUserRepository>();
             services.AddSingleton(new TokenOption
             {
                 Algorithm = tokenSection["Algorithm"],

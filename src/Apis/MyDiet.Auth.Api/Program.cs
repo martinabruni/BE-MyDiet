@@ -3,7 +3,7 @@ using Azure.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-await builder.Services.AddStartupServices(builder.Configuration);
+builder.Services.AddStartupServices(builder.Configuration);
 
 var app = builder.Build();
 

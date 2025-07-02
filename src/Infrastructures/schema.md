@@ -1,7 +1,7 @@
 ## Entities
 
 ```sql
--- User\CREATE TABLE [dbo].[User]
+-- User\CREATE TABLE [dbo].[CoreUser]
 (
     [Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     [Username] NCHAR(50) NULL,
@@ -18,7 +18,7 @@
     [Name] NCHAR(50) NOT NULL,
     [CreatedAt] DATETIME NULL,
     [UpdatedAt] DATETIME NULL,
-    CONSTRAINT [FK_Diet_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User]([Id])
+    CONSTRAINT [FK_Diet_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[CoreUser]([Id])
 );
 
 -- Plan\CREATE TABLE [dbo].[Plan]
@@ -89,7 +89,7 @@
     [Date] DATE NOT NULL,
     [CreatedAt] DATETIME NULL,
     [UpdatedAt] DATETIME NULL,
-    CONSTRAINT [FK_CalendarEntry_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User]([Id]),
+    CONSTRAINT [FK_CalendarEntry_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[CoreUser]([Id]),
     CONSTRAINT [FK_CalendarEntry_Plan] FOREIGN KEY ([PlanId]) REFERENCES [dbo].[Plan]([Id])
 );
 

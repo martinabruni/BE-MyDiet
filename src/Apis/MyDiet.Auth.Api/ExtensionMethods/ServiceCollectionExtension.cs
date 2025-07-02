@@ -6,13 +6,9 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtension
     {
-        public static async Task<IServiceCollection> AddStartupServices(this IServiceCollection services, IConfiguration configuration)
+        //TODO: centralize this method somewhere else
+        public static IServiceCollection AddTokenValidation(this IServiceCollection services)
         {
-            services.AddKeyPairInfrastructure(configuration);
-            services.AddKeyPairBusiness();
-            services.AddAuthInfrastructure(configuration);
-            services.AddAuthBusiness();
-
             services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -48,6 +44,16 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
             });
+            return services;
+        }
+
+        public static IServiceCollection AddStartupServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddKeyPairInfrastructure(configuration);
+            services.AddKeyPairBusiness();
+            services.AddAuthInfrastructure(configuration);
+            services.AddAuthBusiness();
+            services.AddTokenValidation();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

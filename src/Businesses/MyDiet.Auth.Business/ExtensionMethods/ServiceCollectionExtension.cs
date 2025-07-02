@@ -39,15 +39,15 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddAuthBusiness(this IServiceCollection services)
         {
-            services.AddScoped<IMapper<AuthUserDto, User>, AuthUserMapper>();
-            services.AddScoped<IMapper<User, AuthUserDto>, AuthUserMapper>();
+            services.AddScoped<IMapper<AuthUserDto, AuthUser>, AuthUserMapper>();
+            services.AddScoped<IMapper<AuthUser, AuthUserDto>, AuthUserMapper>();
             services.AddScoped<IMapper<UserRegistrationRequest, AuthUserDto>, AuthUserMapper>();
             services.AddScoped<IMapper<AuthUserDto, UserRegistrationResponse>, AuthUserMapper>();
             services.AddScoped<IMapper<AuthUserDto, UserClaims>, AuthUserMapper>();
             services.AddScoped<IMapper<UserClaims, List<Claim>>, ClaimMapper>();
             services.AddScoped<IMapper<JwtSecurityToken, TokenResponse>, TokenMapper>();
 
-            services.AddScoped<IService<AuthUserDto, User, Guid>, AuthUserService>();
+            services.AddScoped<IService<AuthUserDto, AuthUser, Guid>, AuthUserService>();
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IAuthManager, AuthManager>();

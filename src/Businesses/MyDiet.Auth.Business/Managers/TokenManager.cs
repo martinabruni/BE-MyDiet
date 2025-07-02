@@ -14,14 +14,14 @@ namespace MyDiet.Auth.Business.Managers
 {
     internal class TokenManager : ITokenManager
     {
-        private readonly IService<AuthUserDto, User, Guid> _authUserService;
+        private readonly IService<AuthUserDto, AuthUser, Guid> _authUserService;
         private readonly IVaultService<KeyVaultSecret> _privateKeyService;
         private readonly IVaultService<JsonWebKeySetDto> _publicKeyService;
         private readonly IMapper<JsonWebKeySetDto, IEnumerable<RsaSecurityKey>> _publicKeyMapper;
         private readonly ITokenService _tokenService;
         private readonly TokenOption _tokenOption;
 
-        public TokenManager(IVaultService<KeyVaultSecret> privateKeyService, ITokenService tokenService, IService<AuthUserDto, User, Guid> authUserService, IVaultService<JsonWebKeySetDto> publicKeyService, TokenOption tokenOption, IMapper<JsonWebKeySetDto, IEnumerable<RsaSecurityKey>> publicKeyMapper)
+        public TokenManager(IVaultService<KeyVaultSecret> privateKeyService, ITokenService tokenService, IService<AuthUserDto, AuthUser, Guid> authUserService, IVaultService<JsonWebKeySetDto> publicKeyService, TokenOption tokenOption, IMapper<JsonWebKeySetDto, IEnumerable<RsaSecurityKey>> publicKeyMapper)
         {
             _privateKeyService = privateKeyService;
             _tokenService = tokenService;
@@ -64,7 +64,7 @@ namespace MyDiet.Auth.Business.Managers
                 };
             }
 
-            return await _tokenService.GenerateTokenAsync(claims, privateKeyRes.Data);
+            return _tokenService.GenerateToken(claims, privateKeyRes.Data);
         }
 
         public async Task<BusinessResponse<TokenValidationParameters>> GetValidationParametersAsync()

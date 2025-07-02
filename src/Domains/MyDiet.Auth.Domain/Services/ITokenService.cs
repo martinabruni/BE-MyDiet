@@ -7,7 +7,7 @@ namespace MyDiet.Auth.Domain.Services
 {
     public interface ITokenService
     {
-        Task<BusinessResponse<TokenResponse>> GenerateTokenAsync(UserClaims claimDto, KeyVaultSecret privateKey);
+        BusinessResponse<TokenResponse> GenerateToken(UserClaims claimDto, KeyVaultSecret privateKey);
         Task<BusinessResponse<TokenResponse>> RevokeTokenAsync(string token);
     }
 }

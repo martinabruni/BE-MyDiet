@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[User] (
+﻿CREATE TABLE [dbo].[AuthUser] (
     [Id]             UNIQUEIDENTIFIER NOT NULL,
     [Username]       NCHAR (50)       NULL,
     [Email]          NCHAR (255)      NOT NULL,

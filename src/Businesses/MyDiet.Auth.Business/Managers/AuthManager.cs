@@ -11,13 +11,13 @@ namespace MyDiet.Auth.Business.Managers
 {
     internal class AuthManager : IAuthManager
     {
-        private readonly IService<AuthUserDto, User, Guid> _authUserService;
+        private readonly IService<AuthUserDto, AuthUser, Guid> _authUserService;
         private readonly IMapper<UserRegistrationRequest, AuthUserDto> _registrationRequestMapper;
         private readonly IMapper<AuthUserDto, UserRegistrationResponse> _userResponseMapper;
         private readonly IMapper<AuthUserDto, UserClaims> _userClaimsMapper;
         private readonly ITokenManager _tokenManager;
 
-        public AuthManager(IService<AuthUserDto, User, Guid> authUserService, IMapper<UserRegistrationRequest, AuthUserDto> registrationRequestMapper, IMapper<AuthUserDto, UserRegistrationResponse> registrationResponseMapper, ITokenManager tokenManager, IMapper<AuthUserDto, UserClaims> userClaimsMapper)
+        public AuthManager(IService<AuthUserDto, AuthUser, Guid> authUserService, IMapper<UserRegistrationRequest, AuthUserDto> registrationRequestMapper, IMapper<AuthUserDto, UserRegistrationResponse> registrationResponseMapper, ITokenManager tokenManager, IMapper<AuthUserDto, UserClaims> userClaimsMapper)
         {
             _authUserService = authUserService;
             _registrationRequestMapper = registrationRequestMapper;

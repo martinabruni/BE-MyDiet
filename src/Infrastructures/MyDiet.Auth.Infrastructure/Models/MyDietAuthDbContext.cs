@@ -13,13 +13,13 @@ public partial class MyDietAuthDbContext : DbContext
     {
     }
 
-    public virtual DbSet<User> User { get; set; }
+    public virtual DbSet<AuthUser> AuthUser { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<AuthUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC0793F0ECA2");
+            entity.HasKey(e => e.Id).HasName("PK__AuthUser__3214EC07FE01452C");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");

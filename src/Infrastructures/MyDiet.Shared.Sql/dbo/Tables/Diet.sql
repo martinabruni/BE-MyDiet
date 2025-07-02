@@ -5,6 +5,6 @@
     [CreatedAt] DATETIME         NOT NULL,
     [UpdatedAt] DATETIME         NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Diet_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id])
+    CONSTRAINT [FK_Diet_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[CoreUser] ([Id])
 );
 

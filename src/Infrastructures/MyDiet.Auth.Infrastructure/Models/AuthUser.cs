@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MyDiet.Auth.Infrastructure.Models;
 
-public partial class User
+public partial class AuthUser
 {
     public Guid Id { get; set; }
 
