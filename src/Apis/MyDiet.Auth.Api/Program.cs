@@ -1,10 +1,9 @@
+using Azure.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddStartupServices(builder.Configuration);
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+await builder.Services.AddStartupServices(builder.Configuration);
 
 var app = builder.Build();
 

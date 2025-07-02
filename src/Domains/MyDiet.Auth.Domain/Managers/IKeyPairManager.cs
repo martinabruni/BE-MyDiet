@@ -5,6 +5,6 @@ namespace MyDiet.Auth.Domain.Managers
 {
     public interface IKeyPairManager
     {
-        Task<BusinessResponse<KeyPair>> RigenerateAsync();
+        Task<BusinessResponse<KeyPair>> RegenerateAsync();
     }
 }

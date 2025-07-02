@@ -19,7 +19,7 @@ namespace MyDiet.Auth.Business.Managers
             _keyPair = keyPair;
         }
 
-        public async Task<BusinessResponse<KeyPair>> RigenerateAsync()
+        public async Task<BusinessResponse<KeyPair>> RegenerateAsync()
         {
             var privateKeyRes = await _privateKeyService.CreateAsync();
             if (privateKeyRes.Data is null)

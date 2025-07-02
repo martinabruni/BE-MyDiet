@@ -10,7 +10,7 @@ namespace System
             {
                 using var scope = serviceProvider.CreateScope();
                 var keyPairManager = scope.ServiceProvider.GetRequiredService<IKeyPairManager>();
-                await keyPairManager.RigenerateAsync();
+                await keyPairManager.RegenerateAsync();
             }
             catch (Exception ex)
             {

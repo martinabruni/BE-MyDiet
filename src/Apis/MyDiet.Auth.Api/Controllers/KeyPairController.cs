@@ -20,7 +20,7 @@ namespace MyDiet.Session.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> RegenerateAsync()
         {
-            var response = await _keyPairManager.RigenerateAsync();
+            var response = await _keyPairManager.RegenerateAsync();
             return response.ToActionResult();
         }
     }

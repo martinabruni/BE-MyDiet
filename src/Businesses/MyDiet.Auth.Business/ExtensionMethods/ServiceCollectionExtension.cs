@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IMapper<KeyVaultSecret, JsonWebKeySetDto>, KeyPairMapper>();
             services.AddScoped<IMapper<RSA, KeyVaultSecret>, KeyPairMapper>();
             services.AddScoped<IMapper<KeyVaultSecret, RsaSecurityKey>, KeyPairMapper>();
+            services.AddScoped<IMapper<JsonWebKeySetDto, IEnumerable<RsaSecurityKey>>, KeyPairMapper>();
 
             services.AddScoped<IVaultService<KeyVaultSecret>, PrivateKeyService>();
             services.AddScoped<IVaultService<JsonWebKeySetDto>, PublicKeyService>();

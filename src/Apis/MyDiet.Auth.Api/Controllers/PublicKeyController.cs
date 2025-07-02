@@ -23,13 +23,5 @@ namespace MyDiet.Session.Api.Controllers
             var response = await _publicKeyService.GetAsync();
             return response.ToActionResult();
         }
-
-        [Authorize(Policy = "Admin")]
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync()
-        {
-            var response = await _publicKeyService.CreateAsync();
-            return response.ToActionResult();
-        }
     }
 }

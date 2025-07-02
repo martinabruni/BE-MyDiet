@@ -9,7 +9,7 @@ using System.Text.Json;
 namespace MyDiet.Auth.Business.Mappers
 {
     //TODO: check if this mapper can be split into multiple mappers for better separation of concerns
-    internal class KeyPairMapper : IMapper<KeyVaultSecret, JsonWebKeySetDto>, IMapper<RSA, KeyVaultSecret>, IMapper<KeyVaultSecret, RsaSecurityKey>
+    internal class KeyPairMapper : IMapper<KeyVaultSecret, JsonWebKeySetDto>, IMapper<RSA, KeyVaultSecret>, IMapper<KeyVaultSecret, RsaSecurityKey>, IMapper<JsonWebKeySetDto, IEnumerable<RsaSecurityKey>>
     {
         private readonly ByteArrayBase64Converter _converter;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
@@ -60,6 +60,31 @@ namespace MyDiet.Auth.Business.Mappers
                     ContentType = "application/json",
                 }
             };
+        }
+
+        public IEnumerable<RsaSecurityKey> Map(JsonWebKeySetDto input)
+        {
+            if (input == null || input.Keys == null)
+                yield break;
+
+            foreach (var keyDto in input.Keys)
+            {
+                var modulus = Base64UrlEncoder.DecodeBytes(keyDto.N);
+                var exponent = Base64UrlEncoder.DecodeBytes(keyDto.E);
+
+                var rsaParameters = new RSAParameters
+                {
+                    Modulus = modulus,
+                    Exponent = exponent
+                };
+
+                var rsaSecurityKey = new RsaSecurityKey(rsaParameters)
+                {
+                    KeyId = keyDto.Kid
+                };
+
+                yield return rsaSecurityKey;
+            }
         }
 
         RsaSecurityKey IMapper<KeyVaultSecret, RsaSecurityKey>.Map(KeyVaultSecret input)
