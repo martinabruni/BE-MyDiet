@@ -3,6 +3,7 @@
     public class TokenResponse
     {
         public string Token { get; set; } = string.Empty;
+        public string BearerToken => $"Bearer {Token}";
         public DateTime TokenExpiration { get; set; }
     }
 }
