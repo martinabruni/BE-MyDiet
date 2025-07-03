@@ -18,16 +18,9 @@ namespace MyDiet.Shared.Api.Controllers.Auth
 
         [Authorize(Policy = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> RegenerateAsync()
+        private async Task<IActionResult> RegenerateAsync()
         {
             var response = await _keyPairManager.RegenerateAsync();
-            return response.ToActionResult();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetSigningKeyAsync()
-        {
-            var response = await _keyPairManager.GetSigningKeyAsync();
             return response.ToActionResult();
         }
     }

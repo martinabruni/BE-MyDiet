@@ -1,4 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using MyDiet.Auth.Business.AuthenticationSchemes;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -30,8 +34,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 });
             });
             services
-                .AddAuthentication()
-                .AddJwtBearer();
+                .AddAuthentication("CustomJwt")
+                .AddScheme<AuthenticationSchemeOptions, CustomJwtAuthenticationHandler>("CustomJwt", null);
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));

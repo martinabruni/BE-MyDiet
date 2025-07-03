@@ -67,35 +67,6 @@ namespace MyDiet.Auth.Business.Managers
             return _tokenService.GenerateToken(claims, privateKeyRes.Data);
         }
 
-        public async Task<BusinessResponse<TokenValidationParameters>> GetValidationParametersAsync()
-        {
-            await _publicKeyService.CreateAsync();
-            var publicKeyRes = await _publicKeyService.GetAsync();
-            if (publicKeyRes.Data is null)
-            {
-                return new BusinessResponse<TokenValidationParameters>()
-                {
-                    StatusCode = publicKeyRes.StatusCode,
-                    Message = publicKeyRes.Message
-                };
-            }
-
-            return new BusinessResponse<TokenValidationParameters>()
-            {
-                Data = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = _tokenOption.Issuer,
-                    IssuerSigningKey = _publicKeyMapper.Map(publicKeyRes.Data).FirstOrDefault(),
-                },
-                StatusCode = BusinessCode.Ok,
-                Message = "Validation key retrieved successfully"
-            };
-        }
-
         public async Task<BusinessResponse<TokenResponse>> RevokeTokenAsync(string token)
         {
             return await _tokenService.RevokeTokenAsync(token);
