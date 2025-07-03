@@ -6,7 +6,10 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="BaseUtility" Version="1.0.5" />
+		<PackageReference Include="BaseUtility" Version="1.0.7" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Dtos\Responses\" />
 	</ItemGroup>
 
 </Project>

@@ -1,5 +1,9 @@
 ﻿using BaseUtility;
 using MyDiet.Auth.Domain.Dtos.Claims;
+using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Domain.Dtos.Requests;
+using MyDiet.Core.Domain.Managers;
+using MyDiet.Shared.Business.Managers;
 using MyDiet.Shared.Business.Mappers;
 using MyDiet.Shared.Business.Services;
 using MyDiet.Shared.Domain.Dtos;
@@ -16,8 +20,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IMapper<CoreUser, CoreUserDto>, CoreUserMapper>();
             services.AddScoped<IMapper<CoreUserDto, CoreUser>, CoreUserMapper>();
             services.AddScoped<IMapper<UserClaims, CoreUserDto>, CoreUserMapper>();
+            services.AddScoped<IMapper<CreateDietDto, DietDto>, DietMapper>();
+            services.AddScoped<IMapper<CreateDietRequest, CreateDietDto>, DietMapper>();
+
             services.AddScoped<IService<DietDto, Diet, int>, DietService>();
             services.AddScoped<IService<CoreUserDto, CoreUser, Guid>, CoreUserService>();
+            
+            services.AddScoped<IDietManager, DietManager>();
             return services;
         }
     }
