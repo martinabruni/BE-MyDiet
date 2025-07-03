@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MyDiet.Core.Infrastructure.Models;
+namespace MyDiet.Shared.Infrastructure.Models;
 
 public partial class MealFood
 {

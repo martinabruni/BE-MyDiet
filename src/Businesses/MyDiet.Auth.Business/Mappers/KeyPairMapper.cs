@@ -62,6 +62,7 @@ namespace MyDiet.Auth.Business.Mappers
             };
         }
 
+        //TODO: remove it
         public IEnumerable<RsaSecurityKey> Map(JsonWebKeySetDto input)
         {
             if (input == null || input.Keys == null)

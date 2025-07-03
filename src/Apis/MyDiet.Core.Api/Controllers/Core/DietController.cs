@@ -1,14 +1,14 @@
 ﻿using BaseUtility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Infrastructure.Models;
+using MyDiet.Shared.Domain.Dtos;
+using MyDiet.Shared.Infrastructure.Models;
 
-namespace MyDiet.Core.Api.Controllers
+namespace MyDiet.Shared.Api.Controllers.Core
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class DietController : ControllerBase
     {
         private readonly IService<DietDto, Diet, int> _dietService;

@@ -11,7 +11,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Domains\MyDiet.Auth.Domain\MyDiet.Auth.Domain.csproj" />
 	  <ProjectReference Include="..\..\Domains\MyDiet.Core.Domain\MyDiet.Core.Domain.csproj" />
+	  <ProjectReference Include="..\..\Infrastructures\MyDiet.Auth.Infrastructure\MyDiet.Auth.Infrastructure.csproj" />
 	  <ProjectReference Include="..\..\Infrastructures\MyDiet.Core.Infrastructure\MyDiet.Core.Infrastructure.csproj" />
 	</ItemGroup>
 </Project>

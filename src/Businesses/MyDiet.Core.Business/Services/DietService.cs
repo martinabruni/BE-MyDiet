@@ -1,8 +1,8 @@
 ﻿using BaseUtility;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Infrastructure.Models;
+using MyDiet.Shared.Domain.Dtos;
+using MyDiet.Shared.Infrastructure.Models;
 
-namespace MyDiet.Core.Business.Services
+namespace MyDiet.Shared.Business.Services
 {
     internal class DietService : AGenericService<DietDto, Diet, int>
     {

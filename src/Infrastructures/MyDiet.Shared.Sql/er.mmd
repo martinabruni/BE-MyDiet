@@ -1,0 +1,119 @@
+erDiagram
+  AuthUser {
+    Id uniqueidentifier PK
+    Username nchar(50)(NULL) 
+    Email nchar(255) 
+    HashedPassword nchar(255) 
+    Role int 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  CalendarEntry {
+    Id int PK
+    UserId uniqueidentifier FK
+    PlanId int FK
+    Date date 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  CalendarEntry }o--|| Plan : FK_CalendarEntry_Plan
+  CalendarEntry }o--|| CoreUser : FK_CalendarEntry_User
+  CalendarMeal {
+    Id int PK
+    CalendarEntryId int FK
+    MealId int FK
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  CalendarMeal }o--|| CalendarEntry : FK_CalendarMeal_CalendarEntry
+  CalendarMeal }o--|| Meal : FK_CalendarMeal_Meal
+  CoreUser {
+    Id uniqueidentifier PK
+    Username nchar(50)(NULL) 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  Diet {
+    Id int PK
+    UserId uniqueidentifier FK
+    Name nchar(50) 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  Diet }o--|| CoreUser : FK_Diet_User
+  Food {
+    Id int PK
+    Name nchar(50) 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  FoodAlternative {
+    Id int PK
+    FoodId int FK
+    AlternativeFoodId int FK
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  FoodAlternative }o--|| Food : FK_FoodAlternative_AltFood
+  FoodAlternative }o--|| Food : FK_FoodAlternative_Food
+  Meal {
+    Id int PK
+    PlanId int FK
+    MealTypeId int FK
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  Meal }o--|| MealType : FK_Meal_MealType
+  Meal }o--|| Plan : FK_Meal_Plan
+  MealFood {
+    Id int PK
+    MealId int FK
+    FoodId int FK
+    Quantity decimal(18-4) 
+    UnitOfMeasurementId int FK
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  MealFood }o--|| Food : FK_MealFood_Food
+  MealFood }o--|| Meal : FK_MealFood_Meal
+  MealFood }o--|| UnitOfMeasurement : FK_MealFood_UoM
+  MealSwap {
+    Id int PK
+    CalendarMealId int FK
+    SwappedCalendarMealId int FK
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  MealSwap }o--|| CalendarMeal : FK_MealSwap_CalendarMeal
+  MealSwap }o--|| CalendarMeal : FK_MealSwap_Swapped
+  MealType {
+    Id int PK
+    Name nchar(50) 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  Plan {
+    Id int PK
+    DietId int FK
+    Name nchar(50) 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  Plan }o--|| Diet : FK_Plan_Diet
+  UnitConversion {
+    Id int PK
+    FromUnitId int FK
+    ToUnitId int FK
+    ConversionFactor decimal(18-4) 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }
+  UnitConversion }o--|| UnitOfMeasurement : FK_UnitConversion_FromUoM
+  UnitConversion }o--|| UnitOfMeasurement : FK_UnitConversion_ToUoM
+  UnitOfMeasurement {
+    Id int PK
+    Name nchar(50) 
+    Abbreviation nchar(10) 
+    CreatedAt datetime 
+    UpdatedAt datetime(NULL) 
+  }

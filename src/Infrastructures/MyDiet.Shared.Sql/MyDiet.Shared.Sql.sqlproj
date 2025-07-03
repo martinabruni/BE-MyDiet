@@ -67,6 +67,9 @@
     <None Include="Snapshots\MyDiet.Shared.Sql_20250702_16-22-59.dacpac" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250702_16-47-38.dacpac" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250702_18-18-09.dacpac" />
+    <None Include="er.mmd" />
+    <None Include="Snapshots\MyDiet.Shared.Sql_20250703_10-22-02.dacpac" />
+    <None Include="Snapshots\MyDiet.Shared.Sql_20250703_12-35-20.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\CalendarEntry.sql" />

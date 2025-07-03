@@ -52,6 +52,7 @@ namespace MyDiet.Auth.Business.Managers
             };
         }
 
+        //TODO: remove it
         public async Task<BusinessResponse<IEnumerable<RsaSecurityKey>>> GetSigningKeyAsync()
         {
             var privateKeyRes = await _privateKeyService.GetAsync();

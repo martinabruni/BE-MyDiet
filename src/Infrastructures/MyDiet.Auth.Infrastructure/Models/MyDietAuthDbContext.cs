@@ -19,7 +19,7 @@ public partial class MyDietAuthDbContext : DbContext
     {
         modelBuilder.Entity<AuthUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__AuthUser__3214EC07FE01452C");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07ADF8E831");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");

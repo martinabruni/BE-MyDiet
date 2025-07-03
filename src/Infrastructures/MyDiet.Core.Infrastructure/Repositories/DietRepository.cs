@@ -1,7 +1,7 @@
 ﻿using BaseUtility;
-using MyDiet.Core.Infrastructure.Models;
+using MyDiet.Shared.Infrastructure.Models;
 
-namespace MyDiet.Core.Infrastructure.Repositories
+namespace MyDiet.Shared.Infrastructure.Repositories
 {
     internal class DietRepository : AGenericRepository<MyDietCoreDbContext, Diet, int>
     {

@@ -1,5 +1,4 @@
 ﻿using BaseUtility;
-using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Dtos.Claims;
 using System.Security.Claims;
 
@@ -11,6 +10,7 @@ namespace MyDiet.Auth.Business.Mappers
         {
             return [
                 new Claim("userId", input.UserId.ToString()),
+                new Claim("username", input.Username ?? string.Empty),
                 new Claim(ClaimTypes.Role, input.Role.ToString())
             ];
         }

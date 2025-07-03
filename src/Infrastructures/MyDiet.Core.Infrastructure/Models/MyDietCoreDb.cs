@@ -1,6 +1,6 @@
 ﻿using BaseUtility;
 
-namespace MyDiet.Core.Infrastructure.Models
+namespace MyDiet.Shared.Infrastructure.Models
 {
     internal class MyDietCoreDb : IDatabase<MyDietCoreDbContext>
     {

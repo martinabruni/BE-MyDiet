@@ -1,8 +1,8 @@
 ﻿using BaseUtility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MyDiet.Core.Infrastructure.Models;
-using MyDiet.Core.Infrastructure.Repositories;
+using MyDiet.Shared.Infrastructure.Models;
+using MyDiet.Shared.Infrastructure.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

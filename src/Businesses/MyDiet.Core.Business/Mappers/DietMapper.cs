@@ -1,8 +1,8 @@
 ﻿using BaseUtility;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Infrastructure.Models;
+using MyDiet.Shared.Domain.Dtos;
+using MyDiet.Shared.Infrastructure.Models;
 
-namespace MyDiet.Core.Business.Mappers
+namespace MyDiet.Shared.Business.Mappers
 {
     internal class DietMapper : IMapper<Diet, DietDto>, IMapper<DietDto, Diet>
     {

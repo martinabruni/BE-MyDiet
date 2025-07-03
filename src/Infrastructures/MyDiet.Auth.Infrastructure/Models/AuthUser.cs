@@ -9,6 +9,8 @@ public partial class AuthUser
 {
     public Guid Id { get; set; }
 
+    public Guid CoreUserId { get; set; }
+
     public string Username { get; set; }
 
     public string Email { get; set; }

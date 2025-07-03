@@ -14,6 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Businesses\MyDiet.Auth.Business\MyDiet.Auth.Business.csproj" />
 		<ProjectReference Include="..\..\Businesses\MyDiet.Core.Business\MyDiet.Core.Business.csproj" />
 		<ProjectReference Include="..\..\Domains\MyDiet.Auth.Domain\MyDiet.Auth.Domain.csproj" />
 		<ProjectReference Include="..\..\Infrastructures\MyDiet.Core.Infrastructure\MyDiet.Core.Infrastructure.csproj" />

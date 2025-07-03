@@ -1,14 +1,10 @@
-﻿using BaseUtility;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using MyDiet.Auth.Domain.Managers;
+﻿using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddTokenValidation(this IServiceCollection services)
+        private static IServiceCollection AddTokenValidation(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
@@ -33,42 +29,41 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
                 });
             });
-
-
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(async options =>
-                {
-                    //TODO: please change this ASAP and make it work
-                    var httpClient = new HttpClient();
-                    var signingKeyResponse = httpClient.GetFromJsonAsync<BusinessResponse<IEnumerable<RsaSecurityKey>>>(
-                        "https://localhost:7113/api/KeyPair/GetSigningKeyAsync").GetAwaiter().GetResult();
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = "https://localhost:7113",
-                        IssuerSigningKeys = signingKeyResponse.Data
-                    };
-                });
+                .AddAuthentication()
+                .AddJwtBearer();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
             });
             return services;
         }
-        public static IServiceCollection AddStartupServices(this IServiceCollection services, IConfiguration configuration)
+
+        private static IServiceCollection AddAuthStartupServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddKeyPairInfrastructure(configuration);
+            services.AddKeyPairBusiness();
+            services.AddAuthInfrastructure(configuration);
+            services.AddAuthBusiness();
+            services.AddTokenValidation();
+
+            return services;
+        }
+
+        private static IServiceCollection AddCoreStartupServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddCoreInfrastructure(configuration);
             services.AddCoreBusiness();
-            services.AddTokenValidation();
-            services.AddCoreBusiness();
+            return services;
+        }
+
+        public static IServiceCollection AddStartupServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthStartupServices(configuration);
+            services.AddCoreStartupServices(configuration);
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-
             return services;
         }
     }
