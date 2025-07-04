@@ -2,7 +2,7 @@
 using MyDiet.Core.Domain.Dtos;
 using MyDiet.Core.Domain.Dtos.Requests;
 using MyDiet.Core.Domain.Managers;
-using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Domain.Options;
 using MyDiet.Core.Infrastructure.Models;
 using System.Security.Claims;
 
@@ -14,13 +14,15 @@ namespace MyDiet.Core.Business.Managers
         private readonly IService<CoreUserDto, CoreUser, Guid> _userService;
         private readonly IMapper<CreateDietDto, DietDto> _createDtoToDietDtoMapper;
         private readonly IMapper<CreateDietRequest, CreateDietDto> _createRequestToCreateDtoMapper;
+        private readonly DietManagerMessageOption _responseMessageOption;
 
-        public DietManager(IService<CoreUserDto, CoreUser, Guid> userService, IService<DietDto, Diet, int> dietService, IMapper<CreateDietDto, DietDto> createDtoToDietDtoMapper, IMapper<CreateDietRequest, CreateDietDto> createRequestToCreateDtoMapper)
+        public DietManager(IService<CoreUserDto, CoreUser, Guid> userService, IService<DietDto, Diet, int> dietService, IMapper<CreateDietDto, DietDto> createDtoToDietDtoMapper, IMapper<CreateDietRequest, CreateDietDto> createRequestToCreateDtoMapper, DietManagerMessageOption responseMessageOption)
         {
             _userService = userService;
             _dietService = dietService;
             _createDtoToDietDtoMapper = createDtoToDietDtoMapper;
             _createRequestToCreateDtoMapper = createRequestToCreateDtoMapper;
+            _responseMessageOption = responseMessageOption;
         }
 
         private static Guid? GetUserIdFromClaim(Claim? claim)
@@ -41,77 +43,53 @@ namespace MyDiet.Core.Business.Managers
             return request;
         }
 
-        private static BusinessResponse<DietDto> ValidateRequestAndClaim<TRequest>(TRequest request, Claim? claim) where TRequest : class
+        private static DietDto? ValidateRequestAndClaim<TRequest>(TRequest request, Claim? claim) where TRequest : class
         {
             var validRequest = IsValidRequest(request);
             if (validRequest is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "Request cannot be null."
-                };
+                return null;
             }
             var userId = GetUserIdFromClaim(claim);
             if (userId is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "Invalid claim value."
-                };
+                return null;
             }
-            return new BusinessResponse<DietDto>
+            return new DietDto
             {
-                StatusCode = BusinessCode.Ok,
-                Data = new DietDto
-                {
-                    Id = 0,
-                    UserId = (Guid)userId,
-                    Name = string.Empty
-                }
+                Id = 0,
+                UserId = (Guid)userId,
+                Name = string.Empty
             };
         }
 
         public async Task<BusinessResponse<DietDto>> CreateAsync(CreateDietRequest request, Claim? userIdClaim)
         {
-            var isValidRes = ValidateRequestAndClaim(request, userIdClaim);
+            var validRequest = ValidateRequestAndClaim(request, userIdClaim);
 
-            if (isValidRes.Data is null)
+            if (validRequest is null)
             {
-                return isValidRes;
+                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
             }
 
-            var userId = isValidRes.Data.UserId;
+            var userId = validRequest.UserId;
             var userRes = await _userService.GetByIdAsync(userId);
 
             if (userRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = userRes.StatusCode,
-                    Message = userRes.Message
-                };
+                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             var existingDietRes = await _dietService.FindAsync(d => d.Name == request.Name && d.UserId == userId);
 
             if (existingDietRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = existingDietRes.StatusCode,
-                    Message = existingDietRes.Message
-                };
+                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorRetrievingEntities);
             }
 
             if (existingDietRes.Data.ToList().Count != 0)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "A diet with the same name already exists for this user."
-                };
+                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.DietAlreadyExists);
             }
 
             var createDto = _createRequestToCreateDtoMapper.Map(request);
@@ -119,11 +97,7 @@ namespace MyDiet.Core.Business.Managers
 
             if (createDto is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.InternalServerError,
-                    Message = "Failed to map request."
-                };
+                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
             }
 
             return await _dietService.CreateAsync(_createDtoToDietDtoMapper.Map(createDto));
@@ -135,42 +109,26 @@ namespace MyDiet.Core.Business.Managers
 
             if (userId is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.Unauthorized,
-                    Message = "Required claim is missing."
-                };
+                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
             }
 
             var userRes = await _userService.GetByIdAsync((Guid)userId);
 
             if (userRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = userRes.StatusCode,
-                    Message = userRes.Message
-                };
+                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             var dietRes = await _dietService.GetByIdAsync(id);
 
             if (dietRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = dietRes.StatusCode,
-                    Message = dietRes.Message
-                };
+                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             if (dietRes.Data.UserId != userId)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.Unauthorized,
-                    Message = "You are not authorized to delete this diet."
-                };
+                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
             }
 
             return await _dietService.DeleteAsync(id);
@@ -181,42 +139,26 @@ namespace MyDiet.Core.Business.Managers
             var userId = GetUserIdFromClaim(userIdClaim);
             if (userId is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.Unauthorized,
-                    Message = "Required claim is missing."
-                };
+                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
             }
 
             var userRes = await _userService.GetByIdAsync((Guid)userId);
-            
+
             if (userRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = userRes.StatusCode,
-                    Message = userRes.Message
-                };
+                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             var dietRes = await _dietService.GetByIdAsync(id);
 
             if (dietRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = dietRes.StatusCode,
-                    Message = dietRes.Message
-                };
+                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             if (dietRes.Data.UserId != userId)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.Unauthorized,
-                    Message = "You are not authorized to access this diet."
-                };
+                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
             }
 
             return dietRes;
@@ -227,54 +169,38 @@ namespace MyDiet.Core.Business.Managers
             var userId = GetUserIdFromClaim(userIdClaim);
             if (userId is null)
             {
-                return new BusinessResponse<IEnumerable<DietDto>>
-                {
-                    StatusCode = BusinessCode.Unauthorized,
-                    Message = "Required claim is missing."
-                };
+                return BusinessResponse<IEnumerable<DietDto>>.Unauthorize(_responseMessageOption.InvalidRequest);
             }
             return await _dietService.FindAsync(d => d.UserId == userId);
         }
 
         public async Task<BusinessResponse<DietDto>> UpdateAsync(CreateDietRequest request, int id, Claim? userIdClaim)
         {
-            var isValidRes = ValidateRequestAndClaim(request, userIdClaim);
+            var validRequest = ValidateRequestAndClaim(request, userIdClaim);
 
-            if (isValidRes.Data is null)
+            if (validRequest is null)
             {
-                return isValidRes;
+                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
             }
 
-            var userId = isValidRes.Data.UserId;
+            var userId = validRequest.UserId;
             var userRes = await _userService.GetByIdAsync(userId);
 
             if (userRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = userRes.StatusCode,
-                    Message = userRes.Message
-                };
+                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             var existingDietRes = await _dietService.GetByIdAsync(id);
 
             if (existingDietRes.Data is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = existingDietRes.StatusCode,
-                    Message = existingDietRes.Message
-                };
+                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             if (existingDietRes.Data.UserId != userId)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.Unauthorized,
-                    Message = "You are not authorized to update this diet."
-                };
+                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
             }
 
             var createDto = _createRequestToCreateDtoMapper.Map(request);
@@ -282,22 +208,14 @@ namespace MyDiet.Core.Business.Managers
 
             if (createDto is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.InternalServerError,
-                    Message = "Failed to map request."
-                };
+                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorUpdatingEntity);
             }
 
             var newDto = _createDtoToDietDtoMapper.Map(createDto);
 
             if (newDto is null)
             {
-                return new BusinessResponse<DietDto>
-                {
-                    StatusCode = BusinessCode.InternalServerError,
-                    Message = "Failed to map request."
-                };
+                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorUpdatingEntity);
             }
 
             newDto.UpdatedAt = DateTime.UtcNow;

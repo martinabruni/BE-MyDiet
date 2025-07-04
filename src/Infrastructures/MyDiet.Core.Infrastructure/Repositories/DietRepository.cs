@@ -1,5 +1,4 @@
 ﻿using BaseUtility;
-using Microsoft.EntityFrameworkCore;
 using MyDiet.Core.Infrastructure.Models;
 
 namespace MyDiet.Core.Infrastructure.Repositories

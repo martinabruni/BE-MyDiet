@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 Use = jwtSection["Jwk:Use"],
                 Alg = algorithm
             });
-
+            services.AddSingleton<VaultMessageOption>();
             services.AddScoped<IVaultRepository<KeyVaultSecret>, PrivateKeyRepository>();
             services.AddSingleton<KeyPair>();
             return services;
@@ -44,6 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IDatabase<MyDietAuthDbContext>, MyDietAuthDb>();
+            services.AddSingleton<ResponseMessageOption>();
             services.AddScoped<IRepository<AuthUser, Guid>, AuthUserRepository>();
             services.AddSingleton(new TokenOption
             {

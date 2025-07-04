@@ -16,13 +16,15 @@ namespace MyDiet.Auth.Business.Services
         private readonly IMapper<UserClaims, List<Claim>> _claimMapper;
         private readonly IMapper<KeyVaultSecret, RsaSecurityKey> _keyMapper;
         private readonly IMapper<JwtSecurityToken, TokenResponse> _tokenResponseMapper;
+        private readonly ResponseMessageOption _responseMessageOption;
 
-        public TokenService(TokenOption tokenOption, IMapper<UserClaims, List<Claim>> claimMapper, IMapper<KeyVaultSecret, RsaSecurityKey> keyMapper, IMapper<JwtSecurityToken, TokenResponse> tokenResponseMapper)
+        public TokenService(TokenOption tokenOption, IMapper<UserClaims, List<Claim>> claimMapper, IMapper<KeyVaultSecret, RsaSecurityKey> keyMapper, IMapper<JwtSecurityToken, TokenResponse> tokenResponseMapper, ResponseMessageOption responseMessageOption)
         {
             _tokenOption = tokenOption;
             _claimMapper = claimMapper;
             _keyMapper = keyMapper;
             _tokenResponseMapper = tokenResponseMapper;
+            _responseMessageOption = responseMessageOption;
         }
 
         public BusinessResponse<TokenResponse> GenerateToken(UserClaims claimDto, KeyVaultSecret privateKey)
@@ -36,31 +38,21 @@ namespace MyDiet.Auth.Business.Services
                     expires: DateTime.UtcNow.AddMinutes(_tokenOption.ExpiryMinutes),
                     signingCredentials: new SigningCredentials(_keyMapper.Map(privateKey), _tokenOption.Algorithm)
                 );
-                return new BusinessResponse<TokenResponse>()
-                {
-                    Data = _tokenResponseMapper.Map(jwt),
-                    StatusCode = BusinessCode.Created,
-                    Message = "Token generated successfully."
-                };
+                return BusinessResponse<TokenResponse>.Created(
+                    _responseMessageOption.EntityCreatedSuccessfully,
+                    _tokenResponseMapper.Map(jwt)
+                );
             }
             catch
             {
-                return new BusinessResponse<TokenResponse>()
-                {
-                    StatusCode = BusinessCode.InternalServerError,
-                    Message = "An error occurred while generating the token"
-                };
+                return BusinessResponse<TokenResponse>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
             }
         }
 
         public Task<BusinessResponse<TokenResponse>> RevokeTokenAsync(string token)
         {
             //TODO: Implement token revocation logic
-            return Task.FromResult(new BusinessResponse<TokenResponse>()
-            {
-                StatusCode = BusinessCode.NotImplemented,
-                Message = "Token revocation is not implemented."
-            });
+            return Task.FromResult(BusinessResponse<TokenResponse>.NotImplemented(_responseMessageOption.NotImplemented));
         }
     }
 }

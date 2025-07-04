@@ -7,7 +7,6 @@ namespace MyDiet.Auth.Domain.Services
     {
         Task<BusinessResponse<TData>> GetDeletedAsync();
         Task<BusinessResponse<TData>> CreateAsync();
-        Task<BusinessResponse<TData>> ExistsAsync();
         Task<BusinessResponse<TData>> PurgeDeletedAsync();
         Task<BusinessResponse<TData>> GetAsync();
     }

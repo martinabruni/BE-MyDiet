@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using BaseUtility;
+using MyDiet.Auth.Domain.Options;
 using MyDiet.Auth.Domain.Repositories;
 
 namespace MyDiet.Auth.Infrastructure.Repositories
@@ -9,47 +10,32 @@ namespace MyDiet.Auth.Infrastructure.Repositories
     internal class PrivateKeyRepository : IVaultRepository<KeyVaultSecret>
     {
         private readonly SecretClient _secretClient;
+        private readonly VaultMessageOption _responseMessageOptions;
 
-        public PrivateKeyRepository(SecretClient secretClient)
+        public PrivateKeyRepository(SecretClient secretClient, VaultMessageOption responseMessageOptions)
         {
             _secretClient = secretClient;
+            _responseMessageOptions = responseMessageOptions;
         }
 
         public async Task<RepositoryResponse<KeyVaultSecret>> CreateSecretAsync(KeyVaultSecret secret)
         {
             if (secret is null)
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "Secret cannot be null."
-                };
+                return RepositoryResponse<KeyVaultSecret>.BadRequest(_responseMessageOptions.InvalidRequest);
             }
             try
             {
                 var vaultSecret = await _secretClient.SetSecretAsync(secret);
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.Created,
-                    Data = vaultSecret,
-                    Message = "Secret created successfully."
-                };
+                return RepositoryResponse<KeyVaultSecret>.Created(_responseMessageOptions.EntityCreatedSuccessfully, vaultSecret);
             }
             catch (ArgumentNullException)
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.NotFound,
-                    Message = "Failed to create secret in Key Vault."
-                };
+                return RepositoryResponse<KeyVaultSecret>.NotFound(_responseMessageOptions.EntityNotFound);
             }
             catch
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error creating secret"
-                };
+                return RepositoryResponse<KeyVaultSecret>.InternalServerError(_responseMessageOptions.ErrorCreatingEntity);
             }
         }
 
@@ -57,38 +43,21 @@ namespace MyDiet.Auth.Infrastructure.Repositories
         {
             if (string.IsNullOrWhiteSpace(secretName))
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "Secret name cannot be null or empty."
-                };
+                return  RepositoryResponse<KeyVaultSecret>.BadRequest(_responseMessageOptions.InvalidRequest);
             }
 
             try
             {
                 var secret = await _secretClient.GetDeletedSecretAsync(secretName);
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Data = secret.Value,
-                    Message = "Deleted secret retrieved successfully."
-                };
+                return RepositoryResponse<KeyVaultSecret>.Ok(_responseMessageOptions.EntityRetrievedSuccessfully, secret);
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.NotFound,
-                    Message = "Deleted secret not found."
-                };
+                return RepositoryResponse<KeyVaultSecret>.NotFound(_responseMessageOptions.EntityNotFound);
             }
             catch
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error retrieving deleted secret."
-                };
+                return RepositoryResponse<KeyVaultSecret>.InternalServerError(_responseMessageOptions.ErrorRetrievingEntity);
             }
         }
 
@@ -96,46 +65,25 @@ namespace MyDiet.Auth.Infrastructure.Repositories
         {
             if (string.IsNullOrWhiteSpace(secretName))
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "Secret name cannot be null or empty."
-                };
+                return RepositoryResponse<KeyVaultSecret>.BadRequest(_responseMessageOptions.InvalidRequest);
             }
 
             try
             {
                 var secret = await _secretClient.GetSecretAsync(secretName);
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Data = secret.Value,
-                    Message = "Secret retrieved successfully."
-                };
+                return RepositoryResponse<KeyVaultSecret>.Ok(_responseMessageOptions.EntityRetrievedSuccessfully, secret);
             }
             catch (CredentialUnavailableException ex)
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.Unauthorized,
-                    Message = ex.Message,
-                };
+                return RepositoryResponse<KeyVaultSecret>.Unauthorize(_responseMessageOptions.InvalidCredentials);
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.NotFound,
-                    Message = "Secret not found."
-                };
+                return RepositoryResponse<KeyVaultSecret>.NotFound(_responseMessageOptions.EntityNotFound);
             }
             catch
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error retrieving secret."
-                };
+                return RepositoryResponse<KeyVaultSecret>.InternalServerError(_responseMessageOptions.ErrorRetrievingEntity);
             }
         }
 
@@ -143,37 +91,21 @@ namespace MyDiet.Auth.Infrastructure.Repositories
         {
             if (string.IsNullOrWhiteSpace(secretName))
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "Secret name cannot be null or empty."
-                };
+                return RepositoryResponse<KeyVaultSecret>.BadRequest(_responseMessageOptions.InvalidRequest);
             }
 
             try
             {
                 await _secretClient.PurgeDeletedSecretAsync(secretName);
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Message = "Secret purged successfully."
-                };
+                return RepositoryResponse<KeyVaultSecret>.Ok(_responseMessageOptions.EntityPurgedSuccessfully);
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.NotFound,
-                    Message = "Secret not found for purging."
-                };
+                return RepositoryResponse<KeyVaultSecret>.NotFound(_responseMessageOptions.EntityNotFound);
             }
             catch
             {
-                return new RepositoryResponse<KeyVaultSecret>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error purging secret."
-                };
+                return RepositoryResponse<KeyVaultSecret>.InternalServerError(_responseMessageOptions.ErrorPurgingEntity);
             }
         }
     }

@@ -14,24 +14,22 @@ namespace MyDiet.Auth.Business.Services
         private readonly IMapper<RSA, KeyVaultSecret> _rsaToSecretMapper;
         private readonly KeyPair _keyPair;
         private readonly KeyOption _keyOption;
+        private readonly KeyPairMessageOption _keyPairMessageOption;
 
-        public PrivateKeyService(IVaultRepository<KeyVaultSecret> vaultRepository, KeyPair keyPair, IMapper<RSA, KeyVaultSecret> rsaToSecretMapper, KeyOption keyOption)
+        public PrivateKeyService(IVaultRepository<KeyVaultSecret> vaultRepository, KeyPair keyPair, IMapper<RSA, KeyVaultSecret> rsaToSecretMapper, KeyOption keyOption, KeyPairMessageOption keyPairMessageOption)
         {
             _privateKeyRepository = vaultRepository;
             _keyPair = keyPair;
             _rsaToSecretMapper = rsaToSecretMapper;
             _keyOption = keyOption;
+            _keyPairMessageOption = keyPairMessageOption;
         }
 
         public async Task<BusinessResponse<KeyVaultSecret>> CreateAsync()
         {
             if (_keyPair.PrivateKey is not null)
             {
-                return new BusinessResponse<KeyVaultSecret>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "Private key is already set.",
-                };
+                return BusinessResponse<KeyVaultSecret>.BadRequest(_keyPairMessageOption.KeyAlreadySet);
             }
 
             var existingSecret = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
@@ -39,12 +37,7 @@ namespace MyDiet.Auth.Business.Services
             if (existingSecret.Data is not null)
             {
                 _keyPair.PrivateKey = existingSecret.Data;
-                return new BusinessResponse<KeyVaultSecret>
-                {
-                    Data = _keyPair.PrivateKey,
-                    StatusCode = BusinessCode.Ok,
-                    Message = "Private key pulled successfully.",
-                };
+                return BusinessResponse<KeyVaultSecret>.Ok(_keyPairMessageOption.EntityRetrievedSuccessfully, _keyPair.PrivateKey);
             }
 
             var deletedSecret = await _privateKeyRepository.GetDeletedSecretAsync(_keyOption.PrivateKeyName);
@@ -63,12 +56,7 @@ namespace MyDiet.Auth.Business.Services
             }
             _keyPair.PrivateKey = secret;
 
-            return new BusinessResponse<KeyVaultSecret>
-            {
-                Data = _keyPair.PrivateKey,
-                StatusCode = BusinessCode.Created,
-                Message = "Private key created successfully.",
-            };
+            return BusinessResponse<KeyVaultSecret>.Created(_keyPairMessageOption.EntityCreatedSuccessfully, _keyPair.PrivateKey);
         }
 
         public async Task<BusinessResponse<KeyVaultSecret>> GetDeletedAsync()
@@ -82,36 +70,13 @@ namespace MyDiet.Auth.Business.Services
             if (_keyPair.PrivateKey is null)
             {
                 var privateKeyResponse = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
-                return new BusinessResponse<KeyVaultSecret>
+                if (privateKeyResponse.Data is null)
                 {
-                    StatusCode = (BusinessCode)privateKeyResponse.StatusCode,
-                    Message = privateKeyResponse.Message,
-                };
+                    return BusinessResponse<KeyVaultSecret>.NotFound(_keyPairMessageOption.EntityNotFound);
+                }
+                _keyPair.PrivateKey = privateKeyResponse.Data;
             }
-            return new BusinessResponse<KeyVaultSecret>
-            {
-                Data = _keyPair.PrivateKey,
-                StatusCode = BusinessCode.Ok,
-                Message = "Private key retrieved successfully."
-            };
-        }
-
-        public async Task<BusinessResponse<KeyVaultSecret>> ExistsAsync()
-        {
-            if (_keyPair.PrivateKey is null)
-            {
-                var privateKeyResponse = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
-                return new BusinessResponse<KeyVaultSecret>
-                {
-                    StatusCode = (BusinessCode)privateKeyResponse.StatusCode,
-                    Message = privateKeyResponse.Message,
-                };
-            }
-            return new BusinessResponse<KeyVaultSecret>
-            {
-                StatusCode = BusinessCode.Ok,
-                Message = "Private key exists."
-            };
+            return BusinessResponse<KeyVaultSecret>.Ok(_keyPairMessageOption.EntityRetrievedSuccessfully, _keyPair.PrivateKey);
         }
 
         public async Task<BusinessResponse<KeyVaultSecret>> PurgeDeletedAsync()

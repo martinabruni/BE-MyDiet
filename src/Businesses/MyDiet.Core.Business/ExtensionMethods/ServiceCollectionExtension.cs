@@ -1,12 +1,12 @@
 ﻿using BaseUtility;
 using MyDiet.Auth.Domain.Dtos.Claims;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Dtos.Requests;
-using MyDiet.Core.Domain.Managers;
 using MyDiet.Core.Business.Managers;
 using MyDiet.Core.Business.Mappers;
 using MyDiet.Core.Business.Services;
 using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Domain.Dtos.Requests;
+using MyDiet.Core.Domain.Managers;
+using MyDiet.Core.Domain.Options;
 using MyDiet.Core.Infrastructure.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -23,9 +23,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IMapper<CreateDietDto, DietDto>, DietMapper>();
             services.AddScoped<IMapper<CreateDietRequest, CreateDietDto>, DietMapper>();
 
+            services.AddSingleton<DietManagerMessageOption>();
             services.AddScoped<IService<DietDto, Diet, int>, DietService>();
             services.AddScoped<IService<CoreUserDto, CoreUser, Guid>, CoreUserService>();
-            
+
             services.AddScoped<IDietManager, DietManager>();
             return services;
         }

@@ -5,6 +5,7 @@ using MyDiet.Auth.Domain.Dtos.Claims;
 using MyDiet.Auth.Domain.Dtos.Requests;
 using MyDiet.Auth.Domain.Dtos.Responses;
 using MyDiet.Auth.Domain.Managers;
+using MyDiet.Auth.Domain.Options;
 using MyDiet.Auth.Infrastructure.Models;
 using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("MyDiet.Shared.Test")]
@@ -18,44 +19,34 @@ namespace MyDiet.Auth.Business.Managers
         private readonly IMapper<AuthUserDto, UserRegistrationResponse> _userResponseMapper;
         private readonly IMapper<AuthUserDto, UserClaims> _userClaimsMapper;
         private readonly ITokenManager _tokenManager;
+        private readonly AuthManagerMessageOption _responseMessageOptions;
 
-        public AuthManager(IService<AuthUserDto, AuthUser, Guid> authUserService, IMapper<UserRegistrationRequest, AuthUserDto> registrationRequestMapper, IMapper<AuthUserDto, UserRegistrationResponse> registrationResponseMapper, ITokenManager tokenManager, IMapper<AuthUserDto, UserClaims> userClaimsMapper)
+        public AuthManager(IService<AuthUserDto, AuthUser, Guid> authUserService, IMapper<UserRegistrationRequest, AuthUserDto> registrationRequestMapper, IMapper<AuthUserDto, UserRegistrationResponse> registrationResponseMapper, ITokenManager tokenManager, IMapper<AuthUserDto, UserClaims> userClaimsMapper, AuthManagerMessageOption responseMessageOptions)
         {
             _authUserService = authUserService;
             _registrationRequestMapper = registrationRequestMapper;
             _userResponseMapper = registrationResponseMapper;
             _tokenManager = tokenManager;
             _userClaimsMapper = userClaimsMapper;
+            _responseMessageOptions = responseMessageOptions;
         }
 
         public async Task<BusinessResponse<UserRegistrationResponse>> RegisterUserAsync(UserRegistrationRequest request)
         {
             if (request is null)
             {
-                return new BusinessResponse<UserRegistrationResponse>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "User registration request cannot be null."
-                };
+                return BusinessResponse<UserRegistrationResponse>.BadRequest(_responseMessageOptions.InvalidRequest);
             }
             var existingUser = await _authUserService.FindAsync(u => u.Email == request.Email);
 
             if (existingUser.Data is null)
             {
-                return new BusinessResponse<UserRegistrationResponse>
-                {
-                    StatusCode = existingUser.StatusCode,
-                    Message = existingUser.Message
-                };
+                return BusinessResponse<UserRegistrationResponse>.InternalServerError(_responseMessageOptions.ErrorRetrievingEntities);
             }
 
             if (existingUser.Data.ToList().Count != 0)
             {
-                return new BusinessResponse<UserRegistrationResponse>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "User with this email already exists."
-                };
+                return BusinessResponse<UserRegistrationResponse>.BadRequest(_responseMessageOptions.UserAlreadyExists);
             }
 
             var newUser = _registrationRequestMapper.Map(request);
@@ -64,86 +55,45 @@ namespace MyDiet.Auth.Business.Managers
 
             if (registeredUser.Data is null)
             {
-                return new BusinessResponse<UserRegistrationResponse>
-                {
-                    StatusCode = registeredUser.StatusCode,
-                    Message = registeredUser.Message
-                };
+                return BusinessResponse<UserRegistrationResponse>.InternalServerError(_responseMessageOptions.UserRegistrationFailure);
             }
 
-            return new BusinessResponse<UserRegistrationResponse>
-            {
-                StatusCode = BusinessCode.Created,
-                Data = _userResponseMapper.Map(registeredUser.Data),
-                Message = "User registered successfully."
-            };
+            return BusinessResponse<UserRegistrationResponse>.Created(_responseMessageOptions.UserRegistrationSuccess, _userResponseMapper.Map(registeredUser.Data));
         }
 
         public async Task<BusinessResponse<TokenResponse>> LoginUserAsync(UserLoginRequest request)
         {
             if (request is null)
             {
-                return new BusinessResponse<TokenResponse>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "User login request cannot be null."
-                };
+                return BusinessResponse<TokenResponse>.BadRequest(_responseMessageOptions.InvalidRequest);
             }
 
             var existingUser = await _authUserService.FindAsync(u => u.Email == request.Email);
 
             if (existingUser.Data is null)
             {
-                return new BusinessResponse<TokenResponse>
-                {
-                    StatusCode = existingUser.StatusCode,
-                    Message = existingUser.Message
-                };
+                return BusinessResponse<TokenResponse>.InternalServerError(_responseMessageOptions.ErrorRetrievingEntities);
             }
 
             var user = existingUser.Data.FirstOrDefault();
 
             if (user is null)
             {
-                return new BusinessResponse<TokenResponse>
-                {
-                    StatusCode = BusinessCode.NotFound,
-                    Message = "User not found."
-                };
+                return  BusinessResponse<TokenResponse>.BadRequest(_responseMessageOptions.UserNotRegistered);
             }
 
-            var verificationResult = new PasswordHasher<object>().VerifyHashedPassword(
-                user.Id,
+            var verificationResult = new PasswordHasher<AuthUserDto>().VerifyHashedPassword(
+                user,
                 user.HashedPassword,
                 request.Password
             );
 
-            if (verificationResult == PasswordVerificationResult.Failed)
+            if (verificationResult is PasswordVerificationResult.Failed)
             {
-                return new BusinessResponse<TokenResponse>
-                {
-                    StatusCode = BusinessCode.Unauthorized,
-                    Message = "Invalid password."
-                };
+                return BusinessResponse<TokenResponse>.Unauthorize(_responseMessageOptions.InvalidCredentials);
             }
 
-            var token = await _tokenManager.GenerateTokenAsync(_userClaimsMapper.Map(user));
-
-            if (token.Data is null)
-            {
-                return new BusinessResponse<TokenResponse>
-                {
-                    StatusCode = token.StatusCode,
-                    Message = token.Message
-                };
-            }
-
-            return new BusinessResponse<TokenResponse>
-            {
-                StatusCode = BusinessCode.Created,
-                Message = token.Message,
-                Data = token.Data
-            };
+            return await _tokenManager.GenerateTokenAsync(_userClaimsMapper.Map(user));
         }
 
         public async Task<BusinessResponse<TokenResponse>> LogoutUserAsync(string token)

@@ -13,108 +13,58 @@ namespace MyDiet.Auth.Business.Services
         private readonly IMapper<KeyVaultSecret, JsonWebKeySetDto> _secretToJwksMapper;
         private readonly KeyPair _keyPair;
         private readonly KeyOption _keyOption;
+        private readonly KeyPairMessageOption _keyPairMessageOption;
 
-        public PublicKeyService(IVaultRepository<KeyVaultSecret> vaultRepository, KeyPair keyPair, IMapper<KeyVaultSecret, JsonWebKeySetDto> secretToJwksMapper, KeyOption keyOption)
+        public PublicKeyService(IVaultRepository<KeyVaultSecret> vaultRepository, KeyPair keyPair, IMapper<KeyVaultSecret, JsonWebKeySetDto> secretToJwksMapper, KeyOption keyOption, KeyPairMessageOption keyPairMessageOption)
         {
             _privateKeyRepository = vaultRepository;
             _keyPair = keyPair;
             _secretToJwksMapper = secretToJwksMapper;
             _keyOption = keyOption;
+            _keyPairMessageOption = keyPairMessageOption;
         }
 
         public async Task<BusinessResponse<JsonWebKeySetDto>> CreateAsync()
         {
             if (_keyPair.PublicKey is not null)
             {
-                return new BusinessResponse<JsonWebKeySetDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "Public key is already set.",
-                };
+                return BusinessResponse<JsonWebKeySetDto>.BadRequest(_keyPairMessageOption.KeyAlreadySet);
             }
 
             if (_keyPair.PrivateKey is not null)
             {
                 _keyPair.PublicKey = _secretToJwksMapper.Map(_keyPair.PrivateKey);
-                return new BusinessResponse<JsonWebKeySetDto>
-                {
-                    StatusCode = BusinessCode.Created,
-                    Message = "Public key created successfully from existing private key.",
-                    Data = _keyPair.PublicKey
-                };
+                return BusinessResponse<JsonWebKeySetDto>.Created(_keyPairMessageOption.EntityCreatedSuccessfully, _keyPair.PublicKey);
             }
 
-            var secret = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
+            var secretRes = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
 
-            if (secret.Data is null)
+            if (secretRes.Data is null)
             {
-                return new BusinessResponse<JsonWebKeySetDto>
-                {
-                    StatusCode = BusinessCode.NotFound,
-                    Message = "Private key not found.",
-                };
+                return BusinessResponse<JsonWebKeySetDto>.NotFound(_keyPairMessageOption.EntityNotFound);
             }
-            _keyPair.PublicKey = _secretToJwksMapper.Map(secret.Data);
+            _keyPair.PublicKey = _secretToJwksMapper.Map(secretRes.Data);
 
-            return new BusinessResponse<JsonWebKeySetDto>
-            {
-                StatusCode = BusinessCode.Created,
-                Message = "Public key created successfully.",
-                Data = _keyPair.PublicKey
-            };
+            return BusinessResponse<JsonWebKeySetDto>.Created(_keyPairMessageOption.EntityCreatedSuccessfully, _keyPair.PublicKey);
         }
 
         public Task<BusinessResponse<JsonWebKeySetDto>> GetDeletedAsync()
         {
-            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
-            {
-                StatusCode = BusinessCode.NotImplemented,
-                Message = "This method is not implemented for PublicKeyService."
-            });
-        }
-
-        public Task<BusinessResponse<JsonWebKeySetDto>> ExistsAsync()
-        {
-            if (_keyPair.PublicKey is null)
-            {
-                return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
-                {
-                    StatusCode = BusinessCode.NotFound,
-                    Message = "Public key does not exist. Please create it first."
-                });
-            }
-            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
-            {
-                StatusCode = BusinessCode.Ok,
-                Message = "Public key exists.",
-            });
+            return Task.FromResult(BusinessResponse<JsonWebKeySetDto>.NotImplemented(_keyPairMessageOption.NotImplemented));
         }
 
         public Task<BusinessResponse<JsonWebKeySetDto>> PurgeDeletedAsync()
         {
-            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
-            {
-                StatusCode = BusinessCode.NotImplemented,
-                Message = "This method is not implemented for PublicKeyService."
-            });
+            return Task.FromResult(BusinessResponse<JsonWebKeySetDto>.NotImplemented(_keyPairMessageOption.NotImplemented));
         }
 
         public Task<BusinessResponse<JsonWebKeySetDto>> GetAsync()
         {
             if (_keyPair.PublicKey is null)
             {
-                return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
-                {
-                    StatusCode = BusinessCode.NotFound,
-                    Message = "Public key does not exist. Please create it first."
-                });
+                return Task.FromResult(BusinessResponse<JsonWebKeySetDto>.NotFound(_keyPairMessageOption.EntityNotFound));
             }
-            return Task.FromResult(new BusinessResponse<JsonWebKeySetDto>
-            {
-                StatusCode = BusinessCode.Ok,
-                Message = "Public key retrieved successfully",
-                Data = _keyPair.PublicKey
-            });
+            return Task.FromResult(BusinessResponse<JsonWebKeySetDto>.Ok(_keyPairMessageOption.EntityRetrievedSuccessfully));
         }
     }
 }
