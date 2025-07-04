@@ -72,7 +72,6 @@ public class AuthManagerTests
         _authUserService
             .Setup(s => s.FindAsync(It.IsAny<Expression<Func<AuthUser, bool>>>()))
             .ReturnsAsync(BusinessResponse<IEnumerable<AuthUserDto>>.Ok(
-                _messageOptions.EntitiesRetrievedSuccessfully,
                 [
                     new AuthUserDto
                     {
@@ -81,7 +80,8 @@ public class AuthManagerTests
                         HashedPassword = hash,
                         Role = UserRole.User
                     }
-                ]));
+                ],
+                _messageOptions.EntitiesRetrievedSuccessfully));
 
         var manager = CreateManager();
         var req = new UserRegistrationRequest
@@ -103,8 +103,8 @@ public class AuthManagerTests
         _authUserService
             .Setup(s => s.FindAsync(It.IsAny<Expression<Func<AuthUser, bool>>>()))
             .ReturnsAsync(BusinessResponse<IEnumerable<AuthUserDto>>.Ok(
-                _messageOptions.EntitiesRetrievedSuccessfully,
-                []));
+                [],
+                _messageOptions.EntitiesRetrievedSuccessfully));
 
         _registrationRequestMapper
             .Setup(m => m.Map(It.IsAny<UserRegistrationRequest>()))
@@ -154,8 +154,8 @@ public class AuthManagerTests
         _authUserService
             .Setup(s => s.FindAsync(It.IsAny<Expression<Func<AuthUser, bool>>>()))
             .ReturnsAsync(BusinessResponse<IEnumerable<AuthUserDto>>.Ok(
-                _messageOptions.EntitiesRetrievedSuccessfully,
-                []));
+                [],
+                _messageOptions.EntitiesRetrievedSuccessfully));
 
         _registrationRequestMapper
             .Setup(m => m.Map(It.IsAny<UserRegistrationRequest>()))
@@ -163,7 +163,7 @@ public class AuthManagerTests
 
         _authUserService
             .Setup(s => s.CreateAsync(It.IsAny<AuthUserDto>()))
-            .ReturnsAsync(BusinessResponse<AuthUserDto>.Created(_messageOptions.UserRegistrationSuccess, userDto));
+            .ReturnsAsync(BusinessResponse<AuthUserDto>.Created(userDto, _messageOptions.UserRegistrationSuccess));
 
         _userResponseMapper
             .Setup(m => m.Map(It.IsAny<AuthUserDto>()))

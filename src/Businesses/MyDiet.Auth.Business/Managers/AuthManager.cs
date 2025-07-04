@@ -58,7 +58,7 @@ namespace MyDiet.Auth.Business.Managers
                 return BusinessResponse<UserRegistrationResponse>.InternalServerError(_responseMessageOptions.UserRegistrationFailure);
             }
 
-            return BusinessResponse<UserRegistrationResponse>.Created(_responseMessageOptions.UserRegistrationSuccess, _userResponseMapper.Map(registeredUser.Data));
+            return BusinessResponse<UserRegistrationResponse>.Created(_userResponseMapper.Map(registeredUser.Data), _responseMessageOptions.UserRegistrationSuccess);
         }
 
         public async Task<BusinessResponse<TokenResponse>> LoginUserAsync(UserLoginRequest request)

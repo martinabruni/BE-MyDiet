@@ -27,7 +27,7 @@ namespace MyDiet.Auth.Infrastructure.Repositories
             try
             {
                 var vaultSecret = await _secretClient.SetSecretAsync(secret);
-                return RepositoryResponse<KeyVaultSecret>.Created(_responseMessageOptions.EntityCreatedSuccessfully, vaultSecret);
+                return RepositoryResponse<KeyVaultSecret>.Created(vaultSecret, _responseMessageOptions.EntityCreatedSuccessfully);
             }
             catch (ArgumentNullException)
             {
@@ -49,7 +49,7 @@ namespace MyDiet.Auth.Infrastructure.Repositories
             try
             {
                 var secret = await _secretClient.GetDeletedSecretAsync(secretName);
-                return RepositoryResponse<KeyVaultSecret>.Ok(_responseMessageOptions.EntityRetrievedSuccessfully, secret);
+                return RepositoryResponse<KeyVaultSecret>.Ok(secret, _responseMessageOptions.EntityRetrievedSuccessfully);
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {
@@ -71,9 +71,9 @@ namespace MyDiet.Auth.Infrastructure.Repositories
             try
             {
                 var secret = await _secretClient.GetSecretAsync(secretName);
-                return RepositoryResponse<KeyVaultSecret>.Ok(_responseMessageOptions.EntityRetrievedSuccessfully, secret);
+                return RepositoryResponse<KeyVaultSecret>.Ok(secret, _responseMessageOptions.EntityRetrievedSuccessfully);
             }
-            catch (CredentialUnavailableException ex)
+            catch (CredentialUnavailableException)
             {
                 return RepositoryResponse<KeyVaultSecret>.Unauthorize(_responseMessageOptions.InvalidCredentials);
             }
@@ -96,8 +96,8 @@ namespace MyDiet.Auth.Infrastructure.Repositories
 
             try
             {
-                await _secretClient.PurgeDeletedSecretAsync(secretName);
-                return RepositoryResponse<KeyVaultSecret>.Ok(_responseMessageOptions.EntityPurgedSuccessfully);
+                var purged = await _secretClient.PurgeDeletedSecretAsync(secretName);
+                return RepositoryResponse<KeyVaultSecret>.OkWithoutData(_responseMessageOptions.EntityPurgedSuccessfully);
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {

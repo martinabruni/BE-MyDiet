@@ -64,7 +64,7 @@ public class CustomJwtAuthenticationHandler : AuthenticationHandler<Authenticati
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
             return AuthenticateResult.Success(ticket);
         }
-        catch (SecurityTokenException ex)
+        catch (SecurityTokenException)
         {
             return AuthenticateResult.Fail("Invalid token");
         }

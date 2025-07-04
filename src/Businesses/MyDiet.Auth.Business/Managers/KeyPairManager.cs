@@ -37,7 +37,7 @@ namespace MyDiet.Auth.Business.Managers
             _keyPair.PrivateKey = privateKeyRes.Data;
             _keyPair.PublicKey = publicKeyRes.Data;
 
-            return BusinessResponse<KeyPair>.Created(_keyPairMessageOption.EntityCreatedSuccessfully, _keyPair);
+            return BusinessResponse<KeyPair>.Created(_keyPair, _keyPairMessageOption.EntityCreatedSuccessfully);
         }
     }
 }

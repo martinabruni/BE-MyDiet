@@ -34,7 +34,7 @@ namespace MyDiet.Auth.Business.Services
             if (_keyPair.PrivateKey is not null)
             {
                 _keyPair.PublicKey = _secretToJwksMapper.Map(_keyPair.PrivateKey);
-                return BusinessResponse<JsonWebKeySetDto>.Created(_keyPairMessageOption.EntityCreatedSuccessfully, _keyPair.PublicKey);
+                return BusinessResponse<JsonWebKeySetDto>.Created(_keyPair.PublicKey, _keyPairMessageOption.EntityCreatedSuccessfully);
             }
 
             var secretRes = await _privateKeyRepository.GetSecretAsync(_keyOption.PrivateKeyName);
@@ -45,7 +45,7 @@ namespace MyDiet.Auth.Business.Services
             }
             _keyPair.PublicKey = _secretToJwksMapper.Map(secretRes.Data);
 
-            return BusinessResponse<JsonWebKeySetDto>.Created(_keyPairMessageOption.EntityCreatedSuccessfully, _keyPair.PublicKey);
+            return BusinessResponse<JsonWebKeySetDto>.Created(_keyPair.PublicKey, _keyPairMessageOption.EntityCreatedSuccessfully);
         }
 
         public Task<BusinessResponse<JsonWebKeySetDto>> GetDeletedAsync()
@@ -64,7 +64,7 @@ namespace MyDiet.Auth.Business.Services
             {
                 return Task.FromResult(BusinessResponse<JsonWebKeySetDto>.NotFound(_keyPairMessageOption.EntityNotFound));
             }
-            return Task.FromResult(BusinessResponse<JsonWebKeySetDto>.Ok(_keyPairMessageOption.EntityRetrievedSuccessfully));
+            return Task.FromResult(BusinessResponse<JsonWebKeySetDto>.Ok(_keyPair.PublicKey, _keyPairMessageOption.EntityRetrievedSuccessfully));
         }
     }
 }

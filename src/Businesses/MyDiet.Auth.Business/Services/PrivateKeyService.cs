@@ -37,7 +37,7 @@ namespace MyDiet.Auth.Business.Services
             if (existingSecret.Data is not null)
             {
                 _keyPair.PrivateKey = existingSecret.Data;
-                return BusinessResponse<KeyVaultSecret>.Ok(_keyPairMessageOption.EntityRetrievedSuccessfully, _keyPair.PrivateKey);
+                return BusinessResponse<KeyVaultSecret>.Ok(_keyPair.PrivateKey, _keyPairMessageOption.EntityRetrievedSuccessfully);
             }
 
             var deletedSecret = await _privateKeyRepository.GetDeletedSecretAsync(_keyOption.PrivateKeyName);
@@ -56,7 +56,7 @@ namespace MyDiet.Auth.Business.Services
             }
             _keyPair.PrivateKey = secret;
 
-            return BusinessResponse<KeyVaultSecret>.Created(_keyPairMessageOption.EntityCreatedSuccessfully, _keyPair.PrivateKey);
+            return BusinessResponse<KeyVaultSecret>.Created(_keyPair.PrivateKey, _keyPairMessageOption.EntityCreatedSuccessfully);
         }
 
         public async Task<BusinessResponse<KeyVaultSecret>> GetDeletedAsync()
@@ -76,7 +76,7 @@ namespace MyDiet.Auth.Business.Services
                 }
                 _keyPair.PrivateKey = privateKeyResponse.Data;
             }
-            return BusinessResponse<KeyVaultSecret>.Ok(_keyPairMessageOption.EntityRetrievedSuccessfully, _keyPair.PrivateKey);
+            return BusinessResponse<KeyVaultSecret>.Ok(_keyPair.PrivateKey, _keyPairMessageOption.EntityRetrievedSuccessfully);
         }
 
         public async Task<BusinessResponse<KeyVaultSecret>> PurgeDeletedAsync()
