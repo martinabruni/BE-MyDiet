@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<<< HEAD:src/Domains/MyDiet.Auth.Domain/MyDiet.Auth.Domain.csproj
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.8.0" />
     <PackageReference Include="BaseUtility" Version="2.1.8" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.12.1" />
+========
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.16" />
+>>>>>>>> origin/dev:src/Domains/MyDiet.Shared.Domain/MyDiet.Shared.Domain.csproj
   </ItemGroup>
 
 </Project>

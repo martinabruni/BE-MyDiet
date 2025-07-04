@@ -4,8 +4,13 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
+<<<<<<<< HEAD:src/Apis/MyDiet.Shared.Api/Properties/launchSettings.json
       "applicationUrl": "http://localhost:58721",
       "sslPort": 44314
+========
+      "applicationUrl": "http://localhost:29505",
+      "sslPort": 44396
+>>>>>>>> origin/dev:src/Apis/MyDiet.Identity.Api/Properties/launchSettings.json
     }
   },
   "profiles": {
@@ -14,7 +19,11 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
+<<<<<<<< HEAD:src/Apis/MyDiet.Shared.Api/Properties/launchSettings.json
       "applicationUrl": "http://localhost:5005",
+========
+      "applicationUrl": "http://localhost:5121",
+>>>>>>>> origin/dev:src/Apis/MyDiet.Identity.Api/Properties/launchSettings.json
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -24,7 +33,11 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
+<<<<<<<< HEAD:src/Apis/MyDiet.Shared.Api/Properties/launchSettings.json
       "applicationUrl": "https://localhost:7206;http://localhost:5005",
+========
+      "applicationUrl": "https://localhost:7198;http://localhost:5121",
+>>>>>>>> origin/dev:src/Apis/MyDiet.Identity.Api/Properties/launchSettings.json
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

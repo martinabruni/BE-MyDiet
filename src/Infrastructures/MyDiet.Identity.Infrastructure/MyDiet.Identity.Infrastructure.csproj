@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.8.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domains\MyDiet.Identity.Domain\MyDiet.Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\Domains\MyDiet.Shared.Domain\MyDiet.Shared.Domain.csproj" />
+    <ProjectReference Include="..\MyDiet.Shared.Infrastructure\MyDiet.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

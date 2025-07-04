@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>a378599c-2f1b-43c1-9864-ce993f1fd1dd</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Businesses\MyDiet.Identity.Business\MyDiet.Identity.Business.csproj" />
+    <ProjectReference Include="..\..\Businesses\MyDiet.Shared.Business\MyDiet.Shared.Business.csproj" />
+    <ProjectReference Include="..\..\Domains\MyDiet.Identity.Domain\MyDiet.Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\Domains\MyDiet.Shared.Domain\MyDiet.Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructures\MyDiet.Identity.Infrastructure\MyDiet.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructures\MyDiet.Shared.Infrastructure\MyDiet.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

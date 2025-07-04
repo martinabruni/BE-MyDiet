@@ -3,7 +3,11 @@
 using System;
 using System.Collections.Generic;
 
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Core.Infrastructure/Models/Diet.cs
 namespace MyDiet.Core.Infrastructure.Models;
+========
+namespace MyDiet.Shared.Infrastructure.Models;
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Shared.Infrastructure/Models/Diet.cs
 
 public partial class Diet
 {

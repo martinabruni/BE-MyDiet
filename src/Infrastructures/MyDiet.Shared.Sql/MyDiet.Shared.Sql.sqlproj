@@ -3,16 +3,28 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Shared.Sql/MyDiet.Shared.Sql.sqlproj
     <Name>MyDiet.Shared.Sql</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{c442c83b-77f2-4f03-b207-ff0246e103c5}</ProjectGuid>
+========
+    <Name>MyDiet.Db</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{27eb5334-a8a8-47b3-a855-a1528d3a9cf7}</ProjectGuid>
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Db/MyDiet.Db.sqlproj
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Shared.Sql/MyDiet.Shared.Sql.sqlproj
     <RootNamespace>MyDiet.Shared.Sql</RootNamespace>
     <AssemblyName>MyDiet.Shared.Sql</AssemblyName>
+========
+    <RootNamespace>MyDiet.Db</RootNamespace>
+    <AssemblyName>MyDiet.Db</AssemblyName>
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Db/MyDiet.Db.sqlproj
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -61,6 +73,7 @@
     <Folder Include="dbo\Tables\" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Shared.Sql/MyDiet.Shared.Sql.sqlproj
     <None Include="Snapshots\MyDiet.Shared.Sql_20250701_16-57-59.dacpac" />
     <None Include="Snapshots\sqldb-mydiet-core-2025-7-1-16-58.dacpac" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250701_17-02-11.dacpac" />
@@ -70,6 +83,10 @@
     <None Include="er.mmd" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250703_10-22-02.dacpac" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250703_12-35-20.dacpac" />
+========
+    <None Include="Snapshots\MyDiet.Db_20250620_19-25-36.dacpac" />
+    <None Include="Snapshots\sqldb-mydiet-core-2025-6-20-19-25.dacpac" />
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Db/MyDiet.Db.sqlproj
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\CalendarEntry.sql" />
@@ -84,7 +101,11 @@
     <Build Include="dbo\Tables\Plan.sql" />
     <Build Include="dbo\Tables\UnitConversion.sql" />
     <Build Include="dbo\Tables\UnitOfMeasurement.sql" />
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Shared.Sql/MyDiet.Shared.Sql.sqlproj
     <Build Include="dbo\Tables\AuthUser.sql" />
     <Build Include="dbo\Tables\CoreUser.sql" />
+========
+    <Build Include="dbo\Tables\User.sql" />
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Db/MyDiet.Db.sqlproj
   </ItemGroup>
 </Project>

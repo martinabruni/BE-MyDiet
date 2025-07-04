@@ -3,12 +3,17 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using MyDiet.Shared.Domain.Interfaces;
 
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Core.Infrastructure/Models/MyDietCoreDbContext.cs
 namespace MyDiet.Core.Infrastructure.Models;
+========
+namespace MyDiet.Shared.Infrastructure.Models;
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Shared.Infrastructure/Models/MyDietDbContext.cs
 
-public partial class MyDietCoreDbContext : DbContext
+public partial class MyDietDbContext : DbContext
 {
-    public MyDietCoreDbContext(DbContextOptions<MyDietCoreDbContext> options)
+    public MyDietDbContext(DbContextOptions<MyDietDbContext> options)
         : base(options)
     {
     }
@@ -258,6 +263,29 @@ public partial class MyDietCoreDbContext : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength();
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Core.Infrastructure/Models/MyDietCoreDbContext.cs
+========
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC0705D2EF50");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(255)
+                .IsFixedLength();
+            entity.Property(e => e.HashedPassword)
+                .IsRequired()
+                .HasMaxLength(255)
+                .IsFixedLength();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .IsFixedLength();
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Shared.Infrastructure/Models/MyDietDbContext.cs
         });
 
         OnModelCreatingPartial(modelBuilder);

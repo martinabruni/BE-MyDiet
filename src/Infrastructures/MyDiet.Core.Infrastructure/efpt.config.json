@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "MyDietCoreDbContext",
+   "ContextClassName": "MyDietDbContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
@@ -8,7 +8,11 @@
    "OutputContextPath": null,
    "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Core.Infrastructure/efpt.config.json
    "ProjectRootNamespace": "MyDiet.Core.Infrastructure",
+========
+   "ProjectRootNamespace": "MyDiet.Shared.Infrastructure",
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Shared.Infrastructure/efpt.config.json
    "Schemas": null,
    "SelectedHandlebarsLanguage": 2,
    "SelectedToBeGenerated": 0,

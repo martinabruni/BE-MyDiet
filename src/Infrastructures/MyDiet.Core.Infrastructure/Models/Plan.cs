@@ -3,7 +3,11 @@
 using System;
 using System.Collections.Generic;
 
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Core.Infrastructure/Models/Plan.cs
 namespace MyDiet.Core.Infrastructure.Models;
+========
+namespace MyDiet.Shared.Infrastructure.Models;
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Shared.Infrastructure/Models/Plan.cs
 
 public partial class Plan
 {

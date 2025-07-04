@@ -3,7 +3,11 @@
 using System;
 using System.Collections.Generic;
 
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Core.Infrastructure/Models/CoreUser.cs
 namespace MyDiet.Core.Infrastructure.Models;
+========
+namespace MyDiet.Shared.Infrastructure.Models;
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Shared.Infrastructure/Models/User.cs
 
 public partial class CoreUser
 {
@@ -13,6 +17,13 @@ public partial class CoreUser
 
     public DateTime CreatedAt { get; set; }
 
+<<<<<<<< HEAD:src/Infrastructures/MyDiet.Core.Infrastructure/Models/CoreUser.cs
+========
+    public string HashedPassword { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+>>>>>>>> origin/dev:src/Infrastructures/MyDiet.Shared.Infrastructure/Models/User.cs
     public DateTime? UpdatedAt { get; set; }
 
     public virtual ICollection<CalendarEntry> CalendarEntry { get; set; } = new List<CalendarEntry>();
