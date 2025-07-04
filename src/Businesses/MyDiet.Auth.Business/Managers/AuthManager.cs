@@ -6,6 +6,8 @@ using MyDiet.Auth.Domain.Dtos.Requests;
 using MyDiet.Auth.Domain.Dtos.Responses;
 using MyDiet.Auth.Domain.Managers;
 using MyDiet.Auth.Infrastructure.Models;
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("MyDiet.Shared.Test")]
 
 namespace MyDiet.Auth.Business.Managers
 {

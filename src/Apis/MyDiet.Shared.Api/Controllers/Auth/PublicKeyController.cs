@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyDiet.Auth.Domain.Models;
 using MyDiet.Auth.Domain.Services;
 
-namespace MyDiet.Shared.Api.Controllers.Auth
+namespace MyDiet.Core.Api.Controllers.Auth
 {
     [ApiController]
     [Route("api/[controller]/[action]")]

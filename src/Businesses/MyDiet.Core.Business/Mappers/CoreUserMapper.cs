@@ -1,9 +1,9 @@
 ﻿using BaseUtility;
 using MyDiet.Auth.Domain.Dtos.Claims;
-using MyDiet.Shared.Domain.Dtos;
-using MyDiet.Shared.Infrastructure.Models;
+using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Infrastructure.Models;
 
-namespace MyDiet.Shared.Business.Mappers
+namespace MyDiet.Core.Business.Mappers
 {
     internal class CoreUserMapper : IMapper<CoreUser, CoreUserDto>, IMapper<CoreUserDto, CoreUser>, IMapper<UserClaims, CoreUserDto>
     {

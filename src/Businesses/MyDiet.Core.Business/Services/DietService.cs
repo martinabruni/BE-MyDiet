@@ -1,12 +1,12 @@
 ﻿using BaseUtility;
-using MyDiet.Shared.Domain.Dtos;
-using MyDiet.Shared.Infrastructure.Models;
+using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Infrastructure.Models;
 
-namespace MyDiet.Shared.Business.Services
+namespace MyDiet.Core.Business.Services
 {
     internal class DietService : AGenericService<DietDto, Diet, int>
     {
-        public DietService(IRepository<Diet, int> repository, IMapper<Diet, DietDto> databaseToDtoMapper, IMapper<DietDto, Diet> dtoToDatabaseMapper) : base(repository, databaseToDtoMapper, dtoToDatabaseMapper)
+        public DietService(IRepository<Diet, int> repository, IMapper<Diet, DietDto> databaseToDtoMapper, IMapper<DietDto, Diet> dtoToDatabaseMapper, ResponseMessageOption messages) : base(repository, databaseToDtoMapper, dtoToDatabaseMapper, messages)
         {
         }
     }

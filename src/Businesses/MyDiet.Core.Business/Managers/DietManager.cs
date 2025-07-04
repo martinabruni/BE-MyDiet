@@ -2,11 +2,11 @@
 using MyDiet.Core.Domain.Dtos;
 using MyDiet.Core.Domain.Dtos.Requests;
 using MyDiet.Core.Domain.Managers;
-using MyDiet.Shared.Domain.Dtos;
-using MyDiet.Shared.Infrastructure.Models;
+using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Infrastructure.Models;
 using System.Security.Claims;
 
-namespace MyDiet.Shared.Business.Managers
+namespace MyDiet.Core.Business.Managers
 {
     internal class DietManager : IDietManager
     {

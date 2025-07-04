@@ -3,11 +3,11 @@ using MyDiet.Auth.Domain.Dtos.Claims;
 using MyDiet.Core.Domain.Dtos;
 using MyDiet.Core.Domain.Dtos.Requests;
 using MyDiet.Core.Domain.Managers;
-using MyDiet.Shared.Business.Managers;
-using MyDiet.Shared.Business.Mappers;
-using MyDiet.Shared.Business.Services;
-using MyDiet.Shared.Domain.Dtos;
-using MyDiet.Shared.Infrastructure.Models;
+using MyDiet.Core.Business.Managers;
+using MyDiet.Core.Business.Mappers;
+using MyDiet.Core.Business.Services;
+using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Infrastructure.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

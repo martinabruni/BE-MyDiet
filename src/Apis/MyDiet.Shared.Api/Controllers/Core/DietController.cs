@@ -5,7 +5,7 @@ using MyDiet.Core.Domain.Dtos.Requests;
 using MyDiet.Core.Domain.Managers;
 using System.Security.Claims;
 
-namespace MyDiet.Shared.Api.Controllers.Core
+namespace MyDiet.Core.Api.Controllers.Core
 {
     [Authorize]
     [ApiController]

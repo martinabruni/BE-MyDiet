@@ -1,6 +1,6 @@
 ﻿using BaseUtility;
 
-namespace MyDiet.Shared.Infrastructure.Models
+namespace MyDiet.Core.Infrastructure.Models
 {
     public partial class Diet : IAuditable, IEntity<int>
     {
