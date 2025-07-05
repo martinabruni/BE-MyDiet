@@ -31,7 +31,7 @@ namespace MyDiet.Auth.Business.Managers
             var publicKeyRes = await _publicKeyService.CreateAsync();
             if (publicKeyRes.Data is null)
             {
-                return  BusinessResponse<KeyPair>.InternalServerError(_keyPairMessageOption.ErrorCreatingEntity);
+                return BusinessResponse<KeyPair>.InternalServerError(_keyPairMessageOption.ErrorCreatingEntity);
             }
 
             _keyPair.PrivateKey = privateKeyRes.Data;

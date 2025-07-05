@@ -1,6 +1,6 @@
 ﻿using BaseUtility;
-using MyDiet.Core.Domain.Dtos.Requests;
 using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Domain.Dtos.Requests;
 using System.Security.Claims;
 
 namespace MyDiet.Core.Domain.Managers

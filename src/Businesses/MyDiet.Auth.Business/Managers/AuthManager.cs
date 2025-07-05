@@ -79,7 +79,7 @@ namespace MyDiet.Auth.Business.Managers
 
             if (user is null)
             {
-                return  BusinessResponse<TokenResponse>.BadRequest(_responseMessageOptions.UserNotRegistered);
+                return BusinessResponse<TokenResponse>.BadRequest(_responseMessageOptions.UserNotRegistered);
             }
 
             var verificationResult = new PasswordHasher<AuthUserDto>().VerifyHashedPassword(

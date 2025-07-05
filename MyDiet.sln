@@ -10,9 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domains", "Domains", "{C9865844-AE72-4411-A8F6-6C75088A1779}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{93CE6A11-9559-4BF8-9410-375B4C7C5418}"
-	ProjectSection(SolutionItems) = preProject
-		src\Infrastructures\schema.md = src\Infrastructures\schema.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Businesses", "Businesses", "{818290B6-6180-4923-94E0-2C5F9B4D65C9}"
 EndProject

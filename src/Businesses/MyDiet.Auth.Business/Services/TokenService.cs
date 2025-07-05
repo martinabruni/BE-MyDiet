@@ -39,9 +39,7 @@ namespace MyDiet.Auth.Business.Services
                     signingCredentials: new SigningCredentials(_keyMapper.Map(privateKey), _tokenOption.Algorithm)
                 );
                 return BusinessResponse<TokenResponse>.Created(
-                    _responseMessageOption.EntityCreatedSuccessfully,
-                    _tokenResponseMapper.Map(jwt)
-                );
+                    _tokenResponseMapper.Map(jwt), _responseMessageOption.EntityCreatedSuccessfully);
             }
             catch
             {

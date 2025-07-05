@@ -1,7 +1,6 @@
 ﻿using BaseUtility;
 using MyDiet.Core.Domain.Dtos;
 using MyDiet.Core.Domain.Dtos.Requests;
-using MyDiet.Core.Domain.Dtos;
 using MyDiet.Core.Infrastructure.Models;
 
 namespace MyDiet.Core.Business.Mappers

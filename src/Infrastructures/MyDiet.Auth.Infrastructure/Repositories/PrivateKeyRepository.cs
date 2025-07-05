@@ -43,7 +43,7 @@ namespace MyDiet.Auth.Infrastructure.Repositories
         {
             if (string.IsNullOrWhiteSpace(secretName))
             {
-                return  RepositoryResponse<KeyVaultSecret>.BadRequest(_responseMessageOptions.InvalidRequest);
+                return RepositoryResponse<KeyVaultSecret>.BadRequest(_responseMessageOptions.InvalidRequest);
             }
 
             try
