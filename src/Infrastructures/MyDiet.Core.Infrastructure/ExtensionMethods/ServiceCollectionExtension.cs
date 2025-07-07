@@ -17,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IDatabase<MyDietCoreDbContext>, MyDietCoreDb>();
             services.AddScoped<IRepository<CoreUser, Guid>, CoreUserRepository>();
             services.AddScoped<IRepository<Diet, int>, DietRepository>();
+            services.AddScoped<IRepository<Plan, int>, PlanRepository>();
 
             return services;
         }

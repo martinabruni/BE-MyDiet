@@ -51,6 +51,7 @@ namespace MyDiet.Auth.Business.Managers
 
             var newUser = _registrationRequestMapper.Map(request);
             newUser.CreatedAt = DateTime.UtcNow;
+            newUser.UpdatedAt = newUser.CreatedAt;
             var registeredUser = await _authUserService.CreateAsync(newUser);
 
             if (registeredUser.Data is null)

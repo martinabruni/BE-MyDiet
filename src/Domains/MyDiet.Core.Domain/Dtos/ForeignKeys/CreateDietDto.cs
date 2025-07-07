@@ -1,6 +1,6 @@
 ﻿using MyDiet.Core.Domain.Dtos.Requests;
 
-namespace MyDiet.Core.Domain.Dtos
+namespace MyDiet.Core.Domain.Dtos.ForeignKeys
 {
     public class CreateDietDto : CreateDietRequest
     {

@@ -70,6 +70,7 @@
     <None Include="er.mmd" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250703_10-22-02.dacpac" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250703_12-35-20.dacpac" />
+    <None Include="Snapshots\MyDiet.Shared.Sql_20250707_11-14-04.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\CalendarEntry.sql" />
