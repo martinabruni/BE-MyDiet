@@ -9,17 +9,16 @@ using System.Security.Claims;
 
 namespace MyDiet.Core.Business.Managers
 {
-    internal class DietManager : BaseManager<CreateDietRequest>, IManager<DietDto, CreateDietRequest, int>
+    internal class DietManager : BaseManager<DietDto, CreateDietRequest, int>, IManager<DietDto, CreateDietRequest, int>
     {
         private readonly IService<DietDto, Diet, int> _dietService;
-        private readonly IService<CoreUserDto, CoreUser, Guid> _userService;
         private readonly IMapper<CreateDietDto, DietDto> _createDtoToDietDtoMapper;
         private readonly IMapper<CreateDietRequest, CreateDietDto> _createRequestToCreateDtoMapper;
         private readonly DietMessageOption _responseMessageOption;
 
         public DietManager(IService<CoreUserDto, CoreUser, Guid> userService, IService<DietDto, Diet, int> dietService, IMapper<CreateDietDto, DietDto> createDtoToDietDtoMapper, IMapper<CreateDietRequest, CreateDietDto> createRequestToCreateDtoMapper, DietMessageOption responseMessageOption)
+            : base(userService)
         {
-            _userService = userService;
             _dietService = dietService;
             _createDtoToDietDtoMapper = createDtoToDietDtoMapper;
             _createRequestToCreateDtoMapper = createRequestToCreateDtoMapper;
@@ -28,21 +27,19 @@ namespace MyDiet.Core.Business.Managers
 
         public async Task<BusinessResponse<DietDto>> CreateAsync(CreateDietRequest request, Claim? userIdClaim)
         {
-            var validationResult = ValidateAndGetUserId(request, userIdClaim);
+            // Use template method for user and request validation
+            var (userId, validationError) = await ValidateUserAndRequestAsync(
+                request, 
+                userIdClaim, 
+                _responseMessageOption.InvalidRequest,
+                _responseMessageOption.EntityNotFound);
 
-            if (validationResult is null)
+            if (validationError != null)
             {
-                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
+                return validationError;
             }
 
-            var userId = (Guid)validationResult;
-            var userRes = await _userService.GetByIdAsync(userId);
-
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
-            }
-
+            // Check if diet with same name already exists for user
             var existingDietRes = await _dietService.FindAsync(d => d.Name == request.Name && d.UserId == userId);
 
             if (existingDietRes.Data is null)
@@ -55,8 +52,8 @@ namespace MyDiet.Core.Business.Managers
                 return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.DietAlreadyExists);
             }
 
+            // Map request to DTO
             var createDto = _createRequestToCreateDtoMapper.Map(request);
-
             if (createDto is null)
             {
                 return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
@@ -68,38 +65,38 @@ namespace MyDiet.Core.Business.Managers
             {
                 return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
             }
-            dietDto.CreatedAt = DateTime.UtcNow;
-            dietDto.UpdatedAt = dietDto.CreatedAt;
+
+            // Apply creation timestamps using template method
+            ApplyCreationTimestamps(dietDto);
 
             return await _dietService.CreateAsync(dietDto);
         }
 
         public async Task<BusinessResponse<DietDto>> DeleteAsync(int id, Claim? userIdClaim)
         {
-            var userId = ValidateUserClaim(userIdClaim);
+            // Use template method for user validation
+            var (userId, validationError) = await ValidateUserAsync(
+                userIdClaim,
+                _responseMessageOption.InvalidRequest,
+                _responseMessageOption.EntityNotFound);
 
-            if (userId is null)
+            if (validationError != null)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return validationError;
             }
 
-            var userRes = await _userService.GetByIdAsync((Guid)userId);
-
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
-            }
-
-            var dietRes = await _dietService.GetByIdAsync(id);
-
+            // Get diet entity and validate existence
+            var dietRes = await ValidateEntityExistsAsync(_dietService, id, _responseMessageOption.EntityNotFound);
             if (dietRes.Data is null)
             {
                 return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
-            if (dietRes.Data.UserId != userId)
+            // Validate ownership using template method
+            var ownershipError = ValidateOwnership(userId, dietRes.Data.UserId, _responseMessageOption.InvalidRequest);
+            if (ownershipError != null)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return ownershipError;
             }
 
             return await _dietService.DeleteAsync(id);
@@ -107,29 +104,29 @@ namespace MyDiet.Core.Business.Managers
 
         public async Task<BusinessResponse<DietDto>> GetByIdAsync(int id, Claim? userIdClaim)
         {
-            var userId = ValidateUserClaim(userIdClaim);
-            if (userId is null)
+            // Use template method for user validation
+            var (userId, validationError) = await ValidateUserAsync(
+                userIdClaim,
+                _responseMessageOption.InvalidRequest,
+                _responseMessageOption.EntityNotFound);
+
+            if (validationError != null)
             {
-                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
+                return validationError;
             }
 
-            var userRes = await _userService.GetByIdAsync((Guid)userId);
-
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
-            }
-
-            var dietRes = await _dietService.GetByIdAsync(id);
-
+            // Get diet entity and validate existence
+            var dietRes = await ValidateEntityExistsAsync(_dietService, id, _responseMessageOption.EntityNotFound);
             if (dietRes.Data is null)
             {
                 return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
-            if (dietRes.Data.UserId != userId)
+            // Validate ownership using template method
+            var ownershipError = ValidateOwnership(userId, dietRes.Data.UserId, _responseMessageOption.InvalidRequest);
+            if (ownershipError != null)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return ownershipError;
             }
 
             return dietRes;
@@ -137,43 +134,45 @@ namespace MyDiet.Core.Business.Managers
 
         public async Task<BusinessResponse<IEnumerable<DietDto>>> GetByUserIdAsync(Claim? userIdClaim)
         {
+            // Use template method for user validation
             var userId = ValidateUserClaim(userIdClaim);
             if (userId is null)
             {
                 return BusinessResponse<IEnumerable<DietDto>>.Unauthorize(_responseMessageOption.InvalidRequest);
             }
+            
             return await _dietService.FindAsync(d => d.UserId == userId);
         }
 
         public async Task<BusinessResponse<DietDto>> UpdateAsync(CreateDietRequest request, int id, Claim? userIdClaim)
         {
-            var validRequest = ValidateAndGetUserId(request, userIdClaim);
+            // Use template method for user and request validation
+            var (userId, validationError) = await ValidateUserAndRequestAsync(
+                request,
+                userIdClaim,
+                _responseMessageOption.InvalidRequest,
+                _responseMessageOption.EntityNotFound);
 
-            if (validRequest is null)
+            if (validationError != null)
             {
-                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
+                return validationError;
             }
 
-            var userId = (Guid)validRequest;
-            var userRes = await _userService.GetByIdAsync(userId);
-
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
-            }
-
-            var existingDietRes = await _dietService.GetByIdAsync(id);
-
+            // Get existing diet and validate existence
+            var existingDietRes = await ValidateEntityExistsAsync(_dietService, id, _responseMessageOption.EntityNotFound);
             if (existingDietRes.Data is null)
             {
                 return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
-            if (existingDietRes.Data.UserId != userId)
+            // Validate ownership using template method
+            var ownershipError = ValidateOwnership(userId, existingDietRes.Data.UserId, _responseMessageOption.InvalidRequest);
+            if (ownershipError != null)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return ownershipError;
             }
 
+            // Map request to DTO
             var createDto = _createRequestToCreateDtoMapper.Map(request);
             createDto.UserId = userId;
 
@@ -183,15 +182,15 @@ namespace MyDiet.Core.Business.Managers
             }
 
             var newDto = _createDtoToDietDtoMapper.Map(createDto);
-
             if (newDto is null)
             {
                 return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorUpdatingEntity);
             }
 
-            newDto.CreatedAt = existingDietRes.Data.CreatedAt;
-            newDto.UpdatedAt = DateTime.UtcNow;
+            // Apply update timestamps using template method
+            ApplyUpdateTimestamps(newDto, existingDietRes.Data.CreatedAt);
             newDto.Id = id;
+            
             return await _dietService.UpdateAsync(newDto);
         }
     }
