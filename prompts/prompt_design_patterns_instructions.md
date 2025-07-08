@@ -1,0 +1,27 @@
+Utilizza solo queste fonti per quanto riguarda i design patterns:
+
+- https://refactoring.guru/design-patterns/what-is-pattern
+- https://refactoring.guru/design-patterns/why-learn-patterns
+- https://refactoring.guru/design-patterns/classification
+- https://refactoring.guru/design-patterns/factory-method
+- https://refactoring.guru/design-patterns/abstract-factory
+- https://refactoring.guru/design-patterns/builder
+- https://refactoring.guru/design-patterns/prototype
+- https://refactoring.guru/design-patterns/singleton
+- https://refactoring.guru/design-patterns/adapter
+- https://refactoring.guru/design-patterns/bridge
+- https://refactoring.guru/design-patterns/composite
+- https://refactoring.guru/design-patterns/decorator
+- https://refactoring.guru/design-patterns/facade
+- https://refactoring.guru/design-patterns/flyweight
+- https://refactoring.guru/design-patterns/proxy
+- https://refactoring.guru/design-patterns/chain-of-responsability
+- https://refactoring.guru/design-patterns/command
+- https://refactoring.guru/design-patterns/iterator
+- https://refactoring.guru/design-patterns/mediator
+- https://refactoring.guru/design-patterns/memento
+- https://refactoring.guru/design-patterns/observer
+- https://refactoring.guru/design-patterns/state
+- https://refactoring.guru/design-patterns/strategy
+- https://refactoring.guru/design-patterns/template-method
+- https://refactoring.guru/design-patterns/visitor
