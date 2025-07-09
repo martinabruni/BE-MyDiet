@@ -2,7 +2,7 @@
 
 namespace MyDiet.Auth.Domain.Options
 {
-    public class AuthManagerMessageOption : ResponseMessageOption
+    public class AuthManagerMessageOption : ResponseMessage
     {
         public string UserAlreadyExists { get; set; } = "User with this email already exists.";
         public string UserRegistrationSuccess { get; set; } = "User registered successfully.";

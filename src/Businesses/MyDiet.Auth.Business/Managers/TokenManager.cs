@@ -14,9 +14,9 @@ namespace MyDiet.Auth.Business.Managers
         private readonly IService<AuthUserDto, AuthUser, Guid> _authUserService;
         private readonly IVaultService<KeyVaultSecret> _privateKeyService;
         private readonly ITokenService _tokenService;
-        private readonly ResponseMessageOption _responseMessageOption;
+        private readonly ResponseMessage _responseMessageOption;
 
-        public TokenManager(IVaultService<KeyVaultSecret> privateKeyService, ITokenService tokenService, IService<AuthUserDto, AuthUser, Guid> authUserService, ResponseMessageOption responseMessageOption)
+        public TokenManager(IVaultService<KeyVaultSecret> privateKeyService, ITokenService tokenService, IService<AuthUserDto, AuthUser, Guid> authUserService, ResponseMessage responseMessageOption)
         {
             _privateKeyService = privateKeyService;
             _tokenService = tokenService;

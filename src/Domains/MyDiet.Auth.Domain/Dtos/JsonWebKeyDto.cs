@@ -1,4 +1,4 @@
-﻿namespace MyDiet.Auth.Domain.Models
+﻿namespace MyDiet.Auth.Domain.Dtos
 {
     public class JsonWebKeyDto
     {

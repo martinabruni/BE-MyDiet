@@ -1,6 +1,6 @@
 ﻿using Azure.Security.KeyVault.Secrets;
 
-namespace MyDiet.Auth.Domain.Models
+namespace MyDiet.Auth.Domain.Dtos
 {
     public class KeyPair
     {

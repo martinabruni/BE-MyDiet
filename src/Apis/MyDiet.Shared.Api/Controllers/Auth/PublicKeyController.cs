@@ -1,9 +1,9 @@
 ﻿using BaseUtility;
 using Microsoft.AspNetCore.Mvc;
-using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Services;
 
-namespace MyDiet.Core.Api.Controllers.Auth
+namespace MyDiet.Shared.Api.Controllers.Auth
 {
     [ApiController]
     [Route("api/[controller]/[action]")]

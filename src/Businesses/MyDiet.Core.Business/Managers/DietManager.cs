@@ -1,7 +1,6 @@
 ﻿using BaseUtility;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Dtos.ForeignKeys;
-using MyDiet.Core.Domain.Dtos.Requests;
+using MyDiet.Core.Domain.Dtos.CoreUser;
+using MyDiet.Core.Domain.Dtos.Diet;
 using MyDiet.Core.Domain.Managers;
 using MyDiet.Core.Domain.Options;
 using MyDiet.Core.Infrastructure.Models;
@@ -29,7 +28,6 @@ namespace MyDiet.Core.Business.Managers
         public async Task<BusinessResponse<DietDto>> CreateAsync(CreateDietRequest request, Claim? userIdClaim)
         {
             var validationResult = ValidateAndGetUserId(request, userIdClaim);
-
             if (validationResult is null)
             {
                 return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
@@ -37,26 +35,22 @@ namespace MyDiet.Core.Business.Managers
 
             var userId = (Guid)validationResult;
             var userRes = await _userService.GetByIdAsync(userId);
-
             if (userRes.Data is null)
             {
                 return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
             }
 
             var existingDietRes = await _dietService.FindAsync(d => d.Name == request.Name && d.UserId == userId);
-
             if (existingDietRes.Data is null)
             {
                 return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorRetrievingEntities);
             }
-
             if (existingDietRes.Data.ToList().Count != 0)
             {
                 return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.DietAlreadyExists);
             }
 
             var createDto = _createRequestToCreateDtoMapper.Map(request);
-
             if (createDto is null)
             {
                 return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
@@ -68,6 +62,7 @@ namespace MyDiet.Core.Business.Managers
             {
                 return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
             }
+
             dietDto.CreatedAt = DateTime.UtcNow;
             dietDto.UpdatedAt = dietDto.CreatedAt;
 

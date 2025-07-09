@@ -1,6 +1,6 @@
 ﻿using BaseUtility;
 
-namespace MyDiet.Core.Domain.Dtos
+namespace MyDiet.Core.Domain.Dtos.Diet
 {
     public class DietDto : BaseDto<int>
     {

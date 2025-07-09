@@ -97,7 +97,7 @@ namespace MyDiet.Auth.Infrastructure.Repositories
             try
             {
                 var purged = await _secretClient.PurgeDeletedSecretAsync(secretName);
-                return RepositoryResponse<KeyVaultSecret>.OkWithoutData(_responseMessageOptions.EntityPurgedSuccessfully);
+                return RepositoryResponse<KeyVaultSecret>.Ok(_responseMessageOptions.EntityPurgedSuccessfully);
             }
             catch (RequestFailedException ex) when (ex.Status == 404)
             {

@@ -1,6 +1,6 @@
 ﻿using Azure.Security.KeyVault.Secrets;
 using BaseUtility;
-using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Options;
 using MyDiet.Auth.Domain.Repositories;
 using MyDiet.Auth.Domain.Services;

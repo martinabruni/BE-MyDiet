@@ -1,5 +1,5 @@
 ﻿using BaseUtility;
-using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Dtos;
 
 namespace MyDiet.Auth.Domain.Managers
 {

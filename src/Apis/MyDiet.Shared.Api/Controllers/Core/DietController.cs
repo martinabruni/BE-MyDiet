@@ -1,12 +1,11 @@
 ﻿using BaseUtility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Dtos.Requests;
+using MyDiet.Core.Domain.Dtos.Diet;
 using MyDiet.Core.Domain.Managers;
 using System.Security.Claims;
 
-namespace MyDiet.Core.Api.Controllers.Core
+namespace MyDiet.Shared.Api.Controllers.Core
 {
     [Authorize]
     [ApiController]

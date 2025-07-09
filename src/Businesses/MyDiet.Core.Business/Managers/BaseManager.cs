@@ -6,7 +6,6 @@ namespace MyDiet.Core.Business.Managers
     internal abstract class BaseManager<TRequest> : IValidationManager<TRequest>
         where TRequest : class
     {
-
         public Guid? ValidateUserClaim(Claim? claim)
         {
             if (claim is null || !Guid.TryParse(claim.Value, out var userId))

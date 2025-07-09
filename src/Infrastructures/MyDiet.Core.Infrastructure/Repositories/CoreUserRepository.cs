@@ -3,9 +3,9 @@ using MyDiet.Core.Infrastructure.Models;
 
 namespace MyDiet.Core.Infrastructure.Repositories
 {
-    internal class CoreUserRepository : AGenericRepository<MyDietCoreDbContext, CoreUser, Guid>
+    internal class CoreUserRepository : BaseRepository<MyDietCoreDbContext, CoreUser, Guid>
     {
-        public CoreUserRepository(IDatabase<MyDietCoreDbContext> db, ResponseMessageOption messages) : base(db, messages)
+        public CoreUserRepository(IDatabase<MyDietCoreDbContext> db, ResponseMessage messages) : base(db, messages)
         {
         }
     }

@@ -16,9 +16,9 @@ namespace MyDiet.Auth.Business.Services
         private readonly IMapper<UserClaims, List<Claim>> _claimMapper;
         private readonly IMapper<KeyVaultSecret, RsaSecurityKey> _keyMapper;
         private readonly IMapper<JwtSecurityToken, TokenResponse> _tokenResponseMapper;
-        private readonly ResponseMessageOption _responseMessageOption;
+        private readonly ResponseMessage _responseMessageOption;
 
-        public TokenService(TokenOption tokenOption, IMapper<UserClaims, List<Claim>> claimMapper, IMapper<KeyVaultSecret, RsaSecurityKey> keyMapper, IMapper<JwtSecurityToken, TokenResponse> tokenResponseMapper, ResponseMessageOption responseMessageOption)
+        public TokenService(TokenOption tokenOption, IMapper<UserClaims, List<Claim>> claimMapper, IMapper<KeyVaultSecret, RsaSecurityKey> keyMapper, IMapper<JwtSecurityToken, TokenResponse> tokenResponseMapper, ResponseMessage responseMessageOption)
         {
             _tokenOption = tokenOption;
             _claimMapper = claimMapper;

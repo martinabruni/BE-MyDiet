@@ -1,8 +1,7 @@
 ﻿using BaseUtility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Dtos.Requests;
+using MyDiet.Core.Domain.Dtos.Plan;
 using MyDiet.Core.Domain.Managers;
 using System.Security.Claims;
 

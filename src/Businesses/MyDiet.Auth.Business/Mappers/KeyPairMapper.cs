@@ -1,7 +1,7 @@
 ﻿using Azure.Security.KeyVault.Secrets;
 using BaseUtility;
 using Microsoft.IdentityModel.Tokens;
-using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Options;
 using System.Security.Cryptography;
 using System.Text.Json;

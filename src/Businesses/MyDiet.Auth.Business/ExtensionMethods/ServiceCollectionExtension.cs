@@ -9,7 +9,6 @@ using MyDiet.Auth.Domain.Dtos.Claims;
 using MyDiet.Auth.Domain.Dtos.Requests;
 using MyDiet.Auth.Domain.Dtos.Responses;
 using MyDiet.Auth.Domain.Managers;
-using MyDiet.Auth.Domain.Models;
 using MyDiet.Auth.Domain.Options;
 using MyDiet.Auth.Domain.Services;
 using MyDiet.Auth.Infrastructure.Models;

@@ -2,7 +2,7 @@
 
 namespace MyDiet.Core.Domain.Options
 {
-    public class DietMessageOption : ResponseMessageOption
+    public class DietMessageOption : ResponseMessage
     {
         public string DietAlreadyExists { get; set; } = "Diet already exists.";
     }

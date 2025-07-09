@@ -1,4 +1,4 @@
-﻿namespace MyDiet.Core.Domain.Dtos.Requests
+﻿namespace MyDiet.Core.Domain.Dtos.Plan
 {
     public class CreatePlanRequest
     {

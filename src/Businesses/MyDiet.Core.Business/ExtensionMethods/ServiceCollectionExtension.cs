@@ -3,12 +3,12 @@ using MyDiet.Auth.Domain.Dtos.Claims;
 using MyDiet.Core.Business.Managers;
 using MyDiet.Core.Business.Mappers;
 using MyDiet.Core.Business.Services;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Dtos.Requests;
+using MyDiet.Core.Domain.Dtos.CoreUser;
+using MyDiet.Core.Domain.Dtos.Diet;
+using MyDiet.Core.Domain.Dtos.Plan;
 using MyDiet.Core.Domain.Managers;
 using MyDiet.Core.Domain.Options;
 using MyDiet.Core.Infrastructure.Models;
-using MyDiet.Core.Domain.Dtos.ForeignKeys;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

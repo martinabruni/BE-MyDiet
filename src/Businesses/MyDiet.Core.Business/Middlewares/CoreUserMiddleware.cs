@@ -4,7 +4,7 @@ using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Dtos.Claims;
 using MyDiet.Auth.Domain.Enums;
 using MyDiet.Auth.Infrastructure.Models;
-using MyDiet.Core.Domain.Dtos;
+using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Infrastructure.Models;
 using System.Security.Claims;
 

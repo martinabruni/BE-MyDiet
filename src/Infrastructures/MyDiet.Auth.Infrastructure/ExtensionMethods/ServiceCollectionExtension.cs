@@ -3,7 +3,7 @@ using Azure.Security.KeyVault.Secrets;
 using BaseUtility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Options;
 using MyDiet.Auth.Domain.Repositories;
 using MyDiet.Auth.Infrastructure.Models;
@@ -44,7 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IDatabase<MyDietAuthDbContext>, MyDietAuthDb>();
-            services.AddSingleton<ResponseMessageOption>();
+            services.AddSingleton<ResponseMessage>();
             services.AddScoped<IRepository<AuthUser, Guid>, AuthUserRepository>();
             services.AddSingleton(new TokenOption
             {

@@ -1,6 +1,6 @@
 ﻿using BaseUtility;
 
-namespace MyDiet.Core.Domain.Dtos
+namespace MyDiet.Core.Domain.Dtos.CoreUser
 {
     public class CoreUserDto : BaseDto<Guid>
     {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MyDiet.Auth.Domain.Models;
+using MyDiet.Auth.Domain.Dtos;
 using MyDiet.Auth.Domain.Options;
 using MyDiet.Auth.Domain.Services;
 using System.IdentityModel.Tokens.Jwt;

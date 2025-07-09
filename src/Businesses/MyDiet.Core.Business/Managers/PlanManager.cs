@@ -1,6 +1,7 @@
 ﻿using BaseUtility;
-using MyDiet.Core.Domain.Dtos;
-using MyDiet.Core.Domain.Dtos.Requests;
+using MyDiet.Core.Domain.Dtos.CoreUser;
+using MyDiet.Core.Domain.Dtos.Diet;
+using MyDiet.Core.Domain.Dtos.Plan;
 using MyDiet.Core.Domain.Managers;
 using MyDiet.Core.Domain.Options;
 using MyDiet.Core.Infrastructure.Models;
