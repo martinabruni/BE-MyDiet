@@ -33,6 +33,31 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiet.Shared.Api", "src\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiet.Shared.Test", "src\Tests\MyDiet.Shared.Test\MyDiet.Shared.Test.csproj", "{267A43AE-D834-50E6-39A7-3DD387EF37B4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prompts", "prompts", "{3EF1B023-5FDD-4031-B79B-E0BE301018C9}"
+	ProjectSection(SolutionItems) = preProject
+		prompts\prompt_business_response.md = prompts\prompt_business_response.md
+		prompts\prompt_cor.md = prompts\prompt_cor.md
+		prompts\prompt_design_patterns_instructions.md = prompts\prompt_design_patterns_instructions.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{41CC7254-183F-4EE8-AE9A-11319F829D62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "designPatterns", "designPatterns", "{FE7EA78D-5B51-4D7C-9151-E20E30A7199E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\designPatterns\Adapter_Pattern.md = docs\designPatterns\Adapter_Pattern.md
+		docs\designPatterns\Command_Pattern.md = docs\designPatterns\Command_Pattern.md
+		docs\designPatterns\Decorator_Pattern.md = docs\designPatterns\Decorator_Pattern.md
+		docs\designPatterns\Dependency_Injection_Pattern.md = docs\designPatterns\Dependency_Injection_Pattern.md
+		docs\designPatterns\Facade_Pattern.md = docs\designPatterns\Facade_Pattern.md
+		docs\designPatterns\Observer_Pattern.md = docs\designPatterns\Observer_Pattern.md
+		docs\designPatterns\README.md = docs\designPatterns\README.md
+		docs\designPatterns\Repository_Pattern.md = docs\designPatterns\Repository_Pattern.md
+		docs\designPatterns\Service_Layer_Pattern.md = docs\designPatterns\Service_Layer_Pattern.md
+		docs\designPatterns\Singleton_Pattern.md = docs\designPatterns\Singleton_Pattern.md
+		docs\designPatterns\Strategy_Pattern.md = docs\designPatterns\Strategy_Pattern.md
+		docs\designPatterns\Template_Method_Pattern.md = docs\designPatterns\Template_Method_Pattern.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +121,7 @@ Global
 		{A2F1BEB4-D728-4D67-9A3B-4237250E3D10} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{129E0309-A919-CA46-6B5A-2508F92784A9} = {1E6A4772-B0A3-40B0-B1FC-68D15B834170}
 		{267A43AE-D834-50E6-39A7-3DD387EF37B4} = {A2F1BEB4-D728-4D67-9A3B-4237250E3D10}
+		{FE7EA78D-5B51-4D7C-9151-E20E30A7199E} = {41CC7254-183F-4EE8-AE9A-11319F829D62}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E840E447-324A-4759-8BDF-BA710BA71B85}

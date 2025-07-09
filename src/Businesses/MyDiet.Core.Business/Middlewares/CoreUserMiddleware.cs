@@ -32,7 +32,7 @@ namespace MyDiet.Core.Business.Middlewares
 
                 if (coreUser.Data is null)
                 {
-                    var isFirstLogin = await authUserService.FindAsync(au => au.CoreUserId == userId);
+                    var isFirstLogin = await authUserService.FindAsync(au => au.Id == userId);
 
                     if (isFirstLogin.Data is not null)
                     {

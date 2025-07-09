@@ -7,7 +7,7 @@ using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Domain.Dtos.Diet;
 using MyDiet.Core.Domain.Dtos.Plan;
 using MyDiet.Core.Domain.Managers;
-using MyDiet.Core.Domain.Options;
+using MyDiet.Core.Domain.Responses;
 using MyDiet.Core.Infrastructure.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -27,8 +27,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IMapper<PlanDto, Plan>, PlanMapper>();
             services.AddScoped<IMapper<CreatePlanRequest, PlanDto>, PlanMapper>();
 
-            services.AddSingleton<DietMessageOption>();
-            services.AddSingleton<PlanMessageOption>();
+            services.AddSingleton<DietMessage>();
+            services.AddSingleton<PlanMessage>();
             services.AddScoped<IService<DietDto, Diet, int>, DietService>();
             services.AddScoped<IService<PlanDto, Plan, int>, PlanService>();
             services.AddScoped<IService<CoreUserDto, CoreUser, Guid>, CoreUserService>();

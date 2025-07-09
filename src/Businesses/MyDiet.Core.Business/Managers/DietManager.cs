@@ -1,8 +1,10 @@
 ﻿using BaseUtility;
+using MyDiet.Core.Business.Validation;
 using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Domain.Dtos.Diet;
 using MyDiet.Core.Domain.Managers;
-using MyDiet.Core.Domain.Options;
+using MyDiet.Core.Domain.Responses;
+using MyDiet.Core.Domain.Validation;
 using MyDiet.Core.Infrastructure.Models;
 using System.Security.Claims;
 
@@ -10,61 +12,41 @@ namespace MyDiet.Core.Business.Managers
 {
     internal class DietManager : BaseManager<CreateDietRequest>, IManager<DietDto, CreateDietRequest, int>
     {
+        private ValidationContext<CoreValidationContext<DietDto, int>> _validationContext = new() { Context = new() };
         private readonly IService<DietDto, Diet, int> _dietService;
         private readonly IService<CoreUserDto, CoreUser, Guid> _userService;
         private readonly IMapper<CreateDietDto, DietDto> _createDtoToDietDtoMapper;
         private readonly IMapper<CreateDietRequest, CreateDietDto> _createRequestToCreateDtoMapper;
-        private readonly DietMessageOption _responseMessageOption;
+        private readonly DietMessage _message;
+        private readonly ValidationPipeline<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>> _validationPipeline = new();
 
-        public DietManager(IService<CoreUserDto, CoreUser, Guid> userService, IService<DietDto, Diet, int> dietService, IMapper<CreateDietDto, DietDto> createDtoToDietDtoMapper, IMapper<CreateDietRequest, CreateDietDto> createRequestToCreateDtoMapper, DietMessageOption responseMessageOption)
+        public DietManager(IService<CoreUserDto, CoreUser, Guid> userService, IService<DietDto, Diet, int> dietService, IMapper<CreateDietDto, DietDto> createDtoToDietDtoMapper, IMapper<CreateDietRequest, CreateDietDto> createRequestToCreateDtoMapper, DietMessage message)
         {
             _userService = userService;
             _dietService = dietService;
             _createDtoToDietDtoMapper = createDtoToDietDtoMapper;
             _createRequestToCreateDtoMapper = createRequestToCreateDtoMapper;
-            _responseMessageOption = responseMessageOption;
+            _message = message;
+            _validationPipeline
+                .AddHandler(new RequestValidationHandler<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>(message))
+                .AddHandler(new UserAuthenticationValidationHandler<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
+                .AddHandler(new DietExistenceValidationHandler(dietService, message))
+                .AddHandler(new DietMappingValidationHandler(createRequestToCreateDtoMapper, message, createDtoToDietDtoMapper));
         }
 
         public async Task<BusinessResponse<DietDto>> CreateAsync(CreateDietRequest request, Claim? userIdClaim)
         {
-            var validationResult = ValidateAndGetUserId(request, userIdClaim);
-            if (validationResult is null)
+            _validationContext.Context = new CoreValidationContext<DietDto, int>
             {
-                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
-            }
+                UserClaim = userIdClaim
+            };
 
-            var userId = (Guid)validationResult;
-            var userRes = await _userService.GetByIdAsync(userId);
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
-            }
-
-            var existingDietRes = await _dietService.FindAsync(d => d.Name == request.Name && d.UserId == userId);
-            if (existingDietRes.Data is null)
-            {
-                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorRetrievingEntities);
-            }
-            if (existingDietRes.Data.ToList().Count != 0)
-            {
-                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.DietAlreadyExists);
-            }
-
-            var createDto = _createRequestToCreateDtoMapper.Map(request);
-            if (createDto is null)
-            {
-                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
-            }
-
-            createDto.UserId = userId;
-            var dietDto = _createDtoToDietDtoMapper.Map(createDto);
+            var validationRes = await _validationPipeline.ValidateAsync(request, _validationContext);
+            var dietDto = validationRes.Data;
             if (dietDto is null)
             {
-                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorCreatingEntity);
+                return validationRes;
             }
-
-            dietDto.CreatedAt = DateTime.UtcNow;
-            dietDto.UpdatedAt = dietDto.CreatedAt;
 
             return await _dietService.CreateAsync(dietDto);
         }
@@ -75,26 +57,26 @@ namespace MyDiet.Core.Business.Managers
 
             if (userId is null)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return BusinessResponse<DietDto>.Unauthorize(_message.InvalidRequest);
             }
 
             var userRes = await _userService.GetByIdAsync((Guid)userId);
 
             if (userRes.Data is null)
             {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
+                return BusinessResponse<DietDto>.NotFound(_message.EntityNotFound);
             }
 
             var dietRes = await _dietService.GetByIdAsync(id);
 
             if (dietRes.Data is null)
             {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
+                return BusinessResponse<DietDto>.NotFound(_message.EntityNotFound);
             }
 
             if (dietRes.Data.UserId != userId)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return BusinessResponse<DietDto>.Unauthorize(_message.InvalidRequest);
             }
 
             return await _dietService.DeleteAsync(id);
@@ -105,26 +87,26 @@ namespace MyDiet.Core.Business.Managers
             var userId = ValidateUserClaim(userIdClaim);
             if (userId is null)
             {
-                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
+                return BusinessResponse<DietDto>.BadRequest(_message.InvalidRequest);
             }
 
             var userRes = await _userService.GetByIdAsync((Guid)userId);
 
             if (userRes.Data is null)
             {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
+                return BusinessResponse<DietDto>.NotFound(_message.EntityNotFound);
             }
 
             var dietRes = await _dietService.GetByIdAsync(id);
 
             if (dietRes.Data is null)
             {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
+                return BusinessResponse<DietDto>.NotFound(_message.EntityNotFound);
             }
 
             if (dietRes.Data.UserId != userId)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return BusinessResponse<DietDto>.Unauthorize(_message.InvalidRequest);
             }
 
             return dietRes;
@@ -135,7 +117,7 @@ namespace MyDiet.Core.Business.Managers
             var userId = ValidateUserClaim(userIdClaim);
             if (userId is null)
             {
-                return BusinessResponse<IEnumerable<DietDto>>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return BusinessResponse<IEnumerable<DietDto>>.Unauthorize(_message.InvalidRequest);
             }
             return await _dietService.FindAsync(d => d.UserId == userId);
         }
@@ -146,7 +128,7 @@ namespace MyDiet.Core.Business.Managers
 
             if (validRequest is null)
             {
-                return BusinessResponse<DietDto>.BadRequest(_responseMessageOption.InvalidRequest);
+                return BusinessResponse<DietDto>.BadRequest(_message.InvalidRequest);
             }
 
             var userId = (Guid)validRequest;
@@ -154,19 +136,19 @@ namespace MyDiet.Core.Business.Managers
 
             if (userRes.Data is null)
             {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
+                return BusinessResponse<DietDto>.NotFound(_message.EntityNotFound);
             }
 
             var existingDietRes = await _dietService.GetByIdAsync(id);
 
             if (existingDietRes.Data is null)
             {
-                return BusinessResponse<DietDto>.NotFound(_responseMessageOption.EntityNotFound);
+                return BusinessResponse<DietDto>.NotFound(_message.EntityNotFound);
             }
 
             if (existingDietRes.Data.UserId != userId)
             {
-                return BusinessResponse<DietDto>.Unauthorize(_responseMessageOption.InvalidRequest);
+                return BusinessResponse<DietDto>.Unauthorize(_message.InvalidRequest);
             }
 
             var createDto = _createRequestToCreateDtoMapper.Map(request);
@@ -174,14 +156,14 @@ namespace MyDiet.Core.Business.Managers
 
             if (createDto is null)
             {
-                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorUpdatingEntity);
+                return BusinessResponse<DietDto>.InternalServerError(_message.ErrorUpdatingEntity);
             }
 
             var newDto = _createDtoToDietDtoMapper.Map(createDto);
 
             if (newDto is null)
             {
-                return BusinessResponse<DietDto>.InternalServerError(_responseMessageOption.ErrorUpdatingEntity);
+                return BusinessResponse<DietDto>.InternalServerError(_message.ErrorUpdatingEntity);
             }
 
             newDto.CreatedAt = existingDietRes.Data.CreatedAt;

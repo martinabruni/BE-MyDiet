@@ -1,8 +1,8 @@
 ﻿using BaseUtility;
 
-namespace MyDiet.Core.Domain.Options
+namespace MyDiet.Core.Domain.Responses
 {
-    public class DietMessageOption : ResponseMessage
+    public class DietMessage : ResponseMessage
     {
         public string DietAlreadyExists { get; set; } = "Diet already exists.";
     }

@@ -1,8 +1,8 @@
 ﻿using BaseUtility;
 
-namespace MyDiet.Core.Domain.Options
+namespace MyDiet.Core.Domain.Responses
 {
-    public class PlanMessageOption : ResponseMessage
+    public class PlanMessage : ResponseMessage
     {
         public string PlanAlreadyExists { get; set; } = "Plan with this name already exists.";
     }
