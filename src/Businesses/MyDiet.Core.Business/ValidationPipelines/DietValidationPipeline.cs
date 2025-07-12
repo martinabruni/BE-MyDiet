@@ -1,5 +1,6 @@
 using BaseUtility;
 using MyDiet.Core.Business.Validators;
+using MyDiet.Core.Business.Validators.DietValidators;
 using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Domain.Dtos.Diet;
 using MyDiet.Core.Domain.Responses;
@@ -43,24 +44,24 @@ namespace MyDiet.Core.Business.ValidationPipelines
             CreateValidators = new ValidationPipeline<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>();
             CreateValidators = CommonValidators;
             CreateValidators
-                .AddHandler(new CreateDietExistenceValidator(dietService, message, true))
-                .AddHandler(new CreateDietMappingValidator(createRequestToDietDtoMapper, message));
+                .AddHandler(new DietNameUniquenessValidator(dietService, message, true))
+                .AddHandler(new DietCreateRequestMapper(createRequestToDietDtoMapper, message));
 
             // Initialize delete validators
             DeleteValidators = new ValidationPipeline<int, DietDto, CoreValidationContext<DietDto, int>>();
             DeleteValidators
                 .AddHandler(new RequestValidator<int, DietDto, CoreValidationContext<DietDto, int>>(message))
                 .AddHandler(new UserAuthenticationValidator<int, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
-                .AddHandler(new DietExistenceByIdValidator(dietService, message, false))
-                .AddHandler(new IdAuthorizationValidator(message));
+                .AddHandler(new DietIdExistenceValidator(dietService, message, false))
+                .AddHandler(new DietIdOwnershipValidator(message));
 
             // Initialize get by id validators
             GetByIdValidators = new ValidationPipeline<int, DietDto, CoreValidationContext<DietDto, int>>();
             GetByIdValidators
                 .AddHandler(new RequestValidator<int, DietDto, CoreValidationContext<DietDto, int>>(message))
                 .AddHandler(new UserAuthenticationValidator<int, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
-                .AddHandler(new DietExistenceByIdValidator(dietService, message, false))
-                .AddHandler(new IdAuthorizationValidator(message));
+                .AddHandler(new DietIdExistenceValidator(dietService, message, false))
+                .AddHandler(new DietIdOwnershipValidator(message));
 
             // Initialize get by user id validators
             GetByUserIdValidators = new ValidationPipeline<Claim, DietDto, CoreValidationContext<DietDto, int>>();
@@ -73,8 +74,8 @@ namespace MyDiet.Core.Business.ValidationPipelines
             UpdateValidators
                 .AddHandler(new RequestValidator<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>(message))
                 .AddHandler(new UserAuthenticationValidator<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
-                .AddHandler(new CreateDietExistenceValidator(dietService, message, false))
-                .AddHandler(new CreateAuthorizationValidator(message));
+                .AddHandler(new DietNameUniquenessValidator(dietService, message, false))
+                .AddHandler(new DietCreateOwnershipValidator(message));
         }
     }
 }
