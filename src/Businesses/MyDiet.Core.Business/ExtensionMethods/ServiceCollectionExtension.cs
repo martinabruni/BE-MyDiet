@@ -26,6 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IMapper<Plan, PlanDto>, PlanMapper>();
             services.AddScoped<IMapper<PlanDto, Plan>, PlanMapper>();
             services.AddScoped<IMapper<CreatePlanRequest, PlanDto>, PlanMapper>();
+            services.AddScoped<IMapper<CreateDietRequest, DietDto>, DietMapper>();
 
             services.AddSingleton<DietMessage>();
             services.AddSingleton<PlanMessage>();

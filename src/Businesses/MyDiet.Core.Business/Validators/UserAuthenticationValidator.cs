@@ -3,10 +3,9 @@ using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Domain.Validation;
 using MyDiet.Core.Infrastructure.Models;
 
-namespace MyDiet.Core.Business.Validation
+namespace MyDiet.Core.Business.Validators
 {
-    internal class UserAuthenticationValidationHandler<TRequest, TData, TContext, TKey> : BaseValidationHandler<TRequest, TData, CoreValidationContext<TData, TKey>>
-        where TRequest : class
+    internal class UserAuthenticationValidator<TRequest, TData, TContext, TKey> : BaseValidationHandler<TRequest, TData, CoreValidationContext<TData, TKey>>
         where TData : class
         where TContext : class
         where TKey : notnull
@@ -14,7 +13,7 @@ namespace MyDiet.Core.Business.Validation
         private readonly IService<CoreUserDto, CoreUser, Guid> _userService;
         private readonly ResponseMessage _message;
 
-        public UserAuthenticationValidationHandler(IService<CoreUserDto, CoreUser, Guid> userService, ResponseMessage message)
+        public UserAuthenticationValidator(IService<CoreUserDto, CoreUser, Guid> userService, ResponseMessage message)
         {
             _userService = userService;
             _message = message;
@@ -38,7 +37,7 @@ namespace MyDiet.Core.Business.Validation
             }
 
             validation.Context.UserId = userId;
-            return BusinessResponse<TData>.Ok($"{nameof(UserAuthenticationValidationHandler<TRequest, TData, TContext, TKey>)} passed");
+            return BusinessResponse<TData>.Ok($"{nameof(UserAuthenticationValidator<TRequest, TData, TContext, TKey>)} passed");
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MyDiet.Core.Domain.Dtos.Diet
 {
-    public class DietDto : BaseDto<int>
+    public class DietDto : BaseDto<int>, IAuthorizedEntity<Guid>
     {
         public Guid UserId { get; set; }
 
