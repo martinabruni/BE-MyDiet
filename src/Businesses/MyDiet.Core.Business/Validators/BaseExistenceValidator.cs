@@ -1,4 +1,5 @@
 ﻿using BaseUtility;
+using MyDiet.Core.Business.Validators.DietValidators;
 using MyDiet.Core.Domain.Responses;
 using MyDiet.Core.Domain.Validation;
 using System.Linq.Expressions;
@@ -44,7 +45,7 @@ namespace MyDiet.Core.Business.Validators
 
             validation.Context.Data = existingDietRes.Data.FirstOrDefault();
 
-            return BusinessResponse<TData>.Ok($"{nameof(CreateDietExistenceValidator)} passed");
+            return BusinessResponse<TData>.Ok($"{nameof(DietNameUniquenessValidator)} passed");
         }
     }
 }

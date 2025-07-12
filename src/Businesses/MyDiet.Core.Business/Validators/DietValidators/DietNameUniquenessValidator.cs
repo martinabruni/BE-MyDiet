@@ -4,11 +4,11 @@ using MyDiet.Core.Domain.Responses;
 using MyDiet.Core.Infrastructure.Models;
 using System.Linq.Expressions;
 
-namespace MyDiet.Core.Business.Validators
+namespace MyDiet.Core.Business.Validators.DietValidators
 {
-    internal class CreateDietExistenceValidator : BaseExistenceValidator<CreateDietRequest, DietDto, Diet, int>
+    internal class DietNameUniquenessValidator : BaseExistenceValidator<CreateDietRequest, DietDto, Diet, int>
     {
-        public CreateDietExistenceValidator(IService<DietDto, Diet, int> dietService, DietMessage dietMessage, bool errorOnExistingDiet) : base(dietService, dietMessage, errorOnExistingDiet)
+        public DietNameUniquenessValidator(IService<DietDto, Diet, int> dietService, DietMessage dietMessage, bool errorOnExistingDiet) : base(dietService, dietMessage, errorOnExistingDiet)
         {
         }
 

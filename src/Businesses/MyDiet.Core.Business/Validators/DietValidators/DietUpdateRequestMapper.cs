@@ -2,14 +2,14 @@
 using MyDiet.Core.Domain.Dtos.Diet;
 using MyDiet.Core.Domain.Validation;
 
-namespace MyDiet.Core.Business.Validators
+namespace MyDiet.Core.Business.Validators.DietValidators
 {
-    internal class UpdateDietMappingValidator : BaseValidationHandler<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>
+    internal class DietUpdateRequestMapper : BaseValidationHandler<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>
     {
         private readonly IMapper<CreateDietRequest, DietDto> _createRequestToDietDtoMapper;
         private readonly ResponseMessage _message;
 
-        public UpdateDietMappingValidator(IMapper<CreateDietRequest, DietDto> createRequestToDietDtoMapper, ResponseMessage message)
+        public DietUpdateRequestMapper(IMapper<CreateDietRequest, DietDto> createRequestToDietDtoMapper, ResponseMessage message)
         {
             _createRequestToDietDtoMapper = createRequestToDietDtoMapper;
             _message = message;
@@ -33,7 +33,7 @@ namespace MyDiet.Core.Business.Validators
             newDto.CreatedAt = oldDto.CreatedAt;
             newDto.UpdatedAt = DateTime.UtcNow;
 
-            return Task.FromResult(BusinessResponse<DietDto>.Ok(newDto, $"{nameof(CreateDietMappingValidator)} passed"));
+            return Task.FromResult(BusinessResponse<DietDto>.Ok(newDto, $"{nameof(DietCreateRequestMapper)} passed"));
         }
     }
 }

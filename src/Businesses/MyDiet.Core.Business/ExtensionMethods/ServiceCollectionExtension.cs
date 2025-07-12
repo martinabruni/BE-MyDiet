@@ -34,6 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IService<PlanDto, Plan, int>, PlanService>();
             services.AddScoped<IService<CoreUserDto, CoreUser, Guid>, CoreUserService>();
 
+            services.AddScoped<DietValidationPipeline>();
             services.AddScoped<IManager<DietDto, CreateDietRequest, int>, DietManager>();
             services.AddScoped<IManager<PlanDto, CreatePlanRequest, int>, PlanManager>();
             return services;

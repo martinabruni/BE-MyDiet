@@ -1,4 +1,5 @@
 ﻿using BaseUtility;
+using MyDiet.Core.Business.Validators.DietValidators;
 using MyDiet.Core.Domain.Validation;
 
 namespace MyDiet.Core.Business.Validators
@@ -25,7 +26,7 @@ namespace MyDiet.Core.Business.Validators
             {
                 return Task.FromResult(BusinessResponse<TData>.Unauthorize(_message.InvalidRequest));
             }
-            return Task.FromResult(BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(CreateAuthorizationValidator)} passed"));
+            return Task.FromResult(BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(DietCreateOwnershipValidator)} passed"));
         }
     }
 }
