@@ -15,19 +15,19 @@ namespace MyDiet.Core.Business.Validators.DietValidators
             _message = message;
         }
 
-        protected override async Task<BusinessResponse<DietDto>> ValidateAsync(CreateDietRequest request, ValidationContext<CoreValidationContext<DietDto, int>> context)
+        protected override Task<BusinessResponse<DietDto>> ValidateAsync(CreateDietRequest request, ContextProvider<CoreValidationContext<DietDto, int>> context)
         {
             var dietDto = _createRequestToDietDtoMapper.Map(request);
             if (dietDto is null)
             {
-                return BusinessResponse<DietDto>.InternalServerError(_message.ErrorCreatingEntity);
+                return Task.FromResult(BusinessResponse<DietDto>.InternalServerError(_message.ErrorCreatingEntity));
             }
 
             dietDto.UserId = context.Context.UserId;
             dietDto.CreatedAt = DateTime.UtcNow;
             dietDto.UpdatedAt = dietDto.CreatedAt;
 
-            return BusinessResponse<DietDto>.Ok(dietDto, $"{nameof(DietCreateRequestMapper)} passed");
+            return Task.FromResult(BusinessResponse<DietDto>.Ok(dietDto, $"{nameof(DietCreateRequestMapper)} passed"));
         }
     }
 }

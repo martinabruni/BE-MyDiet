@@ -5,7 +5,7 @@ namespace MyDiet.Core.Business.Validators.DietValidators
 {
     internal class DietIdOwnershipValidator : BaseAuthorizationValidator<int, DietDto, int, Guid>
     {
-        public DietIdOwnershipValidator(ResponseMessage message) : base(message)
+        public DietIdOwnershipValidator(ResponseMessage message, bool authorizeFromOldData) : base(message, authorizeFromOldData)
         {
         }
     }

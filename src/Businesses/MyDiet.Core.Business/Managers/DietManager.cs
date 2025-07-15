@@ -10,26 +10,26 @@ namespace MyDiet.Core.Business.Managers
 {
     internal class DietManager : BaseManager<CreateDietRequest>, IManager<DietDto, CreateDietRequest, int>
     {
-        private ValidationContext<CoreValidationContext<DietDto, int>> _validation = new() { Context = new() };
+        private ContextProvider<CoreValidationContext<DietDto, int>> _contextProvider = new() { Context = new() };
         private readonly IService<DietDto, Diet, int> _dietService;
-        private readonly DietValidationPipeline _validationPipeline;
+        private readonly DietValidationPipelineSet _pipelineSet;
 
-        public DietManager(IService<DietDto, Diet, int> dietService, DietValidationPipeline validationPipeline)
+        public DietManager(IService<DietDto, Diet, int> dietService, DietValidationPipelineSet pipelineSet)
         {
             _dietService = dietService;
-            _validationPipeline = validationPipeline;
+            _pipelineSet = pipelineSet;
         }
 
         public async Task<BusinessResponse<DietDto>> CreateAsync(CreateDietRequest request, Claim? userIdClaim)
         {
-            _validation.Context = new CoreValidationContext<DietDto, int>
+            _contextProvider.Context = new CoreValidationContext<DietDto, int>
             {
                 UserClaim = userIdClaim
             };
 
-            var validationRes = await _validationPipeline.CommonValidators.ValidateAsync(request, _validation);
-            var dietDto = validationRes.Data;
+            var validationRes = await _pipelineSet.CreateValidators.ValidateAsync(request, _contextProvider);
 
+            var dietDto = validationRes.Data;
             if (dietDto is null)
             {
                 return validationRes;
@@ -40,53 +40,57 @@ namespace MyDiet.Core.Business.Managers
 
         public async Task<BusinessResponse<DietDto>> DeleteAsync(int id, Claim? userIdClaim)
         {
-            _validation.Context = new CoreValidationContext<DietDto, int>
+            _contextProvider.Context = new CoreValidationContext<DietDto, int>
             {
                 UserClaim = userIdClaim
             };
 
-            var validationRes = await _validationPipeline.DeleteValidators.ValidateAsync(id, _validation);
+            var validationRes = await _pipelineSet.DeleteValidators.ValidateAsync(id, _contextProvider);
 
             return await _dietService.DeleteAsync(id);
         }
 
         public async Task<BusinessResponse<DietDto>> GetByIdAsync(int id, Claim? userIdClaim)
         {
-            _validation.Context = new CoreValidationContext<DietDto, int>
+            _contextProvider.Context = new CoreValidationContext<DietDto, int>
             {
                 UserClaim = userIdClaim
             };
 
-            var validationRes = await _validationPipeline.GetByIdValidators.ValidateAsync(id, _validation);
-            
-            return await _dietService.GetByIdAsync(id);
+            var validationRes = await _pipelineSet.GetByIdValidators.ValidateAsync(id, _contextProvider);
+
+            return validationRes;
         }
 
         public async Task<BusinessResponse<IEnumerable<DietDto>>> GetByUserIdAsync(Claim? userIdClaim)
         {
-            _validation.Context = new CoreValidationContext<DietDto, int>
+            _contextProvider.Context = new CoreValidationContext<DietDto, int>
             {
                 UserClaim = userIdClaim
             };
 
-            var validationRes = await _validationPipeline.GetByUserIdValidators.ValidateAsync(userIdClaim, _validation);
+            var validationRes = await _pipelineSet.GetByUserIdValidators.ValidateAsync(userIdClaim, _contextProvider);
 
             return await _dietService.FindAsync(d => d.UserId == validationRes.Data.UserId);
         }
 
+        //TODO: Non funziona perche l'handler che controlla l'esistenza della dieta e' sbagliato (p.Name == request.Name && p.Id != id)
         public async Task<BusinessResponse<DietDto>> UpdateAsync(CreateDietRequest request, int id, Claim? userIdClaim)
         {
-            _validation.Context = new CoreValidationContext<DietDto, int>
+            var dietDto = 
+                new DietDto
             {
-                UserClaim = userIdClaim
+                Id = id,
+                Name = request.Name,
             };
 
-            var validationRes = await _validationPipeline.UpdateValidators.ValidateAsync(request, _validation);
-
-            if (validationRes.Data is null)
+            _contextProvider.Context = new CoreValidationContext<DietDto, int>
             {
-                return validationRes;
-            }
+                UserClaim = userIdClaim,
+                Data = dietDto
+            };
+
+            var validationRes = await _pipelineSet.UpdateValidators.ValidateAsync(dietDto, _contextProvider);
 
             return await _dietService.UpdateAsync(validationRes.Data);
         }

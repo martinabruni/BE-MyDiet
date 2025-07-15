@@ -1,9 +1,12 @@
 ﻿using BaseUtility;
+using Microsoft.AspNetCore.Mvc;
+using MyDiet.Core.Business.ValidationPipelines;
 using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Domain.Dtos.Diet;
 using MyDiet.Core.Domain.Dtos.Plan;
 using MyDiet.Core.Domain.Managers;
-using MyDiet.Core.Domain.Responses;
+using MyDiet.Core.Domain.Mappers;
+using MyDiet.Core.Domain.Validation;
 using MyDiet.Core.Infrastructure.Models;
 using System.Security.Claims;
 
@@ -14,111 +17,80 @@ namespace MyDiet.Core.Business.Managers
         private readonly IService<CoreUserDto, CoreUser, Guid> _userService;
         private readonly IService<DietDto, Diet, int> _dietService;
         private readonly IService<PlanDto, Plan, int> _planService;
-        private readonly PlanMessage _message;
+        private readonly ResponseMessage _message;
         private readonly IMapper<CreatePlanRequest, PlanDto> _createDtoToPlanDtoMapper;
+        private readonly PlanValidationPipelineSet _pipelineSet;
+        private readonly ContextProvider<CoreValidationContext<PlanDto, int>> _contextProvider = new() { Context = new() };
+        private readonly IAsyncMapper<ContextProvider<CoreValidationContext<PlanDto, int>>, ContextProvider<CoreValidationContext<DietDto, int>>> _contextMapper;
 
-        public PlanManager(PlanMessage message, IService<PlanDto, Plan, int> planService, IService<CoreUserDto, CoreUser, Guid> userService, IService<DietDto, Diet, int> dietService, IMapper<CreatePlanRequest, PlanDto> createDtoToPlanDtoMapper)
+        public PlanManager(ResponseMessage message, IService<PlanDto, Plan, int> planService, IService<CoreUserDto, CoreUser, Guid> userService, IService<DietDto, Diet, int> dietService, IMapper<CreatePlanRequest, PlanDto> createDtoToPlanDtoMapper, PlanValidationPipelineSet pipelineSet, IAsyncMapper<ContextProvider<CoreValidationContext<PlanDto, int>>, ContextProvider<CoreValidationContext<DietDto, int>>> contextMapper)
         {
             _message = message;
             _planService = planService;
             _userService = userService;
             _dietService = dietService;
             _createDtoToPlanDtoMapper = createDtoToPlanDtoMapper;
+            _pipelineSet = pipelineSet;
+            _contextMapper = contextMapper;
         }
 
         public async Task<BusinessResponse<PlanDto>> CreateAsync(CreatePlanRequest request, Claim? userIdClaim)
         {
-            var validationResult = ValidateAndGetUserId(request, userIdClaim);
-            if (validationResult is null)
+            _contextProvider.Context = new CoreValidationContext<PlanDto, int>
             {
-                return BusinessResponse<PlanDto>.BadRequest(_message.InvalidRequest);
-            }
+                Data = new PlanDto
+                {
+                    DietId = request.DietId,
+                    Id = 0,
+                    Name = request.Name,
+                    UserId = new()
+                },
+                UserClaim = userIdClaim
+            };
 
-            var userId = (Guid)validationResult;
-            var userRes = await _userService.GetByIdAsync(userId);
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
-            }
+            var validationRes = await _pipelineSet.CreationValidators.ValidateAsync(request, _contextProvider);
 
-            var dietRes = await _dietService.GetByIdAsync(request.DietId);
-            if (dietRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
-            }
-            if (dietRes.Data.UserId != userId)
-            {
-                return BusinessResponse<PlanDto>.Unauthorize(_message.InvalidRequest);
-            }
+            var createDto = validationRes.Data;
 
-            var existingPlanRes = await _planService.FindAsync(p => p.Name == request.Name && p.DietId == request.DietId);
-            if (existingPlanRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.InternalServerError(_message.ErrorRetrievingEntities);
-            }
-            if (existingPlanRes.Data.ToList().Count != 0)
-            {
-                return BusinessResponse<PlanDto>.BadRequest(_message.PlanAlreadyExists);
-            }
-            var createDto = _createDtoToPlanDtoMapper.Map(request);
             if (createDto is null)
             {
-                return BusinessResponse<PlanDto>.InternalServerError(_message.ErrorCreatingEntity);
+                return validationRes;
             }
-            createDto.CreatedAt = DateTime.UtcNow;
-            createDto.UpdatedAt = createDto.CreatedAt;
+
             return await _planService.CreateAsync(createDto);
         }
 
         public async Task<BusinessResponse<PlanDto>> DeleteAsync(int id, Claim? userIdClaim)
         {
-            var validationResult = ValidateUserClaim(userIdClaim);
-            if (validationResult is null)
+            _contextProvider.Context = new CoreValidationContext<PlanDto, int>
             {
-                return BusinessResponse<PlanDto>.BadRequest(_message.NotLoggedIn);
-            }
-            var userId = (Guid)validationResult;
-            var planRes = await _planService.GetByIdAsync(id);
-            if (planRes.Data is null)
+                UserClaim = userIdClaim
+            };
+
+            var validationRes = await _pipelineSet.DeletionValidators.ValidateAsync(id, _contextProvider);
+            if (validationRes.StatusCode != BusinessCode.Ok)
             {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
+                return validationRes;
             }
 
-            var dietRes = await _dietService.GetByIdAsync(planRes.Data.DietId);
-            if (dietRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
-            }
-            if (dietRes.Data.UserId != userId)
-            {
-                return BusinessResponse<PlanDto>.Unauthorize(_message.InvalidRequest);
-            }
             return await _planService.DeleteAsync(id);
         }
 
         public async Task<BusinessResponse<PlanDto>> GetByIdAsync(int id, Claim? userIdClaim)
         {
-            var validationResult = ValidateUserClaim(userIdClaim);
-            if (validationResult is null)
+            _contextProvider.Context = new CoreValidationContext<PlanDto, int>
             {
-                return BusinessResponse<PlanDto>.BadRequest(_message.NotLoggedIn);
-            }
-            var userId = (Guid)validationResult;
-            var planRes = await _planService.GetByIdAsync(id);
-            if (planRes.Data is null)
+                UserClaim = userIdClaim
+            };
+
+            var validationResult = await _pipelineSet.GetByIdValidators.ValidateAsync(id, _contextProvider);
+            if (validationResult.Data is null)
             {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
+                return validationResult;
             }
-            var dietRes = await _dietService.GetByIdAsync(planRes.Data.DietId);
-            if (dietRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
-            }
-            if (dietRes.Data.UserId != userId)
-            {
-                return BusinessResponse<PlanDto>.Unauthorize(_message.InvalidRequest);
-            }
-            return BusinessResponse<PlanDto>.Ok(planRes.Data, _message.EntitiesRetrievedSuccessfully);
+
+            //TODO: chiamata duplicata
+            return validationResult;
         }
 
         public async Task<BusinessResponse<IEnumerable<PlanDto>>> GetByUserIdAsync(Claim? userIdClaim)
@@ -160,53 +132,28 @@ namespace MyDiet.Core.Business.Managers
 
         public async Task<BusinessResponse<PlanDto>> UpdateAsync(CreatePlanRequest request, int id, Claim? userIdClaim)
         {
-            var validationResult = ValidateAndGetUserId(request, userIdClaim);
-            if (validationResult is null)
+            var planDto = new PlanDto
             {
-                return BusinessResponse<PlanDto>.BadRequest(_message.InvalidRequest);
-            }
-            var userId = (Guid)validationResult;
-            var userRes = await _userService.GetByIdAsync(userId);
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
-            }
-            var dietRes = await _dietService.GetByIdAsync(request.DietId);
-            if (dietRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
-            }
-            if (dietRes.Data.UserId != userId)
-            {
-                return BusinessResponse<PlanDto>.Unauthorize(_message.InvalidRequest);
-            }
-            var planWithSameNameRes = await _planService.FindAsync(p => p.Name == request.Name && p.DietId == request.DietId && p.Id != id);
-            if (planWithSameNameRes.Data is null)
-            {
-                return BusinessResponse<PlanDto>.InternalServerError(_message.ErrorRetrievingEntities);
-            }
-            if (planWithSameNameRes.Data.ToList().Count != 0)
-            {
-                return BusinessResponse<PlanDto>.BadRequest(_message.PlanAlreadyExists);
-            }
-            var actualPlan = await _planService.GetByIdAsync(id);
+                DietId = request.DietId,
+                Name = request.Name,
+                Id = id,
+                UserId = new()
+            };
 
-            if (actualPlan.Data is null)
+            _contextProvider.Context = new CoreValidationContext<PlanDto, int>
             {
-                return BusinessResponse<PlanDto>.NotFound(_message.EntityNotFound);
+                Data = planDto,
+                UserClaim = userIdClaim
+            };
+
+            var validationResult = await _pipelineSet.UpdateValidators.ValidateAsync(planDto, _contextProvider);
+
+            if (validationResult.StatusCode != BusinessCode.Ok)
+            {
+                return validationResult;
             }
 
-            var updateDto = _createDtoToPlanDtoMapper.Map(request);
-            if (updateDto is null)
-            {
-                return BusinessResponse<PlanDto>.InternalServerError(_message.ErrorCreatingEntity);
-            }
-
-            updateDto.Id = id;
-            updateDto.CreatedAt = actualPlan.Data.CreatedAt;
-            updateDto.UpdatedAt = DateTime.UtcNow;
-
-            return await _planService.UpdateAsync(updateDto);
+            return await _planService.UpdateAsync(validationResult.Data);
         }
     }
 }

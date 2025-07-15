@@ -4,32 +4,28 @@ using MyDiet.Core.Domain.Validation;
 
 namespace MyDiet.Core.Business.Validators.DietValidators
 {
-    internal class DietUpdateRequestMapper : BaseValidationHandler<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>
+    internal class DietUpdateRequestMapper : BaseValidationHandler<DietDto, DietDto, CoreValidationContext<DietDto, int>>
     {
-        private readonly IMapper<CreateDietRequest, DietDto> _createRequestToDietDtoMapper;
         private readonly ResponseMessage _message;
 
-        public DietUpdateRequestMapper(IMapper<CreateDietRequest, DietDto> createRequestToDietDtoMapper, ResponseMessage message)
+        public DietUpdateRequestMapper(ResponseMessage message)
         {
-            _createRequestToDietDtoMapper = createRequestToDietDtoMapper;
             _message = message;
         }
 
-        protected override Task<BusinessResponse<DietDto>> ValidateAsync(CreateDietRequest request, ValidationContext<CoreValidationContext<DietDto, int>> context)
+        protected override Task<BusinessResponse<DietDto>> ValidateAsync(DietDto request, ContextProvider<CoreValidationContext<DietDto, int>> context)
         {
-            var oldDto = context.Context.Data;
-
-            if (oldDto is null)
-            {
-                return Task.FromResult(BusinessResponse<DietDto>.InternalServerError(_message.ErrorRetrievingEntity));
-            }
-
-            var newDto = _createRequestToDietDtoMapper.Map(request);
+            var newDto = context.Context.Data;
+            var oldDto = context.Context.OldData;
             if (newDto is null)
             {
-                return Task.FromResult(BusinessResponse<DietDto>.InternalServerError(_message.ErrorMapping));
+                return Task.FromResult(BusinessResponse<DietDto>.InternalServerError(_message.ErrorUpdatingEntity));
             }
-
+            if (oldDto is null)
+            {
+                return Task.FromResult(BusinessResponse<DietDto>.InternalServerError(_message.ErrorUpdatingEntity));
+            }
+            newDto.UserId = oldDto.UserId;
             newDto.CreatedAt = oldDto.CreatedAt;
             newDto.UpdatedAt = DateTime.UtcNow;
 

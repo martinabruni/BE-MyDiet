@@ -13,6 +13,7 @@ namespace MyDiet.Core.Business.Mappers
                 Id = input.Id,
                 DietId = input.DietId,
                 Name = input.Name,
+                UserId = input.UserId,
                 CreatedAt = input.CreatedAt,
                 UpdatedAt = input.UpdatedAt
             };
@@ -25,6 +26,7 @@ namespace MyDiet.Core.Business.Mappers
                 Id = input.Id,
                 DietId = input.DietId,
                 Name = input.Name,
+                UserId = input.UserId,
                 CreatedAt = input.CreatedAt,
                 UpdatedAt = input.UpdatedAt
             };
@@ -37,6 +39,7 @@ namespace MyDiet.Core.Business.Mappers
                 Id = 0, // Assuming Id is auto-generated
                 DietId = input.DietId,
                 Name = input.Name,
+                UserId = new(), //TODO: Set the UserId appropriately
             };
         }
     }

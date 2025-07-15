@@ -19,7 +19,7 @@ namespace MyDiet.Core.Business.Validators
             _message = message;
         }
 
-        protected override async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ValidationContext<CoreValidationContext<TData, TKey>> validation)
+        protected override async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ContextProvider<CoreValidationContext<TData, TKey>> validation)
         {
             if (validation.Context.UserClaim is null)
             {
@@ -37,7 +37,7 @@ namespace MyDiet.Core.Business.Validators
             }
 
             validation.Context.UserId = userId;
-            return BusinessResponse<TData>.Ok($"{nameof(UserAuthenticationValidator<TRequest, TData, TContext, TKey>)} passed");
+            return BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(UserAuthenticationValidator<TRequest, TData, TContext, TKey>)} passed");
         }
     }
 }

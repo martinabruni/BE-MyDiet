@@ -1,6 +1,5 @@
 ﻿using BaseUtility;
 using MyDiet.Core.Business.Validators.DietValidators;
-using MyDiet.Core.Domain.Responses;
 using MyDiet.Core.Domain.Validation;
 using System.Linq.Expressions;
 
@@ -11,41 +10,53 @@ namespace MyDiet.Core.Business.Validators
         where TDatabase : class, IEntity<TKey>
         where TKey : notnull
     {
-        private readonly IService<TData, TDatabase, TKey> _dietService;
-        private readonly DietMessage _dietMessage;
-        private bool _errorOnExistingDiet;
+        private readonly IService<TData, TDatabase, TKey> _service;
+        private readonly ResponseMessage _message;
+        private bool _errorOnExistingEntity;
+        private bool _retrieveOldEntity;
+        private bool _overrideContextData;
 
-        public BaseExistenceValidator(IService<TData, TDatabase, TKey> dietService, DietMessage dietMessage, bool errorOnExistingDiet)
+        public BaseExistenceValidator(IService<TData, TDatabase, TKey> service, ResponseMessage message, bool errorOnExistingEntity, bool retrieveEntity = false, bool overrideContextData = false)
         {
-            _dietService = dietService;
-            _dietMessage = dietMessage;
-            _errorOnExistingDiet = errorOnExistingDiet;
+            _service = service;
+            _message = message;
+            _errorOnExistingEntity = errorOnExistingEntity;
+            _retrieveOldEntity = retrieveEntity;
+            _overrideContextData = overrideContextData;
         }
 
         protected abstract Expression<Func<TDatabase, bool>> GetFilterExpression(TRequest request);
 
-        protected override async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ValidationContext<CoreValidationContext<TData, TKey>> validation)
+        protected override async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ContextProvider<CoreValidationContext<TData, TKey>> validation)
         {
             var userId = validation.Context.UserId;
+            var existingEntityRes = await _service.FindAsync(GetFilterExpression(request));
+            var existingEntities = existingEntityRes.Data;
 
-            var existingDietRes = await _dietService.FindAsync(GetFilterExpression(request));
-
-            if (existingDietRes.Data is null)
+            if (existingEntities is null)
             {
-                return BusinessResponse<TData>.InternalServerError(_dietMessage.ErrorRetrievingEntities);
-            }
-            if (existingDietRes.Data.ToList().Count != 0 && _errorOnExistingDiet)
-            {
-                return BusinessResponse<TData>.BadRequest(_dietMessage.DietAlreadyExists);
-            }
-            if (existingDietRes.Data.ToList().Count == 0 && !_errorOnExistingDiet)
-            {
-                return BusinessResponse<TData>.NotFound(_dietMessage.EntityNotFound);
+                return BusinessResponse<TData>.InternalServerError(_message.ErrorRetrievingEntities);
             }
 
-            validation.Context.Data = existingDietRes.Data.FirstOrDefault();
+            var entityCount = existingEntities.ToList().Count();
 
-            return BusinessResponse<TData>.Ok($"{nameof(DietNameUniquenessValidator)} passed");
+            if (entityCount != 0 && _errorOnExistingEntity)
+            {
+                return BusinessResponse<TData>.BadRequest(_message.EntityAlreadyExists);
+            }
+            if (entityCount == 0 && !_errorOnExistingEntity)
+            {
+                return BusinessResponse<TData>.NotFound(_message.EntityNotFound);
+            }
+
+            var existingEntity = existingEntities.FirstOrDefault();
+
+            if (_retrieveOldEntity)
+                validation.Context.OldData = existingEntity;
+            if(_overrideContextData)
+                validation.Context.Data = existingEntity;
+
+            return BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(DietNameUniquenessValidator)} passed");
         }
     }
 }
