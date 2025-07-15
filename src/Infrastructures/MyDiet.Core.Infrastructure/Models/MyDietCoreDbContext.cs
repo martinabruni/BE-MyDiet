@@ -43,8 +43,6 @@ public partial class MyDietCoreDbContext : DbContext
     {
         modelBuilder.Entity<CalendarEntry>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Calendar__3214EC07FE9C33DA");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -61,8 +59,6 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<CalendarMeal>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Calendar__3214EC072F262A0E");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -75,12 +71,15 @@ public partial class MyDietCoreDbContext : DbContext
                 .HasForeignKey(d => d.MealId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CalendarMeal_Meal");
+
+            entity.HasOne(d => d.User).WithMany(p => p.CalendarMeal)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CalendarMeal_CoreUser");
         });
 
         modelBuilder.Entity<CoreUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CoreUser__3214EC07F15C24B4");
-
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -91,8 +90,6 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<Diet>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Diet__3214EC0773795A4D");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -108,8 +105,6 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<Food>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Food__3214EC0715EFD07C");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -120,8 +115,6 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<FoodAlternative>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__FoodAlte__3214EC075040C018");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -138,8 +131,6 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<Meal>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Meal__3214EC074BBD5DEC");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -152,12 +143,15 @@ public partial class MyDietCoreDbContext : DbContext
                 .HasForeignKey(d => d.PlanId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Meal_Plan");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Meal)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Meal_CoreUser");
         });
 
         modelBuilder.Entity<MealFood>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MealFood__3214EC07E84F6DE4");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Quantity).HasColumnType("decimal(18, 4)");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -176,12 +170,15 @@ public partial class MyDietCoreDbContext : DbContext
                 .HasForeignKey(d => d.UnitOfMeasurementId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MealFood_UoM");
+
+            entity.HasOne(d => d.User).WithMany(p => p.MealFood)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MealFood_CoreUser");
         });
 
         modelBuilder.Entity<MealSwap>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MealSwap__3214EC07F6A6FD6D");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -194,12 +191,15 @@ public partial class MyDietCoreDbContext : DbContext
                 .HasForeignKey(d => d.SwappedCalendarMealId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MealSwap_Swapped");
+
+            entity.HasOne(d => d.User).WithMany(p => p.MealSwap)
+                .HasForeignKey(d => d.UserID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MealSwap_CoreUser");
         });
 
         modelBuilder.Entity<MealType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MealType__3214EC07F0259319");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -210,8 +210,6 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<Plan>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Plan__3214EC076EE427D0");
-
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -223,12 +221,15 @@ public partial class MyDietCoreDbContext : DbContext
                 .HasForeignKey(d => d.DietId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Plan_Diet");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Plan)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Plan_CoreUser");
         });
 
         modelBuilder.Entity<UnitConversion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UnitConv__3214EC07692279FE");
-
             entity.Property(e => e.ConversionFactor).HasColumnType("decimal(18, 4)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -246,8 +247,6 @@ public partial class MyDietCoreDbContext : DbContext
 
         modelBuilder.Entity<UnitOfMeasurement>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UnitOfMe__3214EC07FA40CC1C");
-
             entity.Property(e => e.Abbreviation)
                 .IsRequired()
                 .HasMaxLength(10)

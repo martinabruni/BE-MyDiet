@@ -17,7 +17,11 @@ public partial class MealSwap
 
     public DateTime? UpdatedAt { get; set; }
 
+    public Guid UserID { get; set; }
+
     public virtual CalendarMeal CalendarMeal { get; set; }
 
     public virtual CalendarMeal SwappedCalendarMeal { get; set; }
+
+    public virtual CoreUser User { get; set; }
 }

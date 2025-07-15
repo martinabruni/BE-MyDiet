@@ -17,5 +17,15 @@ public partial class CoreUser
 
     public virtual ICollection<CalendarEntry> CalendarEntry { get; set; } = new List<CalendarEntry>();
 
+    public virtual ICollection<CalendarMeal> CalendarMeal { get; set; } = new List<CalendarMeal>();
+
     public virtual ICollection<Diet> Diet { get; set; } = new List<Diet>();
+
+    public virtual ICollection<Meal> Meal { get; set; } = new List<Meal>();
+
+    public virtual ICollection<MealFood> MealFood { get; set; } = new List<MealFood>();
+
+    public virtual ICollection<MealSwap> MealSwap { get; set; } = new List<MealSwap>();
+
+    public virtual ICollection<Plan> Plan { get; set; } = new List<Plan>();
 }

@@ -17,6 +17,8 @@ public partial class Meal
 
     public DateTime? UpdatedAt { get; set; }
 
+    public Guid UserId { get; set; }
+
     public virtual ICollection<CalendarMeal> CalendarMeal { get; set; } = new List<CalendarMeal>();
 
     public virtual ICollection<MealFood> MealFood { get; set; } = new List<MealFood>();
@@ -24,4 +26,6 @@ public partial class Meal
     public virtual MealType MealType { get; set; }
 
     public virtual Plan Plan { get; set; }
+
+    public virtual CoreUser User { get; set; }
 }

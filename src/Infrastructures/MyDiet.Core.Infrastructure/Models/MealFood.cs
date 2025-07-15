@@ -21,9 +21,13 @@ public partial class MealFood
 
     public DateTime? UpdatedAt { get; set; }
 
+    public Guid UserId { get; set; }
+
     public virtual Food Food { get; set; }
 
     public virtual Meal Meal { get; set; }
 
     public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
+
+    public virtual CoreUser User { get; set; }
 }
