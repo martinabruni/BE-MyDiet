@@ -1,6 +1,5 @@
 ﻿using BaseUtility;
 using MyDiet.Core.Domain.Dtos.Diet;
-using MyDiet.Core.Domain.Validation;
 using MyDiet.Core.Infrastructure.Models;
 using System.Linq.Expressions;
 

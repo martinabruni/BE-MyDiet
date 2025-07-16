@@ -76,12 +76,12 @@ namespace MyDiet.Core.Business.Managers
 
         public async Task<BusinessResponse<DietDto>> UpdateAsync(CreateDietRequest request, int id, Claim? userIdClaim)
         {
-            var dietDto = 
+            var dietDto =
                 new DietDto
-            {
-                Id = id,
-                Name = request.Name,
-            };
+                {
+                    Id = id,
+                    Name = request.Name,
+                };
 
             _contextProvider.Context = new CoreValidationContext<DietDto, int>
             {

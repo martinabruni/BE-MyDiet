@@ -39,7 +39,7 @@ namespace MyDiet.Core.Business.Validators
                 }
                 authorizedUser = validation.Context.Data.UserId;
             }
-            if(!authorizedUser.Equals(validation.Context.UserId))
+            if (!authorizedUser.Equals(validation.Context.UserId))
             {
                 return Task.FromResult(BusinessResponse<TData>.Unauthorize(_message.InvalidRequest));
             }

@@ -1,6 +1,5 @@
 ﻿using BaseUtility;
 using MyDiet.Core.Business.Validators;
-using MyDiet.Core.Business.Validators.DietValidators;
 using MyDiet.Core.Business.Validators.PlanValidators;
 using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Domain.Dtos.Diet;

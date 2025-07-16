@@ -34,34 +34,44 @@ namespace MyDiet.Core.Business.ValidationPipelines
             ResponseMessage message)
         {
             CreateValidators
-                .AddHandler(new RequestValidator<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>(message))
-                .AddHandler(new UserAuthenticationValidator<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
-                .AddHandler(new DietNameUniquenessValidator(dietService, message, true))
-                .AddHandler(new DietCreateRequestMapper(createRequestToDietDtoMapper, message));
+                .AddHandlers([
+                    new RequestValidator<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>>(message),
+                    new UserAuthenticationValidator<CreateDietRequest, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message),
+                    new DietNameUniquenessValidator(dietService, message, true),
+                    new DietCreateRequestMapper(createRequestToDietDtoMapper, message)
+                ]);
 
             DeleteValidators
-                .AddHandler(new RequestValidator<int, DietDto, CoreValidationContext<DietDto, int>>(message))
-                .AddHandler(new UserAuthenticationValidator<int, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
-                .AddHandler(new DietIdExistenceValidator(dietService, message, false))
-                .AddHandler(new DietIdOwnershipValidator(message, false));
+                .AddHandlers([
+                    new RequestValidator<int, DietDto, CoreValidationContext<DietDto, int>>(message),
+                    new UserAuthenticationValidator<int, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message),
+                    new DietIdExistenceValidator(dietService, message, false),
+                    new DietIdOwnershipValidator(message, false)
+                ]);
 
             GetByIdValidators
-                .AddHandler(new RequestValidator<int, DietDto, CoreValidationContext<DietDto, int>>(message))
-                .AddHandler(new UserAuthenticationValidator<int, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
-                .AddHandler(new DietIdExistenceValidator(dietService, message, false, overrideContextData: true))
-                .AddHandler(new DietIdOwnershipValidator(message, false));
+                .AddHandlers([
+                    new RequestValidator<int, DietDto, CoreValidationContext<DietDto, int>>(message),
+                    new UserAuthenticationValidator<int, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message),
+                    new DietIdExistenceValidator(dietService, message, false, overrideContextData: true),
+                    new DietIdOwnershipValidator(message, false)
+                ]);
 
             GetByUserIdValidators
-                .AddHandler(new RequestValidator<Claim, DietDto, CoreValidationContext<DietDto, int>>(message))
-                .AddHandler(new UserAuthenticationValidator<Claim, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message));
+                .AddHandlers([
+                    new RequestValidator<Claim, DietDto, CoreValidationContext<DietDto, int>>(message),
+                    new UserAuthenticationValidator<Claim, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message)
+                ]);
 
             UpdateValidators
-                .AddHandler(new RequestValidator<DietDto, DietDto, CoreValidationContext<DietDto, int>>(message))
-                .AddHandler(new UserAuthenticationValidator<DietDto, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message))
-                .AddHandler(new DietExistenceValidator(dietService, message, false, true))
-                .AddHandler(new DietOwnershipValidator(message, true))
-                .AddHandler(new DietUpdateNameUniquenessValidator(dietService, message, true, false))
-                .AddHandler(new DietUpdateRequestMapper(message));
+                .AddHandlers([
+                    new RequestValidator<DietDto, DietDto, CoreValidationContext<DietDto, int>>(message),
+                    new UserAuthenticationValidator<DietDto, DietDto, CoreValidationContext<DietDto, int>, int>(userService, message),
+                    new DietExistenceValidator(dietService, message, false, true),
+                    new DietOwnershipValidator(message, true),
+                    new DietUpdateNameUniquenessValidator(dietService, message, true, false),
+                    new DietUpdateRequestMapper(message)
+                ]);
         }
     }
 }

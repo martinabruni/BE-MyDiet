@@ -65,7 +65,7 @@ namespace MyDiet.Core.Business.Validators
 
             if (_retrieveOldEntity)
                 validation.Context.OldData = existingEntity;
-            if(_overrideContextData)
+            if (_overrideContextData)
                 validation.Context.Data = existingEntity;
 
             return BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(DietNameUniquenessValidator)} passed");

@@ -6,7 +6,7 @@ namespace MyDiet.Core.Domain.Validation
         where TData : class
     {
         public TData? Data { get; set; }
-        public TData? OldData {  get; set; }
+        public TData? OldData { get; set; }
         public Guid UserId { get; set; }
         public Claim? UserClaim { get; set; }
     }
