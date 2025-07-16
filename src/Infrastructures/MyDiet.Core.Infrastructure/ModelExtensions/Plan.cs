@@ -2,7 +2,7 @@
 
 namespace MyDiet.Core.Infrastructure.Models
 {
-    public partial class Plan : IAuditable, IEntity<int>
+    public partial class Plan : IAuditable, IEntity<int>, IAuthorizedEntity<Guid?>
     {
     }
 }

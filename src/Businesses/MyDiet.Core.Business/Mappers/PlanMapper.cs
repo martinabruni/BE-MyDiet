@@ -24,9 +24,9 @@ namespace MyDiet.Core.Business.Mappers
             return new PlanDto
             {
                 Id = input.Id,
-                DietId = input.DietId,
+                DietId = (int)input.DietId,
                 Name = input.Name,
-                UserId = input.UserId,
+                UserId = (Guid)input.UserId,
                 CreatedAt = input.CreatedAt,
                 UpdatedAt = input.UpdatedAt
             };

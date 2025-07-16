@@ -4,5 +4,5 @@
     [Username] NCHAR (50) NULL, 
     [CreatedAt] DATETIME NOT NULL,
     [UpdatedAt] DATETIME NULL, 
-    CONSTRAINT [FK_CoreUser_AuthUser] FOREIGN KEY ([Id]) REFERENCES [AuthUser]([Id]), 
+    CONSTRAINT [FK_CoreUser_AuthUser] FOREIGN KEY ([Id]) REFERENCES [AuthUser]([Id]) ON DELETE NO ACTION, 
 )

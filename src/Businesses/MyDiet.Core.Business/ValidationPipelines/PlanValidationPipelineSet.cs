@@ -61,10 +61,11 @@ namespace MyDiet.Core.Business.ValidationPipelines
                     new PlanIdOwnershipValidator(message, false)
                 ]);
 
-            //TODO: implementa un handler BaseCollectionExistenceValidator
-            //GetByUserIdValidators
-            //    .AddHandler(new RequestValidator<Claim, PlanDto, CoreValidationContext<PlanDto, int>>(message))
-            //    .AddHandler(new UserAuthenticationValidator<Claim, PlanDto, CoreValidationContext<PlanDto, int>, int>(userService, message));
+            GetByUserIdValidators
+                .AddHandlers([
+                    new RequestValidator<Claim, PlanDto, CoreValidationContext<PlanDto, int>>(message),
+                    new UserAuthenticationValidator<Claim, PlanDto, CoreValidationContext<PlanDto, int>, int>(userService, message),
+                ]);
 
             UpdateValidators
                 .AddHandlers([

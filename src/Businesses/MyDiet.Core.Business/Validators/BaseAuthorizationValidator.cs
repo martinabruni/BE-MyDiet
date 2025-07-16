@@ -6,8 +6,6 @@ namespace MyDiet.Core.Business.Validators
 {
     internal abstract class BaseAuthorizationValidator<TRequest, TData, TKey, TOwnerKey> : BaseValidationHandler<TRequest, TData, CoreValidationContext<TData, TKey>>
         where TData : class, IEntity<TKey>, IAuthorizedEntity<TOwnerKey>
-        where TKey : notnull
-        where TOwnerKey : notnull
     {
         private readonly ResponseMessage _message;
         private readonly bool _authorizeFromOldData;

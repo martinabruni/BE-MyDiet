@@ -9,19 +9,19 @@ public partial class MealFood
 {
     public int Id { get; set; }
 
-    public int MealId { get; set; }
+    public int? MealId { get; set; }
 
-    public int FoodId { get; set; }
+    public int? FoodId { get; set; }
 
     public decimal Quantity { get; set; }
 
-    public int UnitOfMeasurementId { get; set; }
+    public int? UnitOfMeasurementId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
 
     public virtual Food Food { get; set; }
 

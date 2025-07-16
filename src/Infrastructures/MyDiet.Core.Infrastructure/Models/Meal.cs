@@ -9,15 +9,15 @@ public partial class Meal
 {
     public int Id { get; set; }
 
-    public int PlanId { get; set; }
+    public int? PlanId { get; set; }
 
-    public int MealTypeId { get; set; }
+    public int? MealTypeId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
 
     public virtual ICollection<CalendarMeal> CalendarMeal { get; set; } = new List<CalendarMeal>();
 

@@ -23,7 +23,7 @@ namespace MyDiet.Core.Business.Mappers
             return new DietDto
             {
                 Id = input.Id,
-                UserId = input.UserId,
+                UserId = (Guid)input.UserId,
                 Name = input.Name,
                 CreatedAt = input.CreatedAt,
                 UpdatedAt = input.UpdatedAt

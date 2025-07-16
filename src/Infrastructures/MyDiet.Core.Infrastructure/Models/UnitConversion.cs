@@ -9,9 +9,9 @@ public partial class UnitConversion
 {
     public int Id { get; set; }
 
-    public int FromUnitId { get; set; }
+    public int? FromUnitId { get; set; }
 
-    public int ToUnitId { get; set; }
+    public int? ToUnitId { get; set; }
 
     public decimal ConversionFactor { get; set; }
 

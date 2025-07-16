@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace MyDiet.Core.Business.Validators.DietValidators
 {
-    internal class DietNameUniquenessValidator : BaseExistenceValidator<CreateDietRequest, DietDto, Diet, int>
+    internal class DietNameUniquenessValidator : BaseAuthorizedExistenceValidator<CreateDietRequest, DietDto, Diet, int>
     {
-        public DietNameUniquenessValidator(IService<DietDto, Diet, int> service, ResponseMessage message, bool errorOnExistingEntity, bool retrieveEntity = false) : base(service, message, errorOnExistingEntity, retrieveEntity)
+        public DietNameUniquenessValidator(IService<DietDto, Diet, int> service, ResponseMessage message, bool errorOnExistingEntity, bool retrieveOldEntity = false) : base(service, message, errorOnExistingEntity, retrieveOldEntity)
         {
         }
 

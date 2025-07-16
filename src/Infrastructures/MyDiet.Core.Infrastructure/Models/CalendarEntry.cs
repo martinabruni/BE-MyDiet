@@ -9,9 +9,9 @@ public partial class CalendarEntry
 {
     public int Id { get; set; }
 
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
 
-    public int PlanId { get; set; }
+    public int? PlanId { get; set; }
 
     public DateOnly Date { get; set; }
 

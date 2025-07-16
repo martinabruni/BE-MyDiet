@@ -9,7 +9,7 @@ public partial class Plan
 {
     public int Id { get; set; }
 
-    public int DietId { get; set; }
+    public int? DietId { get; set; }
 
     public string Name { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Plan
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
 
     public virtual ICollection<CalendarEntry> CalendarEntry { get; set; } = new List<CalendarEntry>();
 

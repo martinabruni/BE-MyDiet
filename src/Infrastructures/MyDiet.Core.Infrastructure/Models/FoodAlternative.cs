@@ -9,9 +9,9 @@ public partial class FoodAlternative
 {
     public int Id { get; set; }
 
-    public int FoodId { get; set; }
+    public int? FoodId { get; set; }
 
-    public int AlternativeFoodId { get; set; }
+    public int? AlternativeFoodId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

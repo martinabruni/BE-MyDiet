@@ -71,10 +71,9 @@ namespace MyDiet.Core.Business.Managers
 
             var validationRes = await _pipelineSet.GetByUserIdValidators.ValidateAsync(userIdClaim, _contextProvider);
 
-            return await _dietService.FindAsync(d => d.UserId == validationRes.Data.UserId);
+            return await _dietService.FindAsync(d => d.UserId == _contextProvider.Context.UserId);
         }
 
-        //TODO: Non funziona perche l'handler che controlla l'esistenza della dieta e' sbagliato (p.Name == request.Name && p.Id != id)
         public async Task<BusinessResponse<DietDto>> UpdateAsync(CreateDietRequest request, int id, Claim? userIdClaim)
         {
             var dietDto = 

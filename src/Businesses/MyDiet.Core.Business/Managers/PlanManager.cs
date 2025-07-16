@@ -1,5 +1,4 @@
 ﻿using BaseUtility;
-using Microsoft.AspNetCore.Mvc;
 using MyDiet.Core.Business.ValidationPipelines;
 using MyDiet.Core.Domain.Dtos.CoreUser;
 using MyDiet.Core.Domain.Dtos.Diet;
@@ -89,45 +88,19 @@ namespace MyDiet.Core.Business.Managers
                 return validationResult;
             }
 
-            //TODO: chiamata duplicata
             return validationResult;
         }
 
         public async Task<BusinessResponse<IEnumerable<PlanDto>>> GetByUserIdAsync(Claim? userIdClaim)
         {
-            var validationResult = ValidateUserClaim(userIdClaim);
-            if (validationResult is null)
+            _contextProvider.Context = new CoreValidationContext<PlanDto, int>
             {
-                return BusinessResponse<IEnumerable<PlanDto>>.BadRequest(_message.NotLoggedIn);
-            }
-            var userId = (Guid)validationResult;
-            var userRes = await _userService.GetByIdAsync(userId);
-            if (userRes.Data is null)
-            {
-                return BusinessResponse<IEnumerable<PlanDto>>.NotFound(_message.EntityNotFound);
-            }
-            var dietRes = await _dietService.FindAsync(d => d.UserId == userId);
-            if (dietRes.Data is null)
-            {
-                return BusinessResponse<IEnumerable<PlanDto>>.InternalServerError(_message.ErrorRetrievingEntities);
-            }
-            var diets = dietRes.Data.ToList();
-            if (diets.Count == 0)
-            {
-                return BusinessResponse<IEnumerable<PlanDto>>.NotFound(_message.EntityNotFound);
-            }
+                UserClaim = userIdClaim
+            };
 
-            // Get all diet IDs for the user
-            var dietIds = diets.Select(d => d.Id).ToList();
+            var validationResult = await _pipelineSet.GetByUserIdValidators.ValidateAsync(userIdClaim, _contextProvider);
 
-            // Get all plans for these diets
-            var plansRes = await _planService.FindAsync(p => dietIds.Contains(p.DietId));
-            if (plansRes.Data is null)
-            {
-                return BusinessResponse<IEnumerable<PlanDto>>.InternalServerError(_message.ErrorRetrievingEntities);
-            }
-
-            return BusinessResponse<IEnumerable<PlanDto>>.Ok(plansRes.Data, _message.EntitiesRetrievedSuccessfully);
+            return await _planService.FindAsync(p => p.UserId == _contextProvider.Context.UserId);
         }
 
         public async Task<BusinessResponse<PlanDto>> UpdateAsync(CreatePlanRequest request, int id, Claim? userIdClaim)

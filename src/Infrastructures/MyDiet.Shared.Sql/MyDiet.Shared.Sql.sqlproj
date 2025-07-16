@@ -72,6 +72,7 @@
     <None Include="Snapshots\MyDiet.Shared.Sql_20250703_12-35-20.dacpac" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250707_11-14-04.dacpac" />
     <None Include="Snapshots\MyDiet.Shared.Sql_20250715_16-12-24.dacpac" />
+    <None Include="Snapshots\MyDiet.Shared.Sql_20250716_10-29-38.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\CalendarEntry.sql" />
@@ -88,5 +89,8 @@
     <Build Include="dbo\Tables\UnitOfMeasurement.sql" />
     <Build Include="dbo\Tables\AuthUser.sql" />
     <Build Include="dbo\Tables\CoreUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="MyDiet.Shared.Sql.refactorlog" />
   </ItemGroup>
 </Project>

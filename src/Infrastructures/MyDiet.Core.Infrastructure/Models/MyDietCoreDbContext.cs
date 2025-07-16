@@ -48,12 +48,12 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.Plan).WithMany(p => p.CalendarEntry)
                 .HasForeignKey(d => d.PlanId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_CalendarEntry_Plan");
 
             entity.HasOne(d => d.User).WithMany(p => p.CalendarEntry)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_CalendarEntry_User");
         });
 
@@ -64,17 +64,14 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.CalendarEntry).WithMany(p => p.CalendarMeal)
                 .HasForeignKey(d => d.CalendarEntryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CalendarMeal_CalendarEntry");
 
             entity.HasOne(d => d.Meal).WithMany(p => p.CalendarMeal)
                 .HasForeignKey(d => d.MealId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CalendarMeal_Meal");
 
             entity.HasOne(d => d.User).WithMany(p => p.CalendarMeal)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CalendarMeal_CoreUser");
         });
 
@@ -99,7 +96,7 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Diet)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Diet_User");
         });
 
@@ -120,12 +117,10 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.AlternativeFood).WithMany(p => p.FoodAlternativeAlternativeFood)
                 .HasForeignKey(d => d.AlternativeFoodId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_FoodAlternative_AltFood");
 
             entity.HasOne(d => d.Food).WithMany(p => p.FoodAlternativeFood)
                 .HasForeignKey(d => d.FoodId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_FoodAlternative_Food");
         });
 
@@ -136,17 +131,17 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.MealType).WithMany(p => p.Meal)
                 .HasForeignKey(d => d.MealTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Meal_MealType");
 
             entity.HasOne(d => d.Plan).WithMany(p => p.Meal)
                 .HasForeignKey(d => d.PlanId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Meal_Plan");
 
             entity.HasOne(d => d.User).WithMany(p => p.Meal)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Meal_CoreUser");
         });
 
@@ -158,22 +153,22 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.Food).WithMany(p => p.MealFood)
                 .HasForeignKey(d => d.FoodId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_MealFood_Food");
 
             entity.HasOne(d => d.Meal).WithMany(p => p.MealFood)
                 .HasForeignKey(d => d.MealId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_MealFood_Meal");
 
             entity.HasOne(d => d.UnitOfMeasurement).WithMany(p => p.MealFood)
                 .HasForeignKey(d => d.UnitOfMeasurementId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_MealFood_UoM");
 
             entity.HasOne(d => d.User).WithMany(p => p.MealFood)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_MealFood_CoreUser");
         });
 
@@ -184,17 +179,15 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.CalendarMeal).WithMany(p => p.MealSwapCalendarMeal)
                 .HasForeignKey(d => d.CalendarMealId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MealSwap_CalendarMeal");
 
             entity.HasOne(d => d.SwappedCalendarMeal).WithMany(p => p.MealSwapSwappedCalendarMeal)
                 .HasForeignKey(d => d.SwappedCalendarMealId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MealSwap_Swapped");
 
             entity.HasOne(d => d.User).WithMany(p => p.MealSwap)
-                .HasForeignKey(d => d.UserID)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_MealSwap_CoreUser");
         });
 
@@ -219,12 +212,12 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.Diet).WithMany(p => p.Plan)
                 .HasForeignKey(d => d.DietId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Plan_Diet");
 
             entity.HasOne(d => d.User).WithMany(p => p.Plan)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Plan_CoreUser");
         });
 
@@ -236,12 +229,10 @@ public partial class MyDietCoreDbContext : DbContext
 
             entity.HasOne(d => d.FromUnit).WithMany(p => p.UnitConversionFromUnit)
                 .HasForeignKey(d => d.FromUnitId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UnitConversion_FromUoM");
 
             entity.HasOne(d => d.ToUnit).WithMany(p => p.UnitConversionToUnit)
                 .HasForeignKey(d => d.ToUnitId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UnitConversion_ToUoM");
         });
 

@@ -8,7 +8,6 @@ namespace MyDiet.Core.Business.Validators
     internal class UserAuthenticationValidator<TRequest, TData, TContext, TKey> : BaseValidationHandler<TRequest, TData, CoreValidationContext<TData, TKey>>
         where TData : class
         where TContext : class
-        where TKey : notnull
     {
         private readonly IService<CoreUserDto, CoreUser, Guid> _userService;
         private readonly ResponseMessage _message;

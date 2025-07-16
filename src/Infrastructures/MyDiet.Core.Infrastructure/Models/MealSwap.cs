@@ -9,15 +9,15 @@ public partial class MealSwap
 {
     public int Id { get; set; }
 
-    public int CalendarMealId { get; set; }
+    public int? CalendarMealId { get; set; }
 
-    public int SwappedCalendarMealId { get; set; }
+    public int? SwappedCalendarMealId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid UserID { get; set; }
+    public Guid? UserId { get; set; }
 
     public virtual CalendarMeal CalendarMeal { get; set; }
 

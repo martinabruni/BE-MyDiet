@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[UnitConversion] (
     [Id]               INT             IDENTITY (1, 1) NOT NULL,
-    [FromUnitId]       INT             NOT NULL,
-    [ToUnitId]         INT             NOT NULL,
+    [FromUnitId]       INT             NULL,
+    [ToUnitId]         INT             NULL,
     [ConversionFactor] DECIMAL (18, 4) NOT NULL,
     [CreatedAt]        DATETIME        NOT NULL,
     [UpdatedAt]        DATETIME        NULL,

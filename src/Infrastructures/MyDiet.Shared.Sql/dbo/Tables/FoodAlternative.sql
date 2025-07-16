@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[FoodAlternative] (
     [Id]                INT      IDENTITY (1, 1) NOT NULL,
-    [FoodId]            INT      NOT NULL,
-    [AlternativeFoodId] INT      NOT NULL,
+    [FoodId]            INT      NULL,
+    [AlternativeFoodId] INT      NULL,
     [CreatedAt]         DATETIME NOT NULL,
     [UpdatedAt]         DATETIME NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),

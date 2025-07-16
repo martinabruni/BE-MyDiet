@@ -5,10 +5,9 @@ using System.Linq.Expressions;
 
 namespace MyDiet.Core.Business.Validators
 {
-    internal abstract class BaseExistenceValidator<TRequest, TData, TDatabase, TKey> : BaseValidationHandler<TRequest, TData, CoreValidationContext<TData, TKey>>
+    internal abstract class BaseAuthorizedExistenceValidator<TRequest, TData, TDatabase, TKey> : BaseValidationHandler<TRequest, TData, CoreValidationContext<TData, TKey>>
         where TData : class, IEntity<TKey>
-        where TDatabase : class, IEntity<TKey>
-        where TKey : notnull
+        where TDatabase : class, IEntity<TKey>, IAuthorizedEntity<Guid?>
     {
         private readonly IService<TData, TDatabase, TKey> _service;
         private readonly ResponseMessage _message;
@@ -16,12 +15,12 @@ namespace MyDiet.Core.Business.Validators
         private bool _retrieveOldEntity;
         private bool _overrideContextData;
 
-        public BaseExistenceValidator(IService<TData, TDatabase, TKey> service, ResponseMessage message, bool errorOnExistingEntity, bool retrieveEntity = false, bool overrideContextData = false)
+        public BaseAuthorizedExistenceValidator(IService<TData, TDatabase, TKey> service, ResponseMessage message, bool errorOnExistingEntity, bool retrieveOldEntity = false, bool overrideContextData = false)
         {
             _service = service;
             _message = message;
             _errorOnExistingEntity = errorOnExistingEntity;
-            _retrieveOldEntity = retrieveEntity;
+            _retrieveOldEntity = retrieveOldEntity;
             _overrideContextData = overrideContextData;
         }
 
@@ -30,7 +29,20 @@ namespace MyDiet.Core.Business.Validators
         protected override async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ContextProvider<CoreValidationContext<TData, TKey>> validation)
         {
             var userId = validation.Context.UserId;
-            var existingEntityRes = await _service.FindAsync(GetFilterExpression(request));
+
+            Expression<Func<TDatabase, bool>> baseFilter = GetFilterExpression(request);
+            Expression<Func<TDatabase, bool>> activeFilter = p => p.UserId == userId;
+
+            var parameter = baseFilter.Parameters[0];
+            var combined = Expression.Lambda<Func<TDatabase, bool>>(
+                Expression.AndAlso(
+                    baseFilter.Body,
+                    Expression.Invoke(activeFilter, parameter)
+                ),
+                parameter
+            );
+
+            var existingEntityRes = await _service.FindAsync(combined);
             var existingEntities = existingEntityRes.Data;
 
             if (existingEntities is null)
