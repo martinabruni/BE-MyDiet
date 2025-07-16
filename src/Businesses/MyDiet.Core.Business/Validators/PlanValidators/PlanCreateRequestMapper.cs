@@ -20,13 +20,13 @@ namespace MyDiet.Core.Business.Validators.PlanValidators
             var createDto = _createDtoToPlanDtoMapper.Map(request);
             if (createDto is null)
             {
-                return Task.FromResult(BusinessResponse<PlanDto>.InternalServerError(_message.ErrorCreatingEntity));
+                return Task.FromResult(BusinessResponse<PlanDto>.InternalServerError(_message.ErrorMapping));
             }
             createDto.UserId = context.Context.UserId;
             createDto.CreatedAt = DateTime.UtcNow;
             createDto.UpdatedAt = createDto.CreatedAt;
 
-            return Task.FromResult(BusinessResponse<PlanDto>.Ok(createDto, $"{nameof(PlanCreateRequestMapper)} passed"));
+            return Task.FromResult(BusinessResponse<PlanDto>.Ok(createDto, $"{this.GetType().Name} passed"));
         }
     }
 }

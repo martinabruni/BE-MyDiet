@@ -20,14 +20,14 @@ namespace MyDiet.Core.Business.Validators.DietValidators
             var dietDto = _createRequestToDietDtoMapper.Map(request);
             if (dietDto is null)
             {
-                return Task.FromResult(BusinessResponse<DietDto>.InternalServerError(_message.ErrorCreatingEntity));
+                return Task.FromResult(BusinessResponse<DietDto>.InternalServerError(_message.ErrorMapping));
             }
 
             dietDto.UserId = context.Context.UserId;
             dietDto.CreatedAt = DateTime.UtcNow;
             dietDto.UpdatedAt = dietDto.CreatedAt;
 
-            return Task.FromResult(BusinessResponse<DietDto>.Ok(dietDto, $"{nameof(DietCreateRequestMapper)} passed"));
+            return Task.FromResult(BusinessResponse<DietDto>.Ok(dietDto, $"{this.GetType().Name} passed"));
         }
     }
 }

@@ -44,14 +44,12 @@ namespace MyDiet.Core.Business.Validators
 
             var existingEntityRes = await _service.FindAsync(combined);
             var existingEntities = existingEntityRes.Data;
-
             if (existingEntities is null)
             {
                 return BusinessResponse<TData>.InternalServerError(_message.ErrorRetrievingEntities);
             }
 
             var entityCount = existingEntities.ToList().Count();
-
             if (entityCount != 0 && _errorOnExistingEntity)
             {
                 return BusinessResponse<TData>.BadRequest(_message.EntityAlreadyExists);
@@ -68,7 +66,7 @@ namespace MyDiet.Core.Business.Validators
             if (_overrideContextData)
                 validation.Context.Data = existingEntity;
 
-            return BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(DietNameUniquenessValidator)} passed");
+            return BusinessResponse<TData>.Ok(validation.Context.Data, $"{this.GetType().Name} passed");
         }
     }
 }

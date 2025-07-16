@@ -19,17 +19,17 @@ namespace MyDiet.Core.Business.Validators.PlanValidators
             var oldDto = context.Context.OldData;
             if (newDto is null)
             {
-                return Task.FromResult(BusinessResponse<PlanDto>.InternalServerError(_message.ErrorUpdatingEntity));
+                return Task.FromResult(BusinessResponse<PlanDto>.InternalServerError(_message.ErrorRetrievingEntity));
             }
             if (oldDto is null)
             {
-                return Task.FromResult(BusinessResponse<PlanDto>.InternalServerError(_message.ErrorUpdatingEntity));
+                return Task.FromResult(BusinessResponse<PlanDto>.InternalServerError(_message.ErrorRetrievingEntity));
             }
             newDto.UserId = oldDto.UserId;
             newDto.CreatedAt = oldDto.CreatedAt;
             newDto.UpdatedAt = DateTime.UtcNow;
 
-            return Task.FromResult(BusinessResponse<PlanDto>.Ok(newDto, $"{nameof(PlanUpdateRequestMapper)} passed"));
+            return Task.FromResult(BusinessResponse<PlanDto>.Ok(newDto, $"{this.GetType().Name} passed"));
         }
     }
 }

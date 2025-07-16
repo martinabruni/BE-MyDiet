@@ -39,7 +39,7 @@ namespace MyDiet.Core.Business.Validators.PlanValidators
                 return BusinessResponse<PlanDto>.Unauthorize(_message.InvalidRequest);
             }
 
-            return BusinessResponse<PlanDto>.Ok(context.Context.Data);
+            return BusinessResponse<PlanDto>.Ok(context.Context.Data, $"{this.GetType().Name}");
         }
     }
 }

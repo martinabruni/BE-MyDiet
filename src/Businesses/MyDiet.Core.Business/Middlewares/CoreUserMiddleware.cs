@@ -23,8 +23,6 @@ namespace MyDiet.Core.Business.Middlewares
         {
             var user = context.User;
             var userIdClaim = user.FindFirst("userId");
-            var usernameClaim = user.FindFirst("username");
-            var roleClaim = user.FindFirst(ClaimTypes.Role);
 
             if (userIdClaim is not null && Guid.TryParse(userIdClaim.Value, out var userId))
             {
@@ -36,6 +34,8 @@ namespace MyDiet.Core.Business.Middlewares
 
                     if (isFirstLogin.Data is not null)
                     {
+                        var usernameClaim = user.FindFirst("username");
+                        var roleClaim = user.FindFirst(ClaimTypes.Role);
                         var userClaims = new UserClaims
                         {
                             UserId = userId,

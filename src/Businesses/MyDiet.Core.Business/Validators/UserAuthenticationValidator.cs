@@ -22,11 +22,11 @@ namespace MyDiet.Core.Business.Validators
         {
             if (validation.Context.UserClaim is null)
             {
-                return BusinessResponse<TData>.Unauthorize(_message.InvalidRequest);
+                return BusinessResponse<TData>.Unauthorize(_message.NotLoggedIn);
             }
             if (!Guid.TryParse(validation.Context.UserClaim.Value, out var userId))
             {
-                return BusinessResponse<TData>.Unauthorize(_message.InvalidRequest);
+                return BusinessResponse<TData>.Unauthorize(_message.NotLoggedIn);
             }
 
             var userRes = await _userService.GetByIdAsync(userId);
@@ -36,7 +36,7 @@ namespace MyDiet.Core.Business.Validators
             }
 
             validation.Context.UserId = userId;
-            return BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(UserAuthenticationValidator<TRequest, TData, TContext, TKey>)} passed");
+            return BusinessResponse<TData>.Ok(validation.Context.Data, $"{this.GetType().Name} passed");
         }
     }
 }

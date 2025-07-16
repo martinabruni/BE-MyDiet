@@ -43,7 +43,7 @@ namespace MyDiet.Core.Business.Validators
             {
                 return Task.FromResult(BusinessResponse<TData>.Unauthorize(_message.InvalidRequest));
             }
-            return Task.FromResult(BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(DietOwnershipValidator)} passed"));
+            return Task.FromResult(BusinessResponse<TData>.Ok(validation.Context.Data, $"{this.GetType().Name} passed"));
         }
     }
 }

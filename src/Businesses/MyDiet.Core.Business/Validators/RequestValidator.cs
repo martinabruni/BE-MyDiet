@@ -21,7 +21,7 @@ namespace MyDiet.Core.Business.Validators
                 return Task.FromResult(BusinessResponse<TData>.BadRequest(_message.InvalidRequest));
             }
 
-            return Task.FromResult(BusinessResponse<TData>.Ok(validation.Context.Data, $"{nameof(RequestValidator<TRequest, TData, TContext>)} passed"));
+            return Task.FromResult(BusinessResponse<TData>.Ok(validation.Context.Data, $"{this.GetType().Name} passed"));
         }
     }
 }
